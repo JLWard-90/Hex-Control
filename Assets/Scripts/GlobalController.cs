@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GlobalController : MonoBehaviour {
+
+    public int noPlayerIndex = 2;
 
     public static GlobalController instance;
 
@@ -64,6 +67,9 @@ public class GlobalController : MonoBehaviour {
     public int PowCost = 500;
     public int CivCost = 500;
     public int LanCost = 2000;
+    //Aditional lists for players:
+    public string[] playerNames;
+    public int[] playerTypes;
     //End of setup list
 
     void Awake()
@@ -88,5 +94,71 @@ public class GlobalController : MonoBehaviour {
     void Start () {
 		
 	}
-	
-}
+
+    public void updateResidentialValue()
+    {
+        Residential =(int) GameObject.Find("ResidentialSlider").GetComponent<Slider>().value;
+    }
+    public void updateIndustrialValue()
+    {
+        Industrial = (int)GameObject.Find("IndustrialSlider").GetComponent<Slider>().value;
+    }
+    public void updateCivicValue()
+    {
+        Civic = (int)GameObject.Find("CivicSlider").GetComponent<Slider>().value;
+    }
+    public void updatePowerPlantValue()
+    {
+        Power = (int)GameObject.Find("PowerSlider").GetComponent<Slider>().value;
+    }
+    public void updateLandmarkValue()
+    {
+        Landmark = (int)GameObject.Find("LandmarkSlider").GetComponent<Slider>().value;
+    }
+
+    public void updatePlayerList()
+    {
+        playerCount = getPlayerCount();
+        playerNames = new string[playerCount];
+        playerTypes = new int[playerCount];
+        int j = 0;
+        for(int i = 0; i < playerCount; i++)
+        {
+            bool Found = false;
+            while (Found == false)
+            {
+                int pnum = j + 1;
+                string typename = "PlayerType" + pnum;
+                int ptype = GameObject.Find(typename).GetComponent<Dropdown>().value;
+                if (ptype != noPlayerIndex)
+                {
+                    string textboxName = "Player" + pnum + "Field";
+                    playerNames[i] = GameObject.Find(textboxName).GetComponent<InputField>().text;
+                    playerTypes[i] = ptype;
+                    Found = true;
+                    Debug.Log(textboxName);
+                    j++;
+                }
+                else
+                {
+                    j++;
+                }
+            }
+            
+            
+        }
+    }
+    int getPlayerCount()
+    {
+        int count = 0;
+        int curr = GameObject.Find("PlayerType1").GetComponent<Dropdown>().value;
+        if (curr != noPlayerIndex) count++;
+        curr = GameObject.Find("PlayerType2").GetComponent<Dropdown>().value;
+        if (curr != noPlayerIndex) count++;
+        curr = GameObject.Find("PlayerType3").GetComponent<Dropdown>().value;
+        if (curr != noPlayerIndex) count++;
+        curr = GameObject.Find("PlayerType4").GetComponent<Dropdown>().value;
+        if (curr != noPlayerIndex) count++;
+        return count;
+    }
+    }

@@ -10,6 +10,7 @@ ScriptsOnlyBuild:
     - HexGrid
     - HexMesh
     - LevelController
+    - LevelSetupController
     - LobbyMenuController
     - MenuController
     - Player
@@ -29,14 +30,90 @@ ScriptsOnlyBuild:
     - UnityEngine.EventSystems.StandaloneInputModule
     - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
+    - UnityEngine.UI.Dropdown
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.InputField
+    - UnityEngine.UI.Mask
+    - UnityEngine.UI.ScrollRect
+    - UnityEngine.UI.Scrollbar
+    - UnityEngine.UI.Slider
     - UnityEngine.UI.Text
+    - UnityEngine.UI.Toggle
     - UnityEngine.UI.VerticalLayoutGroup
     com.unity.multiplayer-hlapi.Runtime.dll:
     - UnityEngine.Networking.NetworkCallbacks
     - UnityEngine.Networking.NetworkIdentity
   sceneClasses:
+    Assets/Scenes/GameSetupMenu.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 89
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 9696}
+    - Class: 114
+      Script: {instanceID: 9898}
+    - Class: 114
+      Script: {instanceID: 9902}
+    - Class: 114
+      Script: {instanceID: 9948}
+    - Class: 114
+      Script: {instanceID: 10180}
+    - Class: 114
+      Script: {instanceID: 10254}
+    - Class: 114
+      Script: {instanceID: 10322}
+    - Class: 114
+      Script: {instanceID: 10450}
+    - Class: 114
+      Script: {instanceID: 10682}
+    - Class: 114
+      Script: {instanceID: 10916}
+    - Class: 114
+      Script: {instanceID: 11184}
+    - Class: 114
+      Script: {instanceID: 11520}
+    - Class: 114
+      Script: {instanceID: 11950}
+    - Class: 114
+      Script: {instanceID: 11968}
+    - Class: 114
+      Script: {instanceID: 11986}
+    - Class: 114
+      Script: {instanceID: 12006}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
+    - Class: 258
+      Script: {instanceID: 0}
     Assets/Scenes/MainMenu.unity:
     - Class: 1
       Script: {instanceID: 0}
@@ -87,19 +164,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10158}
     - Class: 114
-      Script: {instanceID: 10252}
+      Script: {instanceID: 10254}
     - Class: 114
-      Script: {instanceID: 10448}
+      Script: {instanceID: 10450}
     - Class: 114
-      Script: {instanceID: 10848}
+      Script: {instanceID: 10850}
     - Class: 114
-      Script: {instanceID: 10914}
+      Script: {instanceID: 10916}
     - Class: 114
-      Script: {instanceID: 11338}
+      Script: {instanceID: 11340}
     - Class: 114
-      Script: {instanceID: 11518}
+      Script: {instanceID: 11520}
     - Class: 114
-      Script: {instanceID: 11964}
+      Script: {instanceID: 11968}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -152,37 +229,39 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9948}
     - Class: 114
-      Script: {instanceID: 10198}
+      Script: {instanceID: 10200}
     - Class: 114
-      Script: {instanceID: 10316}
+      Script: {instanceID: 10254}
     - Class: 114
-      Script: {instanceID: 10378}
+      Script: {instanceID: 10318}
     - Class: 114
-      Script: {instanceID: 10386}
+      Script: {instanceID: 10380}
     - Class: 114
-      Script: {instanceID: 10448}
+      Script: {instanceID: 10388}
     - Class: 114
-      Script: {instanceID: 10914}
+      Script: {instanceID: 10450}
     - Class: 114
-      Script: {instanceID: 11020}
+      Script: {instanceID: 10916}
     - Class: 114
-      Script: {instanceID: 11066}
+      Script: {instanceID: 11022}
     - Class: 114
-      Script: {instanceID: 11120}
+      Script: {instanceID: 11068}
     - Class: 114
-      Script: {instanceID: 11168}
+      Script: {instanceID: 11122}
     - Class: 114
-      Script: {instanceID: 11300}
+      Script: {instanceID: 11170}
     - Class: 114
-      Script: {instanceID: 11366}
+      Script: {instanceID: 11302}
     - Class: 114
-      Script: {instanceID: 11518}
+      Script: {instanceID: 11368}
     - Class: 114
-      Script: {instanceID: 11964}
+      Script: {instanceID: 11520}
     - Class: 114
-      Script: {instanceID: 11966}
+      Script: {instanceID: 11706}
     - Class: 114
-      Script: {instanceID: 30142}
+      Script: {instanceID: 11968}
+    - Class: 114
+      Script: {instanceID: 11970}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -377,6 +456,12 @@ ScriptsOnlyBuild:
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: LevelSetupController
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
     className: RectMask2D
@@ -400,7 +485,7 @@ ScriptsOnlyBuild:
     className: TransitionArmModel
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: fcf2000ef36633ad89f43dee1281f56b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GlobalController
@@ -826,6 +911,12 @@ ScriptsOnlyBuild:
     className: MarkerTrack
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: EscMenuController
+  - hash:
+      serializedVersion: 2
       Hash: d791aa6007fa3640be1164ea75bb087d
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -904,7 +995,7 @@ ScriptsOnlyBuild:
     className: StandaloneInputModule
   - hash:
       serializedVersion: 2
-      Hash: 25b66678c86aa0f2f7dfe52211baaac7
+      Hash: e70389ad3f00eb4c4f81c2592d6e37d5
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LevelController
@@ -938,15 +1029,10 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: EscMenuController
   platform: 19
   scenePathNames:
   - Assets/Scenes/MainMenu.unity
+  - Assets/Scenes/GameSetupMenu.unity
   - Assets/Scenes/MainScene.unity
-  playerPath: C:/Users/Public/Documents/Unity Projects/Hex City/Builds/Build_0.2.1/Hex
+  playerPath: C:/Users/Public/Documents/Unity Projects/Hex City/Builds/CurrentBuild/Hex
     Control.exe

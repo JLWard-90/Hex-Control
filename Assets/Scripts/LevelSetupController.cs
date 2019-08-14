@@ -30,7 +30,28 @@ public class LevelSetupController : MonoBehaviour
 
     public void OnStartGameButton()
     {
+        globalContol.updatePlayerList();
         globalContol.useDefaults = false;
         SceneManager.LoadScene("MainScene");
+    }
+    public void UpdateResBuildings()
+    {
+        globalContol.updateResidentialValue();
+    }
+    public void UpdateIndBuildings()
+    {
+        globalContol.updateIndustrialValue();
+    }
+    public void UpdateCivBuildings()
+    {
+        globalContol.updateCivicValue();
+    }
+    public void UpdatePowBuildings()
+    {
+        globalContol.updatePowerPlantValue();
+    }
+    public void UpdateLanBuildings()
+    {
+        globalContol.updateLandmarkValue();
     }
 }

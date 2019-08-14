@@ -80,6 +80,10 @@ public class LevelController : MonoBehaviour {
 
     GlobalController globalController;
 
+    //Aditional lists for players:
+    public string[] playerNames;
+    public int[] playerTypes;
+
     private void Awake()
     {
         //First thing to do is to find the Global controller
@@ -116,6 +120,8 @@ public class LevelController : MonoBehaviour {
             PowCost = globalController.PowCost;
             CivCost = globalController.CivCost;
             LanCost = globalController.LanCost;
+            playerNames = globalController.playerNames;
+            playerTypes = globalController.playerTypes;
         }
         //Move this stuff to start so that it definitely happens after setting the level parameters.
         CellPrices = new List<int>
@@ -130,7 +136,15 @@ public class LevelController : MonoBehaviour {
         {
             0, InfPerRes, InfPerInd, InfPerPow, InfPerCiv, InfPerLan
         };
-        InitPlayers(playerCount);
+        if(globalController.useDefaults == true)
+        {
+            InitPlayers(playerCount);
+        }
+        else
+        {
+            //Here I need a method that will instantiate new players from playerNames and player types
+            InitPlayersNonDefault(playerCount, playerNames, playerTypes);
+        }
     }
 
     private void Start()
@@ -141,7 +155,7 @@ public class LevelController : MonoBehaviour {
     void InitPlayers(int playerCount)
     {
         players = new Player[playerCount];
-        for (int i = 0; i<(playerCount); i++)
+        for (int i = 0; i < (playerCount); i++)
         {
             Player player = players[i] = Instantiate<Player>(PlayerPrefab);
             int j = i + 1;
@@ -157,8 +171,31 @@ public class LevelController : MonoBehaviour {
                 players[i].PlayerName = "AI Player " + j;
             }
         }
-        
+
     }
+
+    void InitPlayersNonDefault(int playerCount, string[] playerNames, int[] playerTypes)
+    {
+        players = new Player[playerCount];
+        for(int i = 0; i < playerCount; i++)
+        {
+            if(playerTypes[i] != globalController.noPlayerIndex)
+            {
+                Player player = players[i] = Instantiate<Player>(PlayerPrefab);
+                players[i].PlayerName = playerNames[i];
+                players[i].playerCash = StartingCash;
+                players[i].playerInfluence = StartingInfluence;
+                players[i].playerNumber = i;
+                players[i].PlayerColor = playerColors[i];
+                if (playerTypes[i] == 1)
+                {
+                    players[i].AIplayer = true;
+                }
+            }
+        }
+    }
+
+
 
 
 }
