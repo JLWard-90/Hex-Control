@@ -16,12 +16,15 @@ public class ActionController : MonoBehaviour {
     [SerializeField]
     int changeToIndCost = 100;
 
+    AudioController audioCont;
+
     private void Awake()
     {
         theGrid = GameObject.Find("HexGrid").GetComponent<HexGrid>();
         hexMesh = theGrid.GetComponentInChildren<HexMesh>();
         uIController = GameObject.Find("UICanvas").GetComponent<UIController>();
         level = GameObject.Find("LevelController").GetComponent<LevelController>();
+        audioCont = GameObject.Find("AudioController").GetComponent<AudioController>();
     }
 
     public void OnBuyCell(Player CurrentPlayer, HexCell Cell)
@@ -38,6 +41,7 @@ public class ActionController : MonoBehaviour {
                     level.players[Cell.cellOwner].playerCash += Cell.cellPrice; //Pay the money directly to the previous owner of the cell.
                 }
                 Cell.cellOwner = CurrentPlayer.playerNumber;
+                audioCont.PlayBuySound();
                 Cell.cellOwnerString = CurrentPlayer.PlayerName;
                 Cell.color = CurrentPlayer.PlayerColor;
                 Cell.CellOwnerColor = CurrentPlayer.PlayerColor;
@@ -65,6 +69,7 @@ public class ActionController : MonoBehaviour {
                         level.players[Cell.cellOwner].playerCash += Cell.cellPrice; //Pay the money directly to the previous owner of the cell.
                     }
                     Cell.cellOwner = CurrentPlayer.playerNumber;
+                    audioCont.PlayBuySound();
                     Cell.cellOwnerString = CurrentPlayer.PlayerName;
                     Cell.color = CurrentPlayer.PlayerColor;
                     Cell.CellOwnerColor = CurrentPlayer.PlayerColor;
@@ -89,6 +94,7 @@ public class ActionController : MonoBehaviour {
                 CurrentPlayer.playerCash += Cell.cellPrice;
                 CurrentPlayer.tileCounts[Cell.cellType]--;
                 Cell.cellOwner = -1;
+                audioCont.PlaySellSound();
                 Cell.cellOwnerString = "None";
                 Cell.CellOwnerColor = Color.white;
                 Cell.color = Cell.CellOwnerColor;
@@ -108,6 +114,7 @@ public class ActionController : MonoBehaviour {
                     CurrentPlayer.playerCash += Cell.cellPrice;
                     CurrentPlayer.tileCounts[Cell.cellType]--;
                     Cell.cellOwner = -1;
+                    audioCont.PlaySellSound();
                     Cell.cellOwnerString = "None";
                     Cell.CellOwnerColor = Color.white;
                     Cell.color = Cell.CellOwnerColor;
@@ -130,6 +137,7 @@ public class ActionController : MonoBehaviour {
             {
                 player.playerCash -= CostPerPP * player.tileCounts[3];
             }
+            audioCont.PlayLobbySound();
             uIController.UpdateInfoPanel();
         }
         else
@@ -151,6 +159,7 @@ public class ActionController : MonoBehaviour {
                 CurrentPlayer.tileCounts[cell.cellType]++;
                 hexMesh.Triangulate(theGrid.cells);
                 theGrid.UpdateCellLabel(cell, cellIndex);
+                audioCont.PlayLobbySound();
                 Debug.Log("Changed cell to Industrial district");
             }
             else

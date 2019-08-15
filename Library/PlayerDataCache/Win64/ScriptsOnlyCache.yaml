@@ -3,6 +3,7 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - AIController
     - ActionController
+    - AudioController
     - EscMenuController
     - GameController
     - GlobalController
@@ -216,6 +217,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
     - Class: 104
@@ -262,6 +267,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 11968}
     - Class: 114
       Script: {instanceID: 11970}
+    - Class: 114
+      Script: {instanceID: 14566}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -1029,6 +1036,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: df949aaa9931359a81a3835e0c6a8676
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: AudioController
   platform: 19
   scenePathNames:
   - Assets/Scenes/MainMenu.unity

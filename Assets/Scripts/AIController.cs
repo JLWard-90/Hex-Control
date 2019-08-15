@@ -223,12 +223,21 @@ public class AIController : MonoBehaviour {
 
     public void RunAITurn()
     {
+        StartCoroutine(TakeActionCoroutine());
+    }
+
+    IEnumerator TakeActionCoroutine()
+    {
+        Debug.Log("Called RunAITurn");
         int nActionsToTake = 2;
-        for (int i=0; i<nActionsToTake; i++)
-            {
-                TakeAction();
-            }
+        for (int i = 0; i < nActionsToTake; i++)
+        {
+            yield return new WaitForSeconds(0.5f);
+            TakeAction();
+            yield return new WaitForSeconds(0.5f);
+        }
         Debug.Log("AI turn complete");
         turnController.EndTurn();
     }
+    
 }

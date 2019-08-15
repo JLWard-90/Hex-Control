@@ -153,6 +153,4 @@ public class TurnController : MonoBehaviour {
         int calculatedIncrease = thePlayer.tileCounts[1] * lCont.CashPerRes + thePlayer.tileCounts[2] * newCashPerInd + thePlayer.tileCounts[3] * lCont.CashPerPow + thePlayer.tileCounts[4] * lCont.CashPerCiv + thePlayer.tileCounts[5] * lCont.CashPerLan;
         return calculatedIncrease;
     }
-    
-
 }
