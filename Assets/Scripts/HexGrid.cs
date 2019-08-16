@@ -151,4 +151,13 @@ public class HexGrid : MonoBehaviour {
         Text label = labels[i];
         label.text = cell.CellTypeShortString;
     }
+
+    public void placeModel()
+    {
+        //This method will place the appropriate 3D model on top of each tile.
+        //The transform for the industrial model needs to be scaled to 2 on each axis.
+        //The models need to be placed at the central position of each hexCell but with a y=2 to place it above the cell so that it is visible.
+        //Either the camera should be set to an angle of 45degrees on the X-axis meaning that it needs to be moved to (50,50,-5), or the models will need to be placed (with a different scaling) 
+        //at an angle to the camera. It is probably easier to move the camera than the models.
+    }
 }
