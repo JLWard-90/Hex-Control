@@ -207,5 +207,6 @@ public class TurnController : MonoBehaviour {
                     }
                 }
             }
+        }
     }
 }
