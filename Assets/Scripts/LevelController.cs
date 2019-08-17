@@ -61,8 +61,17 @@ public class LevelController : MonoBehaviour {
     [Range(1.0f, 10.0f)]
     public float PowerPlantMultiplier;
 
+    [range(0,3)]
+    public int VictoryCondition = 0;
+
     [Range(100, 10000)]
     public int TargetInfluence;
+
+    public int TargetCash = 10000;
+
+    public int TargetCells = 36;
+
+    public int TargetLandmarks = 3;
 
     public int StartingCash = 100;
     public int StartingInfluence = 0;

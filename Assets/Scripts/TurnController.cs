@@ -88,6 +88,22 @@ public class TurnController : MonoBehaviour {
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[3] * lCont.CashPerPow;
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[4] * lCont.CashPerCiv;
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[5] * lCont.CashPerLan;
+
+            if(CurrentPlayer.playerCash >= lCont.TargetCash && lCont.VictoryCondition == 2)
+            {
+                if (WinCondition != 1)
+                {
+                    WinCondition = 1;
+                    WinningPlayer = CurrentPlayer;
+                }
+                else
+                {
+                    if (CurrentPlayer.playerCash > WinningPlayer.playerCash)
+                    {
+                        WinningPlayer = CurrentPlayer;
+                    }
+                }
+            }
         }
     }
     void AddInfluence()
@@ -101,7 +117,7 @@ public class TurnController : MonoBehaviour {
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[4] * lCont.InfPerCiv;
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[5] * lCont.InfPerLan;
 
-            if(CurrentPlayer.playerInfluence >= lCont.TargetInfluence)
+            if(CurrentPlayer.playerInfluence >= lCont.TargetInfluence && lCont.VictoryCondition == 0)
             {
                 if(WinCondition != 1)
                 {
@@ -152,5 +168,43 @@ public class TurnController : MonoBehaviour {
         int newCashPerInd = (int)CpI;
         int calculatedIncrease = thePlayer.tileCounts[1] * lCont.CashPerRes + thePlayer.tileCounts[2] * newCashPerInd + thePlayer.tileCounts[3] * lCont.CashPerPow + thePlayer.tileCounts[4] * lCont.CashPerCiv + thePlayer.tileCounts[5] * lCont.CashPerLan;
         return calculatedIncrease;
+    }
+
+    public void CheckOtherWinConditions()
+    {
+        for (int i = 0; i < TotalPlayerNumber; i++)
+        {
+            Player CurrentPlayer = players[i];
+            int Ncells = CurrentPlayer.tileCounts[0] + CurrentPlayer.tileCounts[1] + CurrentPlayer.tileCounts[2] + CurrentPlayer.tileCounts[3] + CurrentPlayer.tileCounts[4] + CurrentPlayer.tileCounts[5];
+            if (Ncells >= lCont.TargetCells && lCont.VictoryCondition == 1)
+            {
+                if (WinCondition != 1)
+                {
+                    WinCondition = 1;
+                    WinningPlayer = CurrentPlayer;
+                }
+                else
+                {
+                    if (CurrentPlayer.playerInfluence > WinningPlayer.playerInfluence)
+                    {
+                        WinningPlayer = CurrentPlayer;
+                    }
+                }
+            }
+            if (CurrentPlayer.tileCounts[5] >= lCont.TargetLandmarks && lCont.VictoryCondition == 3)
+            {
+                if (WinCondition != 1)
+                {
+                    WinCondition = 1;
+                    WinningPlayer = CurrentPlayer;
+                }
+                else
+                {
+                    if (CurrentPlayer.playerInfluence > WinningPlayer.playerInfluence)
+                    {
+                        WinningPlayer = CurrentPlayer;
+                    }
+                }
+            }
     }
 }
