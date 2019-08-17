@@ -6,6 +6,7 @@ ScriptsOnlyBuild:
     - AudioController
     - EscMenuController
     - GameController
+    - GameOverController
     - GlobalController
     - HexCell
     - HexGrid
@@ -86,19 +87,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10682}
     - Class: 114
-      Script: {instanceID: 10916}
+      Script: {instanceID: 10918}
     - Class: 114
-      Script: {instanceID: 11184}
+      Script: {instanceID: 11186}
     - Class: 114
-      Script: {instanceID: 11520}
+      Script: {instanceID: 11522}
     - Class: 114
-      Script: {instanceID: 11950}
+      Script: {instanceID: 11952}
     - Class: 114
-      Script: {instanceID: 11968}
+      Script: {instanceID: 11970}
     - Class: 114
-      Script: {instanceID: 11986}
+      Script: {instanceID: 11988}
     - Class: 114
-      Script: {instanceID: 12006}
+      Script: {instanceID: 12008}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -169,15 +170,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10450}
     - Class: 114
-      Script: {instanceID: 10850}
+      Script: {instanceID: 10852}
     - Class: 114
-      Script: {instanceID: 10916}
+      Script: {instanceID: 10918}
     - Class: 114
-      Script: {instanceID: 11340}
+      Script: {instanceID: 11342}
     - Class: 114
-      Script: {instanceID: 11520}
+      Script: {instanceID: 11522}
     - Class: 114
-      Script: {instanceID: 11968}
+      Script: {instanceID: 11970}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -213,6 +214,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 33
       Script: {instanceID: 0}
+    - Class: 43
+      Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
     - Class: 81
@@ -224,6 +227,8 @@ ScriptsOnlyBuild:
     - Class: 89
       Script: {instanceID: 0}
     - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
       Script: {instanceID: 0}
     - Class: 114
       Script: {instanceID: 9696}
@@ -246,29 +251,31 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10450}
     - Class: 114
-      Script: {instanceID: 10916}
+      Script: {instanceID: 10836}
     - Class: 114
-      Script: {instanceID: 11022}
+      Script: {instanceID: 10918}
     - Class: 114
-      Script: {instanceID: 11068}
+      Script: {instanceID: 11024}
     - Class: 114
-      Script: {instanceID: 11122}
+      Script: {instanceID: 11070}
     - Class: 114
-      Script: {instanceID: 11170}
+      Script: {instanceID: 11124}
     - Class: 114
-      Script: {instanceID: 11302}
+      Script: {instanceID: 11172}
     - Class: 114
-      Script: {instanceID: 11368}
+      Script: {instanceID: 11304}
     - Class: 114
-      Script: {instanceID: 11520}
+      Script: {instanceID: 11370}
     - Class: 114
-      Script: {instanceID: 11706}
+      Script: {instanceID: 11522}
     - Class: 114
-      Script: {instanceID: 11968}
+      Script: {instanceID: 11708}
     - Class: 114
       Script: {instanceID: 11970}
     - Class: 114
-      Script: {instanceID: 14566}
+      Script: {instanceID: 11972}
+    - Class: 114
+      Script: {instanceID: 39646}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -534,7 +541,7 @@ ScriptsOnlyBuild:
     className: HexCell
   - hash:
       serializedVersion: 2
-      Hash: aea4599bba6058d15b451aa922fc8b64
+      Hash: fbb8e37d4b15c4a69ab3cdb5f49880a6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: HexGrid
@@ -640,6 +647,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
     className: RemoteTestResultSender
+  - hash:
+      serializedVersion: 2
+      Hash: df949aaa9931359a81a3835e0c6a8676
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: AudioController
   - hash:
       serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
@@ -792,7 +805,7 @@ ScriptsOnlyBuild:
     className: MockShareDialog
   - hash:
       serializedVersion: 2
-      Hash: 54c2ba18bf794d4971ce68da46cd44e6
+      Hash: 7489d3193e3b78fc33af348c75fd4548
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UIController
@@ -1038,10 +1051,10 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   - hash:
       serializedVersion: 2
-      Hash: df949aaa9931359a81a3835e0c6a8676
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: AudioController
+    className: GameOverController
   platform: 19
   scenePathNames:
   - Assets/Scenes/MainMenu.unity

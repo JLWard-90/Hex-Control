@@ -36,6 +36,9 @@ public class UIController : MonoBehaviour {
     [SerializeField]
     Text ScoreBoxScoreText;
 
+    [SerializeField]
+    GameObject gameOverPrefab;
+
     private void Awake()
     {
         lCont = GameObject.Find("LevelController").GetComponent<LevelController>();
@@ -81,20 +84,30 @@ public class UIController : MonoBehaviour {
 
     public void OnBuyButtonPress()
     {
-        HexCell cell = gridController.cells[gridController.SelectedCellIndex];
-        actionController.OnBuyCell(CurrentPlayer, cell);
+        if(CurrentPlayer.AIplayer != true)
+        {
+            HexCell cell = gridController.cells[gridController.SelectedCellIndex];
+            actionController.OnBuyCell(CurrentPlayer, cell);
+        }
+        
     }
 
     public void OnSellButtonPress()
     {
-        HexCell cell = gridController.cells[gridController.SelectedCellIndex];
-        actionController.OnSellCell(CurrentPlayer,cell);
+        if (CurrentPlayer.AIplayer != true)
+        {
+            HexCell cell = gridController.cells[gridController.SelectedCellIndex];
+            actionController.OnSellCell(CurrentPlayer, cell);
+        }
     }
 
     public void OnLobbyButtonPress()
     {
-        GameObject LobbyMenu = Instantiate<GameObject>(LobbyMenuPrefab);
-        LobbyMenu.transform.SetParent(transform, false);
+        if (CurrentPlayer.AIplayer != true)
+        {
+            GameObject LobbyMenu = Instantiate<GameObject>(LobbyMenuPrefab);
+            LobbyMenu.transform.SetParent(transform, false);
+        }
     }
 
     public void OnMenuButtonPress()
@@ -113,14 +126,19 @@ public class UIController : MonoBehaviour {
 
     public void OnEndTurnButtonPress()
     {
-        turnController.EndTurn();
+        if (CurrentPlayer.AIplayer != true)
+        {
+            turnController.EndTurn();
+            gridController.DeselectCell();
+        }
     }
 
     public void SpawnWinText(string playername, int playerscore)
     {
-        Text WinText = Instantiate<Text>(WinTextPrefab);
-        WinText.rectTransform.SetParent(this.transform, false);
-        WinText.rectTransform.anchoredPosition = new Vector2(0, 0);
+        GameObject winnerAnnounce = Instantiate<GameObject>(gameOverPrefab);
+        Text WinText = winnerAnnounce.transform.Find("gameOverText").GetComponent<Text>();
+        winnerAnnounce.GetComponent<RectTransform>().SetParent(this.transform, false);
+        winnerAnnounce.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
         WinText.text = string.Format("Game Over \n {0} wins! \n Winning score: {1}", playername, playerscore);
     }
 

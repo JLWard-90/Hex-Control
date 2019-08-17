@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\EscMenuController.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\GameMenuController.cs" />
+    <Compile Include="Assets\Scripts\GameOverController.cs" />
     <Compile Include="Assets\Scripts\GlobalController.cs" />
     <Compile Include="Assets\Scripts\HexCell.cs" />
     <Compile Include="Assets\Scripts\HexCoordinates.cs" />

@@ -232,9 +232,9 @@ public class AIController : MonoBehaviour {
         int nActionsToTake = 2;
         for (int i = 0; i < nActionsToTake; i++)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
             TakeAction();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
         }
         Debug.Log("AI turn complete");
         turnController.EndTurn();

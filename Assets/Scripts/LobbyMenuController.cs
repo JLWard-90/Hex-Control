@@ -33,18 +33,25 @@ public class LobbyMenuController : MonoBehaviour {
 
     public void OnGreenInitiativeButton()
     {
-        Debug.Log(currentPlayer);
-        Debug.Log(theplayers);
-        actionController.OnGreenEnergyInitiative(currentPlayer, theplayers);
-        Destroy(gameObject);
+        if(currentPlayer.AIplayer != true)
+        {
+            Debug.Log(currentPlayer);
+            Debug.Log(theplayers);
+            actionController.OnGreenEnergyInitiative(currentPlayer, theplayers);
+            Destroy(gameObject);
+        }
     }
 
     public void OnChangeToIndButton()
     {
-        Debug.Log("Change to ind...");
-        Debug.Log(theGrid.SelectedCellIndex);
-        HexCell cell = theGrid.cells[theGrid.SelectedCellIndex];
-        Debug.Log(currentPlayer);
-        actionController.ChangeCellType(cell, currentPlayer, 2,theGrid.SelectedCellIndex);
+        if(currentPlayer.AIplayer != true)
+        {
+            Debug.Log("Change to ind...");
+            Debug.Log(theGrid.SelectedCellIndex);
+            HexCell cell = theGrid.cells[theGrid.SelectedCellIndex];
+            Debug.Log(currentPlayer);
+            actionController.ChangeCellType(cell, currentPlayer, 2, theGrid.SelectedCellIndex);
+        }
+        
     }
 }

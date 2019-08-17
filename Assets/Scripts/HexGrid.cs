@@ -23,6 +23,22 @@ public class HexGrid : MonoBehaviour {
 
     Text[] labels;
 
+    [SerializeField]
+    GameObject industrial3DModelPrefab;
+    Vector3 indModelScale = new Vector3(2,2,2);
+    [SerializeField]
+    GameObject residential3DModelPrefab;
+    Vector3 resModelScale = new Vector3(2, 2, 2);
+    [SerializeField]
+    GameObject powerplant3DModelPrefab;
+    Vector3 powModelScale = new Vector3(3, 3, 3);
+    [SerializeField]
+    GameObject civic3DModelPrefab;
+    Vector3 civicModelScale = new Vector3(2, 2, 2);
+    [SerializeField]
+    GameObject Landmark3DModelPrefab;
+    Vector3 LanModelScale = new Vector3(1, 1, 1);
+
     public int SelectedCellIndex = -1; //The index of a selected cell
 
     [SerializeField]
@@ -81,7 +97,7 @@ public class HexGrid : MonoBehaviour {
         DeselectCell();
     }
 
-    void DeselectCell()
+    public void DeselectCell()
     {
         //Clear all cell selection
         if (SelectedCellIndex != -1)
@@ -144,20 +160,87 @@ public class HexGrid : MonoBehaviour {
         //label.text = cell.coordinates.ToStringOnSeparateLines();
         label.text = cell.CellTypeShortString;
         labels[i] = label; //Add this label into the array of labels
+        placeModel(cell);
     }
 
     public void UpdateCellLabel(HexCell cell, int i)
     {
         Text label = labels[i];
         label.text = cell.CellTypeShortString;
+        placeModel(cell);
     }
 
-    public void placeModel()
+    public void initialPlaceModels()
     {
-        //This method will place the appropriate 3D model on top of each tile.
-        //The transform for the industrial model needs to be scaled to 2 on each axis.
-        //The models need to be placed at the central position of each hexCell but with a y=2 to place it above the cell so that it is visible.
-        //Either the camera should be set to an angle of 45degrees on the X-axis meaning that it needs to be moved to (50,50,-5), or the models will need to be placed (with a different scaling) 
-        //at an angle to the camera. It is probably easier to move the camera than the models.
+        //Industrial models will be placed 
+    }
+
+    public void placeModel(HexCell cell)
+    {
+        int celltype = cell.cellType;
+        if(celltype == 1) //Residential
+        {
+            GameObject threeDModel = Instantiate<GameObject>(residential3DModelPrefab);
+            threeDModel.transform.SetParent(cell.gameObject.transform);
+            Vector3 posadj = new Vector3(1, 50, 2);
+            Vector3 pos = cell.transform.position + posadj;
+            Quaternion rot = Quaternion.Euler(45, 57, 45);
+            threeDModel.transform.SetPositionAndRotation(pos, rot);
+            threeDModel.transform.localScale = resModelScale;
+        }
+        else if(celltype == 2)//Industrial
+        {
+            GameObject threeDModel = Instantiate<GameObject>(industrial3DModelPrefab);
+            threeDModel.transform.SetParent(cell.gameObject.transform);
+            Vector3 posadj = new Vector3(3, 50, 0);
+            Vector3 pos = cell.transform.position + posadj;
+            Quaternion rot = Quaternion.Euler(45, 60, 45);
+            threeDModel.transform.SetPositionAndRotation(pos, rot);
+            threeDModel.transform.localScale = indModelScale;
+        }
+        else if(celltype == 3) //Power plant
+        {
+            GameObject threeDModel = Instantiate<GameObject>(powerplant3DModelPrefab);
+            threeDModel.transform.SetParent(cell.gameObject.transform);
+            Vector3 posadj = new Vector3(4, 50, -1);
+            Vector3 pos = cell.transform.position + posadj;
+            Quaternion rot = Quaternion.Euler(45, 60, 45);
+            threeDModel.transform.SetPositionAndRotation(pos, rot);
+            threeDModel.transform.localScale = powModelScale;
+        }
+        else if(celltype == 4) //Civic
+        {
+            GameObject threeDModel = Instantiate<GameObject>(civic3DModelPrefab);
+            threeDModel.transform.SetParent(cell.gameObject.transform);
+            Vector3 posadj = new Vector3(0, 50, 0);
+            Vector3 pos = cell.transform.position + posadj;
+            Quaternion rot = Quaternion.Euler(-45, -120, -45);
+            threeDModel.transform.SetPositionAndRotation(pos, rot);
+            threeDModel.transform.localScale = civicModelScale;
+        }
+        else if(celltype == 5)//Landmark
+        {
+            GameObject threeDModel = Instantiate<GameObject>(Landmark3DModelPrefab);
+            threeDModel.transform.SetParent(cell.gameObject.transform);
+            Vector3 posadj = new Vector3(-3, 50, -5);
+            Vector3 pos = cell.transform.position + posadj;
+            Quaternion rot = Quaternion.Euler(-45,-120,-45);
+            threeDModel.transform.SetPositionAndRotation(pos, rot);
+            threeDModel.transform.localScale = LanModelScale;
+        }
+        else
+        {
+            Debug.Log("Cell type not recognised! No model instantiated.");
+        }
+         
+    }
+
+    public void destroyModel(HexCell cell)
+    {
+        GameObject threeDModel = cell.gameObject.transform.GetChild(0).gameObject; //I think each HexCell game object should only have a single child
+        if(threeDModel != null)
+        {
+            Destroy(threeDModel);
+        }
     }
 }

@@ -154,6 +154,7 @@ public class ActionController : MonoBehaviour {
             {
                 CurrentPlayer.playerInfluence -= changeToIndCost;
                 CurrentPlayer.tileCounts[cell.cellType]--;
+                theGrid.destroyModel(cell);
                 cell.cellType = newCellType;
                 cell.SetCellTypeProperties();
                 CurrentPlayer.tileCounts[cell.cellType]++;
