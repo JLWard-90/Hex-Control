@@ -10,9 +10,16 @@ public class LobbyMenuController : MonoBehaviour {
     LevelController lCont;
     TurnController turnController;
     HexGrid theGrid;
+    GameObject[] instance;
 
     private void Awake()
     {
+        instance = GameObject.FindGameObjectsWithTag("LobbyMenu");
+        Debug.Log(instance.Length);
+        if(instance.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
         lCont = GameObject.Find("LevelController").GetComponent<LevelController>();
         turnController = GameObject.Find("GameController").GetComponent<TurnController>();
         actionController = GameObject.Find("GameController").GetComponent<ActionController>();
