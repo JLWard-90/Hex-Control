@@ -66,6 +66,7 @@ public class TurnController : MonoBehaviour {
     {
         AddCash();
         AddInfluence();
+        CheckOtherWinConditions();
         CurrentPlayer = 0;
         CurrentTurn++;
         ResetPrices();

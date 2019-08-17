@@ -74,7 +74,15 @@ public class UIController : MonoBehaviour {
         CurrentPlayer = lCont.players[playerindex];
         PlayerNameText.text = string.Format("Turn {0} {1}", CurrentTurn, CurrentPlayer.PlayerName);
         PlayerCashText.text = string.Format("Cash: ${0} (+${1})",CurrentPlayer.playerCash,CashIncrease);
-        PlayerInfluenceText.text = string.Format("Influence: {0} (+{2})/{1}",CurrentPlayer.playerInfluence,lCont.TargetInfluence,InfIncrease);
+        if(lCont.VictoryCondition == 0)
+        {
+            PlayerInfluenceText.text = string.Format("Influence: {0} (+{2})/{1}", CurrentPlayer.playerInfluence, lCont.TargetInfluence, InfIncrease);
+        }
+        else
+        {
+            PlayerInfluenceText.text = string.Format("Influence: {0} (+{1})", CurrentPlayer.playerInfluence, InfIncrease);
+        }
+        
     }
 
     public void UpdateCellPanel(HexCell cell)
