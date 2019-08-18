@@ -84,12 +84,17 @@ public class HexGrid : MonoBehaviour {
 
     void HandleInput0()
     {
-        //Debug.Log("click");
+        Debug.Log("click");
         Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
         if(Physics.Raycast(inputRay, out hit) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
+            Debug.Log("TouchCell (HexGrid.cs line 92)");
             TouchCell(hit.point);
+        }
+        else
+        {
+            Debug.Log("No cell hit");
         }
     }
     void HandleInput1()
@@ -100,8 +105,10 @@ public class HexGrid : MonoBehaviour {
     public void DeselectCell()
     {
         //Clear all cell selection
-        if (SelectedCellIndex != -1)
+        if (SelectedCellIndex != -1 && SelectedCellIndex <(width*height) && SelectedCellIndex >= 0)
         {
+            Debug.Log("Selected Cell Index:");
+            Debug.Log(SelectedCellIndex);
             HexCell cell = cells[SelectedCellIndex];
             cell.selectedCell = false;
             cell.SetCellTypeProperties();
@@ -126,12 +133,15 @@ public class HexGrid : MonoBehaviour {
         Debug.Log("touched at " + coordinates.ToString());
         int index = coordinates.X + coordinates.Z * width + coordinates.Z / 2;
         DeselectCell();
-        SelectedCellIndex = index;
-        HexCell cell = cells[index];
-        cell.color = touchedColor;
-        cell.selectedCell = true;
+        if(index < (width * height) && index >= 0)
+        {
+            SelectedCellIndex = index;
+            HexCell cell = cells[index];
+            cell.color = touchedColor;
+            cell.selectedCell = true;
+            uiController.UpdateCellPanel(cell);
+        }
         hexMesh.Triangulate(cells);
-        uiController.UpdateCellPanel(cell);
     }
 
     void CreateCell(int x, int z, int i)

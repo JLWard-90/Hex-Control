@@ -408,7 +408,7 @@ MonoBehaviour:
   cellPrefab: {fileID: 114770736378350768, guid: 4ee80535fb81c9947970ba95daae8e07,
     type: 3}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
-  touchedColor: {r: 0.9601507, g: 1, b: 0, a: 1}
+  touchedColor: {r: 0, g: 1, b: 0, a: 1}
   cells: []
   cellLabelPrefab: {fileID: 114878580876819538, guid: 52594fbe309dbbe48a1a225ff9f205bd,
     type: 3}
@@ -3564,10 +3564,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828e8e4f186543c41af3a69b2549b7f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Residential: 49
-  Industrial: 48
-  Power: 13
-  Civic: 31
+  Residential: 28
+  Industrial: 36
+  Power: 19
+  Civic: 19
   Landmark: 5
   players: []
   playerColors:
@@ -3579,23 +3579,27 @@ MonoBehaviour:
   playerCount: 3
   AiPlayerCount: 2
   CashPerPow: 0
-  CashPerInd: 150
-  CashPerRes: 10
-  CashPerCiv: -50
-  CashPerLan: -300
+  CashPerInd: 100
+  CashPerRes: 20
+  CashPerCiv: -20
+  CashPerLan: 0
   InfPerPow: 0
-  InfPerInd: -20
+  InfPerInd: -10
   InfPerRes: 5
-  InfPerCiv: 20
-  InfPerLan: 200
-  PowerPlantMultiplier: 1.5
+  InfPerCiv: 30
+  InfPerLan: 75
+  PowerPlantMultiplier: 1.25
+  VictoryCondition: 0
   TargetInfluence: 1000
+  TargetCash: 300
+  TargetCells: 36
+  TargetLandmarks: 3
   StartingCash: 300
   StartingInfluence: 0
   ResCost: 100
-  IndCost: 300
-  PowCost: 500
-  CivCost: 500
+  IndCost: 200
+  PowCost: 350
+  CivCost: 350
   LanCost: 2000
   CellPrices: 
   CellCashList: 

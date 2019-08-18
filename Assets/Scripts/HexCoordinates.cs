@@ -62,7 +62,7 @@ public struct HexCoordinates
         x -= offset;
         y -= offset;
         Debug.Log("ToRound: " + x + " " + y);
-        int iX = Mathf.RoundToInt(x-0.25f);
+        int iX = Mathf.RoundToInt(x-0.35f);
         int iY = Mathf.RoundToInt(y-0.25f);
         int iZ = -iX - iY;
         //int iZ = Mathf.RoundToInt(-x - y);

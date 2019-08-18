@@ -61,7 +61,7 @@ public class LevelController : MonoBehaviour {
     [Range(1.0f, 10.0f)]
     public float PowerPlantMultiplier;
 
-    [range(0,3)]
+    [Range(0,3)]
     public int VictoryCondition = 0;
 
     [Range(100, 10000)]
