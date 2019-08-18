@@ -91,8 +91,24 @@ public class UIController : MonoBehaviour {
 
     public void UpdateCellPanel(HexCell cell)
     {
-        CellInfoText.text = string.Format("{0} \n \n Value: {1} \n \n Owner: \n {2} \n \n $/Inf: {3}/{4}", cell.cellTypeString, cell.cellPrice, cell.cellOwnerString,lCont.CellCashList[cell.cellType], lCont.CellInfList[cell.cellType]);
+        if(cell.cellType == 3)
+        {
+            if(turnController.powerToThepeople == true)
+            {
+                CellInfoText.text = string.Format("{0} \n \n Value: {1} \n \n Owner: \n {2} \n \n Res $ multiplier: {3}", cell.cellTypeString, cell.cellPrice, cell.cellOwnerString, lCont.PowerPlantMultiplier);
+            }
+            else
+            {
+                CellInfoText.text = string.Format("{0} \n \n Value: {1} \n \n Owner: \n {2} \n \n Ind $ multiplier: {3}", cell.cellTypeString, cell.cellPrice, cell.cellOwnerString, lCont.PowerPlantMultiplier);
+            }
+            
+        }
+        else
+        {
+            CellInfoText.text = string.Format("{0} \n \n Value: {1} \n \n Owner: \n {2} \n \n $/Inf: {3}/{4}", cell.cellTypeString, cell.cellPrice, cell.cellOwnerString, lCont.CellCashList[cell.cellType], lCont.CellInfList[cell.cellType]);
+        }
     }
+        
 
     public void OnBuyButtonPress()
     {

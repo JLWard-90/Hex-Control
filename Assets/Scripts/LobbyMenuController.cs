@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyMenuController : MonoBehaviour {
 
@@ -24,6 +25,11 @@ public class LobbyMenuController : MonoBehaviour {
         turnController = GameObject.Find("GameController").GetComponent<TurnController>();
         actionController = GameObject.Find("GameController").GetComponent<ActionController>();
         theGrid = GameObject.Find("HexGrid").GetComponent<HexGrid>();
+        if(turnController.powerToThepeople == true)
+        {
+            Button pttpButton = GameObject.Find("powerToThePeopleButton").GetComponent<Button>();
+            pttpButton.GetComponent<Image>().color = Color.red;
+        }
     }
 
     void Start()
@@ -58,7 +64,23 @@ public class LobbyMenuController : MonoBehaviour {
             HexCell cell = theGrid.cells[theGrid.SelectedCellIndex];
             Debug.Log(currentPlayer);
             actionController.ChangeCellType(cell, currentPlayer, 2, theGrid.SelectedCellIndex);
+            Destroy(gameObject);
         }
         
+    }
+
+    public void OnPowerToThePeopleButton()
+    {
+        if (turnController.powerToThepeople == false)
+        {
+            actionController.PowerToThePeople(currentPlayer);
+            Button pttpButton = GameObject.Find("powerToThePeopleButton").GetComponent<Button>();
+            pttpButton.GetComponent<Image>().color = Color.red;
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("PowerToThePeople Already in play!");
+        }
     }
 }

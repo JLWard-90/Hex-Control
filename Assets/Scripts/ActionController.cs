@@ -8,13 +8,16 @@ public class ActionController : MonoBehaviour {
     HexMesh hexMesh;
     UIController uIController;
     LevelController level;
+    TurnController tcontroller;
 
     [SerializeField]
     int greenInitiativeCost = 100;
     [SerializeField]
-    int greenInitiativePPdrain = 100;
+    int greenInitiativePPdrain = 200;
     [SerializeField]
     int changeToIndCost = 100;
+    [SerializeField]
+    int powerToThePeopleCost = 100;
 
     AudioController audioCont;
 
@@ -25,6 +28,7 @@ public class ActionController : MonoBehaviour {
         uIController = GameObject.Find("UICanvas").GetComponent<UIController>();
         level = GameObject.Find("LevelController").GetComponent<LevelController>();
         audioCont = GameObject.Find("AudioController").GetComponent<AudioController>();
+        tcontroller = GameObject.Find("GameController").GetComponent<TurnController>();
     }
 
     public void OnBuyCell(Player CurrentPlayer, HexCell Cell)
@@ -167,7 +171,8 @@ public class ActionController : MonoBehaviour {
                 theGrid.UpdateCellLabel(cell, cellIndex);
                 audioCont.PlayLobbySound();
                 Debug.Log("Changed cell to Industrial district");
-                uIController.updateMessageBox(CurrentPlayer.PlayerName, "changed a cell type to industrial");
+                string messagestring = "changed a district to " + cell.cellTypeString;
+                uIController.updateMessageBox(CurrentPlayer.PlayerName, messagestring);
             }
             else
             {
@@ -178,5 +183,16 @@ public class ActionController : MonoBehaviour {
         {
             Debug.Log("Cell does not belong to current player.");
         }
+    }
+
+    public void PowerToThePeople(Player CurrentPlayer)
+    {
+        if(CurrentPlayer.playerInfluence >= powerToThePeopleCost)
+        {
+            tcontroller.powerToThepeople = true;
+            CurrentPlayer.playerInfluence -= powerToThePeopleCost;
+            uIController.updateMessageBox(CurrentPlayer.PlayerName, "played Power to the people");
+        }
+        
     }
 }

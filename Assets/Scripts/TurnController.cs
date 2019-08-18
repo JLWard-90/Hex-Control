@@ -15,6 +15,7 @@ public class TurnController : MonoBehaviour {
     Player WinningPlayer;
     HexCell[] Cells;
     HexGrid Grid;
+    public bool powerToThepeople = false;
 
     private void Awake()
     {
@@ -81,10 +82,23 @@ public class TurnController : MonoBehaviour {
             //Count of each builing type: [0] empty land, [1] Residential, [2] Industrial, [3] PowerSupply, [4] Civic, [5] landmark
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[1] * lCont.CashPerRes;
             float CpI = lCont.CashPerInd;
-            for (int j = 0; j < CurrentPlayer.tileCounts[3]; j++) {
-                CpI = (CpI * lCont.PowerPlantMultiplier);
+            float CpR = lCont.CashPerRes;
+            if (powerToThepeople == true)
+            {
+                for (int j = 0; j < CurrentPlayer.tileCounts[3]; j++)
+                {
+                    CpR = (CpI * lCont.PowerPlantMultiplier);
+                }
+            }
+            else
+            {
+                for (int j = 0; j < CurrentPlayer.tileCounts[3]; j++)
+                {
+                    CpI = (CpI * lCont.PowerPlantMultiplier);
+                }
             }
             int newCashPerInd = (int)CpI;
+            int newCashPerRes = (int)CpR;
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[2] * newCashPerInd;
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[3] * lCont.CashPerPow;
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[4] * lCont.CashPerCiv;
