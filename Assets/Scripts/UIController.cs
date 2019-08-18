@@ -39,6 +39,10 @@ public class UIController : MonoBehaviour {
     [SerializeField]
     GameObject gameOverPrefab;
 
+    [SerializeField]
+    Text messageBox;
+    string[] messageString = new string[12];
+
     private void Awake()
     {
         lCont = GameObject.Find("LevelController").GetComponent<LevelController>();
@@ -169,6 +173,22 @@ public class UIController : MonoBehaviour {
             outputString = outputString + string.Format("{0}: {1}\n", thePlayer.PlayerName, playerScore);
         }
         ScoreBoxScoreText.text = outputString;
+    }
+
+    public void updateMessageBox(string PlayerName, string Action)
+    {
+        string outstring = PlayerName + Action;
+        for(int  i=0; i < (messageString.Length - 1); i++)
+        {
+            messageString[i] = messageString[i + 1];
+        }
+        messageString[messageString.Length - 1] = outstring;
+        string boxString = "";
+        for(int i=0; i< messageString.Length; i++)
+        {
+            boxString = boxString + messageString[i] + "\n";
+        }
+        messageBox.text = boxString;
     }
 
 }

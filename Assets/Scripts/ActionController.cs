@@ -49,6 +49,7 @@ public class ActionController : MonoBehaviour {
                 uIController.UpdateInfoPanel();
                 uIController.UpdateCellPanel(Cell);
                 hexMesh.Triangulate(theGrid.cells);
+                uIController.updateMessageBox(CurrentPlayer.PlayerName, "bought a district");
             }
             else
             {
@@ -77,6 +78,7 @@ public class ActionController : MonoBehaviour {
                     uIController.UpdateInfoPanel();
                     uIController.UpdateCellPanel(Cell);
                     hexMesh.Triangulate(theGrid.cells);
+                    uIController.updateMessageBox(CurrentPlayer.PlayerName, "bought a district");
                 }
             }
         }
@@ -101,6 +103,7 @@ public class ActionController : MonoBehaviour {
                 uIController.UpdateInfoPanel();
                 uIController.UpdateCellPanel(Cell);
                 hexMesh.Triangulate(theGrid.cells);
+                uIController.updateMessageBox(CurrentPlayer.PlayerName, "sold a district");
             }
         }
         else 
@@ -121,6 +124,7 @@ public class ActionController : MonoBehaviour {
                     uIController.UpdateInfoPanel();
                     uIController.UpdateCellPanel(Cell);
                     hexMesh.Triangulate(theGrid.cells);
+                    uIController.updateMessageBox(CurrentPlayer.PlayerName, "sold a district");
                 }
             }
         }
@@ -139,6 +143,7 @@ public class ActionController : MonoBehaviour {
             }
             audioCont.PlayLobbySound();
             uIController.UpdateInfoPanel();
+            uIController.updateMessageBox(CurrentPlayer.PlayerName, "lobbied for a green energy initiative");
         }
         else
         {
@@ -162,6 +167,7 @@ public class ActionController : MonoBehaviour {
                 theGrid.UpdateCellLabel(cell, cellIndex);
                 audioCont.PlayLobbySound();
                 Debug.Log("Changed cell to Industrial district");
+                uIController.updateMessageBox(CurrentPlayer.PlayerName, "changed a cell type to industrial");
             }
             else
             {
