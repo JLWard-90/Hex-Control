@@ -99,6 +99,15 @@ public class HardAIController : MonoBehaviour
                     winMove = true; //Confirm that a winning move has been performed.
                 }
             }
+            else if(AIPlayer.playerInfluence + tcontrol.CalculateInfIncrease(AIPlayer.playerNumber) - levelcont.InfPerInd >= levelcont.TargetInfluence && AIPlayer.tileCounts[2] > 0)
+            {
+                //If selling an industrial district will allow the AI player to win the game
+                List<GameObject> ownedIndCells = ownedCellsOfType(AIPlayer, 2);
+                GameObject theCellToSell = mostExpensiveCell(ownedIndCells);
+                HexCell theHexCellToSell = theCellToSell.GetComponent<HexCell>();
+                actions.OnSellCell(AIPlayer, theHexCellToSell);
+                winMove = true;
+            }
             else
             {
                 winMove = false;
@@ -183,5 +192,42 @@ public class HardAIController : MonoBehaviour
             Debug.Log("Error in hardAI.cs:cheapestCell :: Cannot determine cheapest cell! Input list of cells may be empty");
         }
         return cheapestCell;
+    }
+
+    GameObject mostExpensiveCell(List<GameObject> cellList)
+    {
+        int maxCellPrice = 0;
+        GameObject mostExpensiveCell = new GameObject();
+        bool foundMaxCell = false;
+        foreach(GameObject cell in cellList)
+        {
+            HexCell theCellComp = cell.GetComponent<HexCell>();
+            if(theCellComp.cellPrice > maxCellPrice)
+            {
+                maxCellPrice = theCellComp.cellPrice;
+                mostExpensiveCell = cell;
+                foundMaxCell = true;
+            }
+        }
+        if(foundMaxCell != true)
+        {
+            Debug.Log("Error in hardAI:mostExpensiveCell :: Cannot determine most expensive cell! Input list of cells may be empty");
+        }
+        return mostExpensiveCell;
+    }
+
+    List<GameObject> ownedCellsOfType(Player AIPlayer, int cellType)
+    {
+        GameObject[] fullCellsList = GameObject.FindGameObjectsWithTag("HexCell");
+        List<GameObject> ownedCells = new List<GameObject>();
+        foreach(GameObject cell in fullCellsList)
+        {
+            HexCell hexcomp = cell.GetComponent<HexCell>();
+            if(hexcomp.cellOwner == AIPlayer.playerNumber && hexcomp.cellType == cellType)
+            {
+                ownedCells.Add(cell);
+            }
+        }
+        return ownedCells;
     }
 }
