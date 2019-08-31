@@ -32,7 +32,7 @@ public class HardAIController : MonoBehaviour
         }
     }
 
-    private int chooseLobbyAction()
+    private int chooseLobbyAction() //Here we select a lobby action at random, check if it is worth doing
     {
         int lobbyAction = 0; //If lobbyAction == 0, no action is performed. We start with this value to ensure that nothing weird is likely to happen
         
@@ -51,11 +51,11 @@ public class HardAIController : MonoBehaviour
         bool winMove = false; // We initialise with false to make sure nothing weird happens.
         //First check what the win condition is...
         int winCondition = levelcont.VictoryCondition; //Check that this is the correct variable (and in the correct class!)
-        int NlandmarkAvailable = CountAvailableCells(AIPlayer,5);
-        int NResAvailable = CountAvailableCells(AIPlayer, 1);
-        int NIndAvailable = CountAvailableCells(AIPlayer, 2);
-        int NPowAvailable = CountAvailableCells(AIPlayer, 3);
-        int NCivAvailable = CountAvailableCells(AIPlayer, 4);
+        int NlandmarkAvailable = CountAvailableCellsOfType(AIPlayer,5);
+        int NResAvailable = CountAvailableCellsOfType(AIPlayer, 1);
+        int NIndAvailable = CountAvailableCellsOfType(AIPlayer, 2);
+        int NPowAvailable = CountAvailableCellsOfType(AIPlayer, 3);
+        int NCivAvailable = CountAvailableCellsOfType(AIPlayer, 4);
         if (winCondition==0)
         {
             //Win condition is to reach a target influence level
@@ -63,7 +63,7 @@ public class HardAIController : MonoBehaviour
             {
                 //If buying a landmark will win the game and there is a landmark available that the AIplayer can afford
                 //Then buy the landmark
-                List<GameObject> availableLandmarks = FindAvailableCells(AIPlayer, 5); //First get the list of available landmarks
+                List<GameObject> availableLandmarks = FindAvailableCellsOfType(AIPlayer, 5); //First get the list of available landmarks
                 GameObject CellToBuy = cheapestCell(availableLandmarks); //Then select the cheapest landmark cell available.
                 HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
                 actions.OnBuyCell(AIPlayer, theCell); //Buy the cell
@@ -72,7 +72,7 @@ public class HardAIController : MonoBehaviour
             else if(AIPlayer.playerInfluence + tcontrol.CalculateInfIncrease(AIPlayer.playerNumber) + levelcont.InfPerLan >= levelcont.TargetInfluence && NCivAvailable > 0)
             {
                 //If we cannot get a landmark then we will try for a civic building
-                List<GameObject> availableCivics = FindAvailableCells(AIPlayer, 4);
+                List<GameObject> availableCivics = FindAvailableCellsOfType(AIPlayer, 4);
                 GameObject CellToBuy = cheapestCell(availableCivics);
                 HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
                 actions.OnBuyCell(AIPlayer, theCell); //Buy the cell
@@ -81,7 +81,7 @@ public class HardAIController : MonoBehaviour
             else if(AIPlayer.playerInfluence + tcontrol.CalculateInfIncrease(AIPlayer.playerNumber) + levelcont.InfPerLan >= levelcont.TargetInfluence && NResAvailable > 0)
             {
                 //Try for a residential building
-                List<GameObject> availableCellsOfType = FindAvailableCells(AIPlayer, 1);
+                List<GameObject> availableCellsOfType = FindAvailableCellsOfType(AIPlayer, 1);
                 GameObject CellToBuy = cheapestCell(availableCellsOfType);
                 HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
                 actions.OnBuyCell(AIPlayer, theCell); //Buy the cell
@@ -92,7 +92,7 @@ public class HardAIController : MonoBehaviour
                 //Else if power to the people is switched on, then buying a powerplant might win the game
                 if (AIPlayer.playerInfluence + AIPlayer.tileCounts[1] * (int)(levelcont.InfPerRes * (AIPlayer.tileCounts[3]+1) * levelcont.PowerPlantMultiplier) >= levelcont.TargetInfluence && NPowAvailable > 0)
                 {
-                    List<GameObject> availableCellsOfType = FindAvailableCells(AIPlayer, 3);
+                    List<GameObject> availableCellsOfType = FindAvailableCellsOfType(AIPlayer, 3);
                     GameObject CellToBuy = cheapestCell(availableCellsOfType);
                     HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
                     actions.OnBuyCell(AIPlayer, theCell); //Buy the cell
@@ -115,7 +115,20 @@ public class HardAIController : MonoBehaviour
         }
         else if (winCondition==1)
         {
-            //Win condition is to control entire map
+            //Win condition is to control the map
+            int sumTiles = AIPlayer.tileCounts[0] + AIPlayer.tileCounts[1] + AIPlayer.tileCounts[2] + AIPlayer.tileCounts[3] + AIPlayer.tileCounts[4] + AIPlayer.tileCounts[5];
+            if(sumTiles + 1 >= levelcont.TargetCells)
+            {
+                //If buying one more tile will win the game
+                List<GameObject> availableCells = FindAvailableCells(AIPlayer);
+                if(availableCells.Count > 0) //If there are any available cells in the list
+                {
+                    GameObject cheapest = cheapestCell(availableCells);
+                    HexCell cheapestHexCellComponent = cheapest.GetComponent<HexCell>();
+                    actions.OnBuyCell(AIPlayer, cheapestHexCellComponent); //Buy the cheapest cell available to win the game
+                    winMove = true;
+                }
+            }
         }
         else if (winCondition==2)
         {
@@ -132,7 +145,7 @@ public class HardAIController : MonoBehaviour
         return winMove;
     }
 
-    int CountAvailableCells(Player currentPlayer, int targetCellType)//This is very similar to FindAvailableCells and works in the same way but returns a simple integer of the number of available cells
+    int CountAvailableCellsOfType(Player currentPlayer, int targetCellType)//This is very similar to FindAvailableCells and works in the same way but returns a simple integer of the number of available cells
     {
         GameObject[] fullCellsList = GameObject.FindGameObjectsWithTag("HexCell"); //Get all of the objects with the tag "HexCells" This should be every cell on the board and nothing else
         int count = 0;//Start a counter with the value 0 
@@ -152,7 +165,7 @@ public class HardAIController : MonoBehaviour
         return count;
     }
 
-    List<GameObject> FindAvailableCells(Player currentPlayer, int targetCellType) //This is very similar to Count available cells and works in the same way but returns a list of gameObjects
+    List<GameObject> FindAvailableCellsOfType(Player currentPlayer, int targetCellType) //This is very similar to Count available cells and works in the same way but returns a list of gameObjects
     {
         List<GameObject> possibleCells = new List<GameObject>();
         GameObject[] fullCellsList = GameObject.FindGameObjectsWithTag("HexCell");
@@ -229,5 +242,20 @@ public class HardAIController : MonoBehaviour
             }
         }
         return ownedCells;
+    }
+
+    List<GameObject> FindAvailableCells(Player currentPlayer)
+    {
+        GameObject[] fullCellsList = GameObject.FindGameObjectsWithTag("HexCell");
+        List<GameObject> posscells = new List<GameObject>();
+        foreach(GameObject cell in fullCellsList)
+        {
+            HexCell component = cell.GetComponent<HexCell>();
+            if(component.cellOwner != AIPlayer.playerNumber && component.cellPrice <= AIPlayer.playerCash)
+            {
+                posscells.Add(cell);
+            }
+        }
+        return posscells;
     }
 }
