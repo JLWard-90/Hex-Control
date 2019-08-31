@@ -18,6 +18,16 @@ public class HardAIController : MonoBehaviour
     public void hardAIAction()
     {
         bool ActionSelected = false; //Keep a running track of whether or not we have arrived at a decision
+        ActionSelected = winningMove(); //If a winning move is possible, then it will be carried out and ActionSelected will be set to true
+        if(ActionSelected == true)
+        {
+            Debug.Log("AI played a winning move");
+        }
+        else
+        {
+            //If the winning move did not succeed then we need to carry on down the tree
+            Debug.Log("Winning move not available at this time");
+        }
     }
 
     private int chooseLobbyAction()
