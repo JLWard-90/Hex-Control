@@ -87,7 +87,7 @@ public class TurnController : MonoBehaviour {
             {
                 for (int j = 0; j < CurrentPlayer.tileCounts[3]; j++)
                 {
-                    CpR = (CpI * lCont.PowerPlantMultiplier);
+                    CpR = (CpR * lCont.PowerPlantMultiplier);
                 }
             }
             else
@@ -126,7 +126,14 @@ public class TurnController : MonoBehaviour {
         for (int i = 0; i < TotalPlayerNumber; i++)
         {
             Player CurrentPlayer = players[i];
-            CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[1] * lCont.InfPerRes;
+            if(powerToThepeople == true)
+            {
+                CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[1] * (int)(lCont.InfPerRes * CurrentPlayer.tileCounts[3] * lCont.PowerPlantMultiplier);
+            }
+            else
+            {
+                CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[1] * lCont.InfPerRes;
+            }
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[2] * lCont.InfPerInd;
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[3] * lCont.InfPerPow;
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[4] * lCont.InfPerCiv;
