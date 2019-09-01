@@ -1,4 +1,5 @@
 //This file will contain the necessary functions for the hard AI mode for HexControl
+//Current section to work on: preventOpponentVictory method
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,6 +30,16 @@ public class HardAIController : MonoBehaviour
         {
             //If the winning move did not succeed then we need to carry on down the tree
             Debug.Log("Winning move not available at this time");
+            //Do the next thing
+            ActionSelected = PreventOpponentVictory(); //If the AI can stop another player from winning, then it will do so and ActionSelected will be set to true
+        }
+        if(ActionSelected == true)
+        {
+            Debug.Log("AI attempted to prevent opponent victory");
+        }
+        else
+        {
+            //Carry on down the decision tree
         }
     }
 
@@ -44,13 +55,14 @@ public class HardAIController : MonoBehaviour
         return lobbyAction;
     }
 
+    //This method will see whether the AI can win this turn and, if it can, take the appropriate action
     private bool winningMove()
     {
         //If a winning move can be made, we execute that move and return true.
         //If a winning move cannot be made, we return false
         bool winMove = false; // We initialise with false to make sure nothing weird happens.
         //First check what the win condition is...
-        int winCondition = levelcont.VictoryCondition; //Check that this is the correct variable (and in the correct class!)
+        int winCondition = levelcont.VictoryCondition; 
         int NlandmarkAvailable = CountAvailableCellsOfType(AIPlayer,5);
         int NResAvailable = CountAvailableCellsOfType(AIPlayer, 1);
         int NIndAvailable = CountAvailableCellsOfType(AIPlayer, 2);
@@ -195,7 +207,75 @@ public class HardAIController : MonoBehaviour
         }
         return winMove;
     }
+    //winning move method ends
+    //This method will test whether an opponent may win this turn and, if so, try to do something about it
+    private bool PreventOpponentVictory()
+    {
+        //For each victory condition:
+        //First we need to get a list of all other players
+        //Then see if any of those players are about to win
+        //Then decide how to prevent that from happening
+        int winCondition = levelcont.VictoryCondition;
+        bool takenAction = false;
+        bool opponentWinPossible = false;
+        Player targetPlayer = AIPlayer; //Declaring a Player component without a value may be dangerous so I will actually set the target player to be the current player for now because then it will ensure that nothing is likely to go seriously wrong
+        GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("player");
+        if (winCondition == 0)
+        {
+            int distanceToVictory = 1000; //
+            //Victory condition is to reach target influence
+            foreach(GameObject playerObject in allPlayers)
+            {
+                Player playerComponent = playerObject.GetComponent<Player>();
+                if(playerComponent.playerNumber != AIPlayer.playerNumber && (levelcont.TargetInfluence - playerComponent.playerInfluence) < distanceToVictory && (playerComponent.playerInfluence + tcontrol.CalculateInfIncrease(playerComponent.playerNumber)) >= levelcont.TargetInfluence)
+                {
+                    //If the playerComponent does not belong to the target player AND the distance to victory is lower than the current stored value AND the player in question is on track to win
+                    opponentWinPossible = true;
+                    distanceToVictory = levelcont.TargetInfluence - playerComponent.playerInfluence; //Set the new distance to Victory (this will ensure that the player closest to winning will be targeted)
+                    targetPlayer = playerComponent; //Set the target player
+                }
+                else
+                {
+                    Debug.Log("Player does not appear to be about to win");
+                }
+            }
+            if (opponentWinPossible == true)
+            {
+                //If an opponent has been found that might win we will try to take some action
+                //Need to get the cheapest available cells of each type for the target player
+                List<GameObject> targetPlayerLandmarks = ownedCellsOfType(targetPlayer, 5);
+                List<GameObject> targetPlayerCivics = ownedCellsOfType(targetPlayer, 4);
+                List<GameObject> targetPlayerRes = ownedCellsOfType(targetPlayer, 1);
+                if(targetPlayer.playerInfluence + tcontrol.CalculateInfIncrease(targetPlayer.playerNumber) - levelcont.InfPerLan < levelcont.TargetInfluence && targetPlayer.tileCounts[5] > 0)
+                {
+                    //If the removing a landmark will prevent the player from winning and the target player owns a landmark then we will see if we can buy it
+                }
+            }
+            else
+            {
+                takenAction = false;
+            }
+        }
+        else if (winCondition == 1)
+        {
 
+        }
+        else if (winCondition == 2)
+        {
+
+        }
+        else if (winCondition == 3)
+        {
+
+        }
+        else
+        {
+            Debug.Log("Error encountered in hardAI.cs:preventOpponentVictory:: Victory condition not found");
+        }
+        return takenAction;
+    }
+    //Here ends the core logic methods of the AI
+    //Below this point are general purpose methods for performing calculations, buying and selling districts etc.
     int CountAvailableCellsOfType(Player currentPlayer, int targetCellType)//This is very similar to FindAvailableCells and works in the same way but returns a simple integer of the number of available cells
     {
         GameObject[] fullCellsList = GameObject.FindGameObjectsWithTag("HexCell"); //Get all of the objects with the tag "HexCells" This should be every cell on the board and nothing else

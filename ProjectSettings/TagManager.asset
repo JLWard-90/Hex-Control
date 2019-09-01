@@ -6,6 +6,7 @@ TagManager:
   tags:
   - HexCell
   - LobbyMenu
+  - player
   layers:
   - Default
   - TransparentFX
