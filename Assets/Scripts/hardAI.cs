@@ -180,6 +180,14 @@ public class HardAIController : MonoBehaviour
         else if(winCondition==3)
         {
             //win condition is to gain 3 landmarks
+            if(AIPlayer.tileCounts[5] >= levelcont.TargetLandmarks && NlandmarkAvailable > 0)
+            {
+                winMove = BuyBestcellOfType(AIPlayer, 5); //If the player can get a landmark and they only need one more landmark, then buy it
+            }
+            else
+            {
+                winMove = false; //Otherwise no winning move is available.
+            }
         }
         else
         {
