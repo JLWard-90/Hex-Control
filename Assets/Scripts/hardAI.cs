@@ -63,50 +63,30 @@ public class HardAIController : MonoBehaviour
             {
                 //If buying a landmark will win the game and there is a landmark available that the AIplayer can afford
                 //Then buy the landmark
-                List<GameObject> availableLandmarks = FindAvailableCellsOfType(AIPlayer, 5); //First get the list of available landmarks
-                GameObject CellToBuy = cheapestCell(availableLandmarks); //Then select the cheapest landmark cell available.
-                HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
-                actions.OnBuyCell(AIPlayer, theCell); //Buy the cell
-                winMove = true; //Confirm that a winning move has been performed.
+                winMove = BuyBestcellOfType(AIPlayer, 5);
             }
             else if(AIPlayer.playerInfluence + tcontrol.CalculateInfIncrease(AIPlayer.playerNumber) + levelcont.InfPerLan >= levelcont.TargetInfluence && NCivAvailable > 0)
             {
                 //If we cannot get a landmark then we will try for a civic building
-                List<GameObject> availableCivics = FindAvailableCellsOfType(AIPlayer, 4);
-                GameObject CellToBuy = cheapestCell(availableCivics);
-                HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
-                actions.OnBuyCell(AIPlayer, theCell); //Buy the cell
-                winMove = true; //Confirm that a winning move has been performed.
+                winMove = BuyBestcellOfType(AIPlayer, 4);
             }
             else if(AIPlayer.playerInfluence + tcontrol.CalculateInfIncrease(AIPlayer.playerNumber) + levelcont.InfPerLan >= levelcont.TargetInfluence && NResAvailable > 0)
             {
                 //Try for a residential building
-                List<GameObject> availableCellsOfType = FindAvailableCellsOfType(AIPlayer, 1);
-                GameObject CellToBuy = cheapestCell(availableCellsOfType);
-                HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
-                actions.OnBuyCell(AIPlayer, theCell); //Buy the cell
-                winMove = true; //Confirm that a winning move has been performed.
+                winMove = BuyBestcellOfType(AIPlayer, 1);
             }
             else if(tcontrol.powerToThepeople == true)
             {
                 //Else if power to the people is switched on, then buying a powerplant might win the game
                 if (AIPlayer.playerInfluence + AIPlayer.tileCounts[1] * (int)(levelcont.InfPerRes * (AIPlayer.tileCounts[3]+1) * levelcont.PowerPlantMultiplier) >= levelcont.TargetInfluence && NPowAvailable > 0)
                 {
-                    List<GameObject> availableCellsOfType = FindAvailableCellsOfType(AIPlayer, 3);
-                    GameObject CellToBuy = cheapestCell(availableCellsOfType);
-                    HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
-                    actions.OnBuyCell(AIPlayer, theCell); //Buy the cell
-                    winMove = true; //Confirm that a winning move has been performed.
+                    winMove = BuyBestcellOfType(AIPlayer, 3);
                 }
             }
             else if(AIPlayer.playerInfluence + tcontrol.CalculateInfIncrease(AIPlayer.playerNumber) - levelcont.InfPerInd >= levelcont.TargetInfluence && AIPlayer.tileCounts[2] > 0)
             {
                 //If selling an industrial district will allow the AI player to win the game
-                List<GameObject> ownedIndCells = ownedCellsOfType(AIPlayer, 2);
-                GameObject theCellToSell = mostExpensiveCell(ownedIndCells);
-                HexCell theHexCellToSell = theCellToSell.GetComponent<HexCell>();
-                actions.OnSellCell(AIPlayer, theHexCellToSell);
-                winMove = true;
+                winMove = SellBestCellOfType(AIPlayer, 2);
             }
             else
             {
@@ -133,6 +113,69 @@ public class HardAIController : MonoBehaviour
         else if (winCondition==2)
         {
             //Win condition is to gain target cash
+            int sumTiles = AIPlayer.tileCounts[0] + AIPlayer.tileCounts[1] + AIPlayer.tileCounts[2] + AIPlayer.tileCounts[3] + AIPlayer.tileCounts[4] + AIPlayer.tileCounts[5];
+            float CpI = levelcont.CashPerInd;
+            float CpR = levelcont.CashPerRes;
+            if (tcontrol.powerToThepeople == true)
+            {
+                for (int j = 0; j < AIPlayer.tileCounts[3]; j++)
+                {
+                    CpR = (CpR * levelcont.PowerPlantMultiplier);
+                }
+            }
+            else
+            {
+                for (int j = 0; j < AIPlayer.tileCounts[3]; j++)
+                {
+                    CpI = (CpI * levelcont.PowerPlantMultiplier);
+                }
+            }
+
+            float CpIplus1PP = CpI * levelcont.PowerPlantMultiplier;
+            float CpRpluss1PP = CpR * levelcont.PowerPlantMultiplier;
+
+            int minimumIndCost = minimumCellCost(2, AIPlayer);
+            int minimumPowCost = minimumCellCost(3, AIPlayer);
+            int minimumResCost = minimumCellCost(1, AIPlayer);
+            if (AIPlayer.playerCash + tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) + CpI - minimumIndCost >= levelcont.TargetCash && NIndAvailable > 0)
+            {
+                //If buying a new industrial district makes sense
+                winMove = BuyBestcellOfType(AIPlayer, 2);
+            }
+            else if(AIPlayer.playerCash + tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) - (CpI * AIPlayer.tileCounts[2]) + (CpIplus1PP*AIPlayer.tileCounts[2]) - minimumPowCost >= levelcont.TargetCash && NPowAvailable > 0 && tcontrol.powerToThepeople != true)
+            {
+                //If buying a powerplant makes sense when powerplants affect industrial districts
+                winMove = BuyBestcellOfType(AIPlayer, 3);
+                
+            }
+            else if(AIPlayer.playerCash + tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) - (CpR * AIPlayer.tileCounts[1]) + (CpRpluss1PP * AIPlayer.tileCounts[1]) - minimumPowCost >= levelcont.TargetCash && NPowAvailable >0 && tcontrol.powerToThepeople == true)
+            {
+                //If buying a powerplant makes sense when powerplants affect residential districts
+                winMove = BuyBestcellOfType(AIPlayer, 3);
+            }
+            else if(AIPlayer.playerCash + tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) + CpR - minimumResCost >= levelcont.TargetCash && NResAvailable > 0)
+            {
+                winMove = BuyBestcellOfType(AIPlayer, 1);
+            }
+            else if(sumTiles > 5) //If we have more than 5 tiles owned
+            {
+                List<GameObject> allOwnedCells = OwnedCellsAll(AIPlayer);
+                GameObject mostExpensiveOwnedCell = mostExpensiveCell(allOwnedCells);
+                HexCell expensiveComponent = mostExpensiveOwnedCell.GetComponent<HexCell>();
+                if((expensiveComponent.cellPrice * 0.5) + AIPlayer.playerCash >= levelcont.TargetCash)
+                {
+                    actions.OnSellCell(AIPlayer, expensiveComponent);
+                    winMove = true;
+                }
+                else
+                {
+                    winMove = false;
+                }
+            }
+            else
+            {
+                winMove = false;
+            }
         }
         else if(winCondition==3)
         {
@@ -244,6 +287,21 @@ public class HardAIController : MonoBehaviour
         return ownedCells;
     }
 
+    List<GameObject> OwnedCellsAll(Player currentPlayer)
+    {
+        GameObject[] fullCellsList = GameObject.FindGameObjectsWithTag("HexCell");
+        List<GameObject> ownedCells = new List<GameObject>();
+        foreach(GameObject cell in fullCellsList)
+        {
+            HexCell hexComponent = cell.GetComponent<HexCell>();
+            if(hexComponent.cellOwner == currentPlayer.playerNumber)
+            {
+                ownedCells.Add(cell);
+            }
+        }
+        return ownedCells;
+    }
+
     List<GameObject> FindAvailableCells(Player currentPlayer)
     {
         GameObject[] fullCellsList = GameObject.FindGameObjectsWithTag("HexCell");
@@ -257,5 +315,40 @@ public class HardAIController : MonoBehaviour
             }
         }
         return posscells;
+    }
+
+    int minimumCellCost(int cellType, Player currentPlayer)
+    {
+        GameObject[] fullCellsList = GameObject.FindGameObjectsWithTag("HexCell");
+        List<GameObject> possCells = new List<GameObject>();
+        int minimum = 1000000;
+        foreach(GameObject cell in fullCellsList)
+        {
+            HexCell hexComponent = cell.GetComponent<HexCell>();
+            if(hexComponent.cellType == cellType && hexComponent.cellOwner != currentPlayer.playerNumber && hexComponent.cellPrice < minimum)
+            {
+                minimum = hexComponent.cellPrice;
+            }
+        }
+        return minimum;
+    }
+
+    bool BuyBestcellOfType(Player currentPlayer, int cellTypeNo)
+    {
+        List<GameObject> availableCellsOfType = FindAvailableCellsOfType(currentPlayer, cellTypeNo);
+        GameObject CellToBuy = cheapestCell(availableCellsOfType);
+        HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
+        actions.OnBuyCell(AIPlayer, theCell); //Buy the cell
+        bool winMove = true; //Confirm that a winning move has been performed.
+        return winMove;
+    }
+    bool SellBestCellOfType(Player currentPlayer, int cellTypeNo)
+    {
+        List<GameObject> ownedIndCells = ownedCellsOfType(currentPlayer, cellTypeNo);
+        GameObject theCellToSell = mostExpensiveCell(ownedIndCells);
+        HexCell theHexCellToSell = theCellToSell.GetComponent<HexCell>();
+        actions.OnSellCell(AIPlayer, theHexCellToSell);
+        bool winMove = true;
+        return winMove;
     }
 }
