@@ -14,8 +14,9 @@ public class hardAI : MonoBehaviour
     private void Awake()
     {
         tcontrol = GameObject.Find("GameController").GetComponent<TurnController>();
-        levelcont = GameObject.Find("GameController").GetComponent<LevelController>();
+        levelcont = GameObject.Find("LevelController").GetComponent<LevelController>();
         actions = GameObject.Find("GameController").GetComponent<ActionController>();
+        AIPlayer = this.GetComponent<Player>();
     }
 
     public void hardAIAction()
@@ -93,8 +94,8 @@ public class hardAI : MonoBehaviour
         if (winCondition == 0)
         {
             //If win condition is influence
-            if(AIPlayer.playerCash <= minimumCellCost(FindAvailableCellsOfType(AIPlayer,5)) && tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) + levelcont.CashPerLan >= 200)
-            {
+            if(AIPlayer.playerCash <= minimumCellCost(FindAvailableCellsOfType(AIPlayer,5)) && tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) + levelcont.CashPerLan >= 200 && CountAvailableCellsOfType(AIPlayer,5) > 0)
+            {          
                 ActionTaken = BuyBestcellOfType(AIPlayer, 5);
             }
             else if (AIPlayer.playerInfluence > 100)
@@ -121,19 +122,19 @@ public class hardAI : MonoBehaviour
             {
                 contbool = false;
                 //Now we have gone out of the randomised section and we only have to type out the alternative route once.
-                if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 4)))
+                if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 4)) && CountAvailableCellsOfType(AIPlayer, 4) > 0)
                 {
                     ActionTaken = BuyBestcellOfType(AIPlayer, 5);
                 }
-                else if(AIPlayer.tileCounts[2] >= 3 && AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,3)))
+                else if(AIPlayer.tileCounts[2] >= 3 && AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,3)) && CountAvailableCellsOfType(AIPlayer, 3) > 0)
                 {
                     ActionTaken = BuyBestcellOfType(AIPlayer, 3);
                 }
-                else if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 2)))
+                else if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 2)) && CountAvailableCellsOfType(AIPlayer, 2) > 0)
                 {
                     ActionTaken = BuyBestcellOfType(AIPlayer, 2);
                 }
-                else if (AIPlayer.playerCash >-minimumCellCost(FindAvailableCellsOfType(AIPlayer, 1)))
+                else if (AIPlayer.playerCash >-minimumCellCost(FindAvailableCellsOfType(AIPlayer, 1)) && CountAvailableCellsOfType(AIPlayer, 1) > 0)
                 {
                     ActionTaken = BuyBestcellOfType(AIPlayer, 1);
                 }
@@ -396,8 +397,12 @@ public class hardAI : MonoBehaviour
                 {
                     GameObject cheapest = cheapestCell(availableCells);
                     HexCell cheapestHexCellComponent = cheapest.GetComponent<HexCell>();
-                    actions.OnBuyCell(AIPlayer, cheapestHexCellComponent); //Buy the cheapest cell available to win the game
-                    winMove = true;
+                    if (AIPlayer.playerCash >= cheapestHexCellComponent.cellPrice)
+                    {
+                        Debug.Log("Parse to actions from winningMove");
+                        actions.OnBuyCell(AIPlayer, cheapestHexCellComponent); //Buy the cheapest cell available to win the game
+                        winMove = true;
+                    }
                 }
             }
         }
@@ -455,6 +460,7 @@ public class hardAI : MonoBehaviour
                 HexCell expensiveComponent = mostExpensiveOwnedCell.GetComponent<HexCell>();
                 if((expensiveComponent.cellPrice * 0.5) + AIPlayer.playerCash >= levelcont.TargetCash)
                 {
+                    Debug.Log("Parse to actions from winningMove");
                     actions.OnSellCell(AIPlayer, expensiveComponent);
                     winMove = true;
                 }
@@ -697,8 +703,14 @@ public class hardAI : MonoBehaviour
         int count = 0;//Start a counter with the value 0 
         foreach(GameObject cell in fullCellsList)
         {
+            Debug.Log(count);
             HexCell theCellComponent = cell.GetComponent<HexCell>(); //Get the HexCell component of the HexCell game object
-            if(theCellComponent.cellType == targetCellType && AIPlayer.playerCash <= theCellComponent.cellPrice && theCellComponent.cellOwner != AIPlayer.playerNumber) //Check that cell price is the correct variable name
+            Debug.Log(targetCellType);
+            Debug.Log(theCellComponent.cellType);
+            Debug.Log(currentPlayer);
+            Debug.Log(theCellComponent.cellOwner);
+            Debug.Log(theCellComponent.cellPrice);
+            if(theCellComponent.cellType == targetCellType && currentPlayer.playerCash <= theCellComponent.cellPrice && theCellComponent.cellOwner != currentPlayer.playerNumber) //Check that cell price is the correct variable name
             {
                 //If the cell is of the correct type and the player can afford to buy it
                 count++;
@@ -842,6 +854,7 @@ public class hardAI : MonoBehaviour
         List<GameObject> availableCellsOfType = FindAvailableCellsOfType(currentPlayer, cellTypeNo);
         GameObject CellToBuy = cheapestCell(availableCellsOfType);
         HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
+        Debug.Log("parse to actions from BuyBestcellOfType");
         actions.OnBuyCell(currentPlayer, theCell); //Buy the cell
         bool winMove = true; //Confirm that a winning move has been performed.
         return winMove;
@@ -851,6 +864,7 @@ public class hardAI : MonoBehaviour
         List<GameObject> ownedIndCells = ownedCellsOfType(currentPlayer, cellTypeNo);
         GameObject theCellToSell = mostExpensiveCell(ownedIndCells);
         HexCell theHexCellToSell = theCellToSell.GetComponent<HexCell>();
+        Debug.Log("parse to actions from SellBestCellOfType");
         actions.OnSellCell(currentPlayer, theHexCellToSell);
         bool winMove = true;
         return winMove;
@@ -860,6 +874,7 @@ public class hardAI : MonoBehaviour
         List<GameObject> availableCellsOfType = ownedCellsOfType(targetPlayer, cellTypeNo);
         GameObject CellToBuy = cheapestCell(availableCellsOfType);
         HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
+        Debug.Log("parse to actions from BuyBestCellOfTypeFromPlayer");
         actions.OnBuyCell(currentPlayer, theCell); //Buy the cell
         bool winMove = true; //Confirm that a winning move has been performed.
         return winMove;
@@ -869,6 +884,7 @@ public class hardAI : MonoBehaviour
         List<GameObject> targetownedCells = OwnedCellsAll(targetPlayer);
         GameObject CellToBuy = cheapestCell(targetownedCells);
         HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
+        Debug.Log("parse to actions from BuyBestCellFromPlayer");
         actions.OnBuyCell(currentPlayer, theCell); //Buy the cell
         bool winMove = true; //Confirm that a winning move has been performed.
         return winMove;
@@ -879,6 +895,7 @@ public class hardAI : MonoBehaviour
         List<GameObject> availableCells = FindAvailableCells(currentPlayer);
         GameObject CellToBuy = cheapestCell(availableCells);
         HexCell theCell = CellToBuy.GetComponent<HexCell>();
+        Debug.Log("parse to actions from BuyBestCellOfAnyType");
         actions.OnBuyCell(currentPlayer,theCell);
         winMove = true;
         return winMove;

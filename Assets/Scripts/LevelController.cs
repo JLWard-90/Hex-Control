@@ -199,6 +199,22 @@ public class LevelController : MonoBehaviour {
                 if (playerTypes[i] == 1)
                 {
                     players[i].AIplayer = true;
+                    players[i].aiPlayerLevel = 0;
+                }
+                else if (playerTypes[i] == 2)
+                {
+                    players[i].AIplayer = true;
+                    players[i].aiPlayerLevel = 1;
+                }
+                else if (playerTypes[i] == 3)
+                {
+                    players[i].AIplayer = true;
+                    players[i].aiPlayerLevel = 2;
+                }
+                else if (playerTypes[i] == 4)
+                {
+                    players[i].AIplayer = true;
+                    players[i].aiPlayerLevel = 3;
                 }
             }
         }

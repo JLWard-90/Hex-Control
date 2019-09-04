@@ -21,6 +21,17 @@ public class AIController : MonoBehaviour {
         ai_hard = this.GetComponent<hardAI>();
     }
 
+    private void Start()
+    {
+        aiLevel = AIPlayer.aiPlayerLevel;
+        if(aiLevel < 0 || aiLevel > 3)
+        {
+            //If something has gone wrong...
+            Debug.Log("Error in AIController.cs:Start :: Unrecognised AI level, setting to pathetic as default");
+            aiLevel = 0;
+        }
+    }
+
     int ChooseAction() //Actions
     {
         //This method will choose which action the AI will take. [0] = No action, [1] = Buy, [2] = sell, [3] = Lobby

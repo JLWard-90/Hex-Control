@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class GlobalController : MonoBehaviour {
 
-    public int noPlayerIndex = 2;
+    public int noPlayerIndex = 5;
 
     public static GlobalController instance;
 
@@ -156,6 +156,9 @@ public class GlobalController : MonoBehaviour {
         curr = GameObject.Find("PlayerType2").GetComponent<Dropdown>().value;
         if (curr != noPlayerIndex) count++;
         curr = GameObject.Find("PlayerType3").GetComponent<Dropdown>().value;
+        Debug.Log("curr");
+        Debug.Log(curr);
+        Debug.Log(noPlayerIndex);
         if (curr != noPlayerIndex) count++;
         curr = GameObject.Find("PlayerType4").GetComponent<Dropdown>().value;
         if (curr != noPlayerIndex) count++;

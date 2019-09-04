@@ -1317,5 +1317,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4135274533238474468, guid: 4e1a79b318569fc4589a23e768ec6b2a,
+        type: 3}
+      propertyPath: IndCost
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4135274533238474468, guid: 4e1a79b318569fc4589a23e768ec6b2a,
+        type: 3}
+      propertyPath: PowCost
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 4135274533238474468, guid: 4e1a79b318569fc4589a23e768ec6b2a,
+        type: 3}
+      propertyPath: CivCost
+      value: 350
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e1a79b318569fc4589a23e768ec6b2a, type: 3}
