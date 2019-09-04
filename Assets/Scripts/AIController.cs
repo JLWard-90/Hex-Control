@@ -6,9 +6,11 @@ public class AIController : MonoBehaviour {
 
     TurnController turnController;
     int aiLevel = 0; //[0] the simplest possible AI. Makes decisions at random.
+    //AI levels: [0]: pathetic, [1]: easy, [2]: medium, [3] hard
     Player AIPlayer;
     LevelController level;
     ActionController actions;//Need this to be able to perform actions
+    hardAI ai_hard;
 
     private void Awake()
     {
@@ -16,6 +18,7 @@ public class AIController : MonoBehaviour {
         AIPlayer = this.GetComponent<Player>();
         level = GameObject.Find("LevelController").GetComponent<LevelController>();
         actions = GameObject.Find("GameController").GetComponent<ActionController>();
+        ai_hard = this.GetComponent<hardAI>();
     }
 
     int ChooseAction() //Actions
@@ -226,15 +229,56 @@ public class AIController : MonoBehaviour {
         StartCoroutine(TakeActionCoroutine());
     }
 
+    private void actionSelect()
+    {
+        if(aiLevel == 0)
+        {
+            TakeAction();
+        }
+        else if(aiLevel == 1)
+        {
+            int randnum = Random.Range(1,11); //Roll a D10
+            if(randnum >= 8)
+            {
+                ai_hard.hardAIAction(); //If 8,9,10 then take an action from the hardAI script
+            }
+            else
+            {
+                TakeAction(); //Otherwise take a simple action
+            }
+        }
+        else if(aiLevel == 2)
+        {
+            int randnum = Random.Range(1, 11);
+            if(randnum > 5)
+            {
+                ai_hard.hardAIAction();
+            }
+            else
+            {
+                TakeAction();
+            }
+        }
+        else if(aiLevel == 3)
+        {
+            ai_hard.hardAIAction();
+        }
+        else
+        {
+            Debug.Log("AI level not recognised. Defaulting to pathetic.");
+            TakeAction();
+        }
+    }
+
     IEnumerator TakeActionCoroutine()
     {
         Debug.Log("Called RunAITurn");
         int nActionsToTake = 2;
         for (int i = 0; i < nActionsToTake; i++)
         {
-            yield return new WaitForSeconds(0.3f);
-            TakeAction();
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
+            actionSelect();
+            yield return new WaitForSeconds(0.2f);
         }
         Debug.Log("AI turn complete");
         turnController.EndTurn();

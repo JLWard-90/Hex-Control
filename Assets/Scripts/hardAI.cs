@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HardAIController : MonoBehaviour
+public class hardAI : MonoBehaviour
 {
     TurnController tcontrol;
     LevelController levelcont;
