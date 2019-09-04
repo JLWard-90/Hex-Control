@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\LevelSetupController.cs" />
     <Compile Include="Assets\Scripts\LobbyMenuController.cs" />
     <Compile Include="Assets\Scripts\MenuController.cs" />
+    <Compile Include="Assets\Scripts\MouseOverTextController.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\TurnController.cs" />
     <Compile Include="Assets\Scripts\UIController.cs" />

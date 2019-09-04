@@ -40,19 +40,151 @@ public class HardAIController : MonoBehaviour
         else
         {
             //Carry on down the decision tree
+            ActionSelected = ApproachingEndGame(); //If the AI thinks that it can win in less than 5 turns it will pursue a more aggressive End game strategy where it is purely focussed on the victory condition
         }
+        if (ActionSelected == true)
+        {
+            Debug.Log("AI tried end game mode action");
+        }
+        else
+        {
+            ActionSelected = NormalGameLogicSequence();
+        }
+        if (ActionSelected == true)
+        {
+            Debug.Log("AI takes normal action");
+        }
+        else
+        {
+            Debug.Log("No action taken by AI");
+        }
+    }
+
+    private bool tryLobbyAction()
+    {
+        bool actionTaken = false;
+        int actionToTake = chooseLobbyAction();
+        if (actionToTake == 0)
+        {
+            actionTaken = false;
+        }
+        else
+        {
+            Debug.Log("AI Lobbying actions not yet implemented!");
+        }
+        return actionTaken;
     }
 
     private int chooseLobbyAction() //Here we select a lobby action at random, check if it is worth doing
     {
         int lobbyAction = 0; //If lobbyAction == 0, no action is performed. We start with this value to ensure that nothing weird is likely to happen
-        
-        
         if(lobbyAction == 0)
         {
             Debug.Log("No suitable lobby action was selected");
         }
         return lobbyAction;
+    }
+
+    private bool NormalGameLogicSequence()
+    {
+        bool ActionTaken = false;
+        return ActionTaken;
+    }
+
+    private bool ApproachingEndGame()
+    {
+        //This method will check to see whether the AI thinks that it is close to winning the game and, if so, it will pursue an aggressive strategy aimed solely on getting as close to victory as possible
+        int endGameCriterion = 5; //The number of turns in which the AI will win excluding actions and opposing players
+        bool ActionTaken = false;
+        bool nearEndGame = false;
+        int winCondition = levelcont.VictoryCondition;
+        if (winCondition == 0)
+        {
+            //If win condition is influence victory
+            if (AIPlayer.playerInfluence + (tcontrol.CalculateInfIncrease(AIPlayer.playerNumber) * endGameCriterion) >= levelcont.TargetInfluence)
+            {
+                //If the AIplayer will win in the number of turns in the endGameCriterion parameter on the condition that nothing happens, then we go into end game strategy mode
+                nearEndGame = true;
+            }
+        }
+        else if (winCondition == 1)
+        {
+            //If win condition is controlling the board
+            int sumPlayerCells = AIPlayer.tileCounts[0] + AIPlayer.tileCounts[1] + AIPlayer.tileCounts[2] + AIPlayer.tileCounts[3] + AIPlayer.tileCounts[4] + AIPlayer.tileCounts[5];
+            if (sumPlayerCells + (endGameCriterion*2) >= levelcont.TargetCells)
+            {
+                //Assuming the player is able to buy at least 2 cells per turn then we go into near end game mode
+                nearEndGame = true;
+            }
+        }
+        else if (winCondition == 2)
+        {
+            //If win condition is Cash victory
+            if (AIPlayer.playerCash + (tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) * endGameCriterion) >= levelcont.TargetCash)
+            {
+                nearEndGame = true;
+            }
+        }
+        else if (winCondition == 3)
+        {
+            //If win condition is landmark victory
+            if (AIPlayer.tileCounts[5] >= 1 && AIPlayer.playerCash >= cheapestCell(FindAvailableCellsOfType(AIPlayer,5)).GetComponent<HexCell>().cellPrice)
+            {
+                nearEndGame = true;
+            }
+        }
+        else
+        {
+            nearEndGame = false;
+        }
+        if (nearEndGame == true)
+        {
+            //If the AI thinks it can win soon then use the following logic
+            if (winCondition == 0)
+            {
+                //If can, buy landmark
+                //If can, buy Civic
+                //If can, buy Residential
+                //If can and need more money, buy powerplant
+                //If can and need more money, buy Industrial
+                //If desperate, consider a lobbying action
+                //Else do nothing
+            }
+            else if (winCondition == 1)
+            {
+                //Buy the cheapest available cell
+                List<GameObject> possibleCells = FindAvailableCells(AIPlayer);
+                if (possibleCells.Count > 0)
+                {
+                    ActionTaken = BuyBestCellOfAnyType(AIPlayer);
+                }    
+            }
+            else if (winCondition == 2)
+            {
+                //If can, buy Industrial
+                //If can, buy powerplant
+                //If can, buy Residential
+                //If can, try lobbying
+                //Else sell most expensive landmark (if any)
+                //Else sell most expensive Civic (if any)
+            }
+            else if (winCondition == 3)
+            {
+                //Buy the cheapest available landmark cell
+                ActionTaken = BuyBestcellOfType(AIPlayer,5);
+            }
+            else
+            {
+                Debug.Log("Error in hardAI.cs:ApproachingEndGame :: Victory condition not recognised, aborting action");
+                ActionTaken = false;
+            }
+        }
+        else
+        {
+            //If the AI does not think it can win soon then it does not take an action and instead exits this method to carry on down the decision tree
+            ActionTaken = false;
+        }
+        return ActionTaken; //Return a bool stating whether or not the AI has carried out an action
     }
 
     //This method will see whether the AI can win this turn and, if it can, take the appropriate action
@@ -246,9 +378,22 @@ public class HardAIController : MonoBehaviour
                 List<GameObject> targetPlayerLandmarks = ownedCellsOfType(targetPlayer, 5);
                 List<GameObject> targetPlayerCivics = ownedCellsOfType(targetPlayer, 4);
                 List<GameObject> targetPlayerRes = ownedCellsOfType(targetPlayer, 1);
-                if(targetPlayer.playerInfluence + tcontrol.CalculateInfIncrease(targetPlayer.playerNumber) - levelcont.InfPerLan < levelcont.TargetInfluence && targetPlayer.tileCounts[5] > 0)
+                if(targetPlayer.playerInfluence + tcontrol.CalculateInfIncrease(targetPlayer.playerNumber) - levelcont.InfPerLan < levelcont.TargetInfluence && targetPlayer.tileCounts[5] > 0 && cheapestCell(targetPlayerLandmarks).GetComponent<HexCell>().cellPrice <= AIPlayer.playerCash)
                 {
-                    //If the removing a landmark will prevent the player from winning and the target player owns a landmark then we will see if we can buy it
+                    //If the removing a landmark will prevent the player from winning and the target player owns a landmark and we can buy it, we do so.
+                    takenAction = BuyBestCellOfTypeFromPlayer(AIPlayer, targetPlayer, 5);
+                }
+                else if (targetPlayer.playerInfluence + tcontrol.CalculateInfIncrease(targetPlayer.playerNumber) - levelcont.InfPerCiv < levelcont.TargetInfluence && targetPlayer.tileCounts[4] > 0 && cheapestCell(targetPlayerCivics).GetComponent<HexCell>().cellPrice <= AIPlayer.playerCash)
+                {
+                    takenAction = BuyBestCellOfTypeFromPlayer(AIPlayer, targetPlayer, 4);
+                }
+                else if (targetPlayer.playerInfluence + tcontrol.CalculateInfIncrease(targetPlayer.playerNumber) - levelcont.InfPerRes < levelcont.TargetInfluence && targetPlayer.tileCounts[1] > 0 && cheapestCell(targetPlayerCivics).GetComponent<HexCell>().cellPrice <= AIPlayer.playerCash)
+                {
+                    takenAction = BuyBestCellOfTypeFromPlayer(AIPlayer, targetPlayer, 1);
+                }
+                else 
+                {
+                    takenAction = tryLobbyAction();
                 }
             }
             else
@@ -256,17 +401,140 @@ public class HardAIController : MonoBehaviour
                 takenAction = false;
             }
         }
-        else if (winCondition == 1)
+        else if (winCondition == 1) //If win condition is controlling the board
         {
-
+            int distanceToVictory = 1000; //
+            //Victory condition is to reach target influence
+            foreach(GameObject playerObject in allPlayers)
+            {
+                Player playerComponent = playerObject.GetComponent<Player>();
+                int NplayerTerritories = playerComponent.tileCounts[0] + playerComponent.tileCounts[1] + playerComponent.tileCounts[2] + playerComponent.tileCounts[3] + playerComponent.tileCounts[4] + playerComponent.tileCounts[5];
+                if(NplayerTerritories - 3 >= levelcont.TargetCells && playerComponent.playerNumber != AIPlayer.playerNumber && levelcont.TargetCells - NplayerTerritories <= distanceToVictory)
+                {
+                    //If the playerComponent does not belong to the target player AND the distance to victory is lower than the current stored value AND the player in question only needs 3 or fewer more districts to win the game
+                    opponentWinPossible = true;
+                    distanceToVictory = levelcont.TargetCells - NplayerTerritories; //Set the new distance to Victory (this will ensure that the player closest to winning will be targeted)
+                    targetPlayer = playerComponent; //Set the target player
+                }
+                else
+                {
+                    Debug.Log("Player does not appear to be about to win");
+                }
+                if(opponentWinPossible == true && minimumCellCost(OwnedCellsAll(targetPlayer)) <= AIPlayer.playerCash)
+                {
+                    //If the opponent is likely to win soon, and the current player can afford to buy the cheapest cell of the target player then buy that cell
+                    takenAction = BuyBestCellFromPlayer(AIPlayer, targetPlayer);
+                }
+                else
+                {
+                    //otherwise try something more drastic...
+                    takenAction = tryLobbyAction();
+                }
+            }
         }
-        else if (winCondition == 2)
+        else if (winCondition == 2) //If win condition is amassing 10000 cash
         {
-
+            int distanceToVictory = 10000; //
+            //Victory condition is to reach target influence
+            foreach(GameObject playerObject in allPlayers)
+            {
+                Player playerComponent = playerObject.GetComponent<Player>();
+                if(playerComponent.playerNumber != AIPlayer.playerNumber && (levelcont.TargetCash - playerComponent.playerCash) < distanceToVictory && (playerComponent.playerCash + tcontrol.CalculateCashIncrease(playerComponent.playerNumber)) >= levelcont.TargetCash)
+                {
+                    //If the playerComponent does not belong to the target player AND the distance to victory is lower than the current stored value AND the player in question is on track to win
+                    opponentWinPossible = true;
+                    distanceToVictory = levelcont.TargetCash - playerComponent.playerCash; //Set the new distance to Victory (this will ensure that the player closest to winning will be targeted)
+                    targetPlayer = playerComponent; //Set the target player
+                }
+                else
+                {
+                    Debug.Log("Player does not appear to be about to win");
+                }
+            }
+            if(opponentWinPossible == true)
+            {
+                //If the opponent might win...
+                List<GameObject> targetPlayerInd = ownedCellsOfType(targetPlayer, 2);
+                List<GameObject> targetPlayerPow = ownedCellsOfType(targetPlayer, 3);
+                List<GameObject> targetPlayerRes = ownedCellsOfType(targetPlayer, 1);
+                if(targetPlayer.playerCash + tcontrol.CalculateCashIncrease(targetPlayer.playerNumber) - levelcont.CashPerInd < levelcont.TargetCash && targetPlayer.tileCounts[2] > 0 && minimumCellCost(targetPlayerInd) <= AIPlayer.playerCash)
+                {
+                    //Buy opponent's industrial district if possible and it would help
+                    takenAction = BuyBestCellOfTypeFromPlayer(AIPlayer, targetPlayer, 2);
+                }      
+                else if (targetPlayer.playerCash + tcontrol.CalculateCashIncrease(targetPlayer.playerNumber) - levelcont.CashPerRes < levelcont.TargetCash && targetPlayer.tileCounts[1] > 0 && minimumCellCost(targetPlayerRes) <= AIPlayer.playerCash)
+                {
+                    //Buy oppenent's residential district if possible and if it would help
+                    takenAction = BuyBestCellOfTypeFromPlayer(AIPlayer, targetPlayer, 1);
+                }
+                else if (targetPlayerPow.Count > 0)
+                {
+                    float PMult = 1.0f;
+                    for(int i=0; i < targetPlayerPow.Count-1; i++)
+                    {
+                        //For each powerplant tile owned by the target player
+                        PMult *= levelcont.PowerPlantMultiplier;
+                    }
+                    if (tcontrol.powerToThepeople == false && targetPlayer.playerCash + tcontrol.CalculateCashIncrease(targetPlayer.playerNumber) - (targetPlayerInd.Count * PMult) + (targetPlayerInd.Count * PMult / levelcont.PowerPlantMultiplier) < levelcont.TargetCash && targetPlayer.tileCounts[3] > 0 && minimumCellCost(targetPlayerPow) <= AIPlayer.playerCash)
+                    {
+                        //Buy a powerplant
+                        BuyBestCellOfTypeFromPlayer(AIPlayer, targetPlayer, 3);
+                    }
+                    else if (tcontrol.powerToThepeople == true && targetPlayer.playerCash + tcontrol.CalculateCashIncrease(targetPlayer.playerNumber) - (targetPlayerRes.Count * PMult) + (targetPlayerRes.Count * PMult / levelcont.PowerPlantMultiplier) < levelcont.TargetCash && targetPlayer.tileCounts[3] > 0 && minimumCellCost(targetPlayerPow) <= AIPlayer.playerCash)
+                    {
+                        BuyBestCellOfTypeFromPlayer(AIPlayer, targetPlayer, 3);
+                    }
+                    else
+                    {
+                        //If buying a power plant wont help or isn't possible, try a lobbying action
+                        takenAction = tryLobbyAction();
+                    }
+                }
+                else
+                {
+                    //else try some lobbying
+                    takenAction = tryLobbyAction();
+                }   
+            }
+            else
+            {
+                //If the opponent probably won't win this turn
+                takenAction = false;
+            }
         }
-        else if (winCondition == 3)
+        else if (winCondition == 3) //If win condition is controlling 3 landmarks
         {
-
+            //If Another player has target landmarks - 1 then do something about it!
+            foreach(GameObject playerObject in allPlayers)
+            {
+                Player playerComponent = playerObject.GetComponent<Player>();
+                if (playerComponent.playerNumber != AIPlayer.playerNumber && playerComponent.tileCounts[5] >= levelcont.TargetLandmarks-1)
+                {
+                    opponentWinPossible = true;
+                    targetPlayer = playerComponent;
+                    //No distance to victory variable used because the best move is to target the player that goes last and then hope that the last player will handle players that go before it...
+                }
+                else
+                {
+                    Debug.Log("Player does not appear to be about to win");
+                }
+                if (opponentWinPossible == true)
+                {
+                    List<GameObject> targetPlayerLandmarks = ownedCellsOfType(targetPlayer, 5);
+                    if (minimumCellCost(targetPlayerLandmarks) <= AIPlayer.playerCash)
+                    {
+                        takenAction = BuyBestCellOfTypeFromPlayer(AIPlayer, targetPlayer, 5);
+                    }
+                    else
+                    {
+                        takenAction = tryLobbyAction();
+                    }
+                }
+                else
+                {
+                    takenAction = false;
+                }
+            }
         }
         else
         {
@@ -421,12 +689,13 @@ public class HardAIController : MonoBehaviour
         return minimum;
     }
 
+
     bool BuyBestcellOfType(Player currentPlayer, int cellTypeNo)
     {
         List<GameObject> availableCellsOfType = FindAvailableCellsOfType(currentPlayer, cellTypeNo);
         GameObject CellToBuy = cheapestCell(availableCellsOfType);
         HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
-        actions.OnBuyCell(AIPlayer, theCell); //Buy the cell
+        actions.OnBuyCell(currentPlayer, theCell); //Buy the cell
         bool winMove = true; //Confirm that a winning move has been performed.
         return winMove;
     }
@@ -435,8 +704,46 @@ public class HardAIController : MonoBehaviour
         List<GameObject> ownedIndCells = ownedCellsOfType(currentPlayer, cellTypeNo);
         GameObject theCellToSell = mostExpensiveCell(ownedIndCells);
         HexCell theHexCellToSell = theCellToSell.GetComponent<HexCell>();
-        actions.OnSellCell(AIPlayer, theHexCellToSell);
+        actions.OnSellCell(currentPlayer, theHexCellToSell);
         bool winMove = true;
         return winMove;
+    }
+    bool BuyBestCellOfTypeFromPlayer(Player currentPlayer, Player targetPlayer, int cellTypeNo)
+    {
+        List<GameObject> availableCellsOfType = ownedCellsOfType(targetPlayer, cellTypeNo);
+        GameObject CellToBuy = cheapestCell(availableCellsOfType);
+        HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
+        actions.OnBuyCell(currentPlayer, theCell); //Buy the cell
+        bool winMove = true; //Confirm that a winning move has been performed.
+        return winMove;
+    }
+    bool BuyBestCellFromPlayer(Player currentPlayer, Player targetPlayer)
+    {
+        List<GameObject> targetownedCells = OwnedCellsAll(targetPlayer);
+        GameObject CellToBuy = cheapestCell(targetownedCells);
+        HexCell theCell = CellToBuy.GetComponent<HexCell>(); //Get the HexCell component of the cell to buy
+        actions.OnBuyCell(currentPlayer, theCell); //Buy the cell
+        bool winMove = true; //Confirm that a winning move has been performed.
+        return winMove;
+    }
+    bool BuyBestCellOfAnyType(Player currentPlayer)
+    {
+        bool winMove = false;
+        List<GameObject> availableCells = FindAvailableCells(currentPlayer);
+        GameObject CellToBuy = cheapestCell(availableCells);
+        HexCell theCell = CellToBuy.GetComponent<HexCell>();
+        actions.OnBuyCell(currentPlayer,theCell);
+        winMove = true;
+        return winMove;
+    }
+    int minimumCellCost(List<GameObject> listOfCells)
+    {
+        int mincost = 1000000;
+        foreach (GameObject cellObj in listOfCells)
+        {
+            HexCell cell = cellObj.GetComponent<HexCell>();
+            if (cell.cellPrice < mincost) mincost = cell.cellPrice;
+        }
+        return mincost;
     }
 }
