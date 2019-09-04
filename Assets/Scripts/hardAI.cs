@@ -88,14 +88,82 @@ public class HardAIController : MonoBehaviour
     private bool NormalGameLogicSequence()
     {
         bool ActionTaken = false;
+        bool contbool = false;
         int winCondition = levelcont.VictoryCondition;
         if (winCondition == 0)
         {
             //If win condition is influence
+            if(AIPlayer.playerCash <= minimumCellCost(FindAvailableCellsOfType(AIPlayer,5)) && tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) + levelcont.CashPerLan >= 200)
+            {
+                ActionTaken = BuyBestcellOfType(AIPlayer, 5);
+            }
+            else if (AIPlayer.playerInfluence > 100)
+            {
+                int randnum = Random.Range(1, 7); //Roll a D6
+                if (randnum < 2)
+                {
+                    ActionTaken = tryLobbyAction();
+                    if(ActionTaken == false)
+                    {
+                        contbool = true; //If we try to take a lobby action but none are suitable, we continue along the decision tree.
+                    }
+                }
+                else
+                {
+                    contbool = true;
+                }
+            }
+            else
+            {
+                contbool = true;
+            }
+            if (contbool == true)
+            {
+                contbool = false;
+                //Now we have gone out of the randomised section and we only have to type out the alternative route once.
+                if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 4)))
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 5);
+                }
+                else if(AIPlayer.tileCounts[2] >= 3 && AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,3)))
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 3);
+                }
+                else if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 2)))
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 2);
+                }
+                else if (AIPlayer.playerCash >-minimumCellCost(FindAvailableCellsOfType(AIPlayer, 1)))
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 1);
+                }
+                else if (AIPlayer.playerInfluence >= 100)
+                {
+                    ActionTaken = tryLobbyAction();
+                }
+                else
+                {
+                    //Do nothing as all possible actions have been attempted.
+                    Debug.Log("No viable actions to take");
+                    ActionTaken = true;
+                }
+            }
         }
-        if(winCondition == 1)
+        else if(winCondition == 1)
         {
             //If win condition is control of board
+        }
+        else if (winCondition == 2)
+        {
+            //If win condition is target cash
+        }
+        else if (winCondition == 3)
+        {
+            //If win condition is to get 3 landmarks
+        }
+        else
+        {
+            Debug.Log("Error in hardAI.cs:NormalGameLogicSequence :: Unrecognised victory condition");
         }
         return ActionTaken;
     }
