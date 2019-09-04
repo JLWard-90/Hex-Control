@@ -88,6 +88,15 @@ public class HardAIController : MonoBehaviour
     private bool NormalGameLogicSequence()
     {
         bool ActionTaken = false;
+        int winCondition = levelcont.VictoryCondition;
+        if (winCondition == 0)
+        {
+            //If win condition is influence
+        }
+        if(winCondition == 1)
+        {
+            //If win condition is control of board
+        }
         return ActionTaken;
     }
 
@@ -143,12 +152,38 @@ public class HardAIController : MonoBehaviour
             if (winCondition == 0)
             {
                 //If can, buy landmark
+                if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,5)))
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 5);
+                }
                 //If can, buy Civic
+                else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,4)))
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 4);
+                }
                 //If can, buy Residential
-                //If can and need more money, buy powerplant
-                //If can and need more money, buy Industrial
-                //If desperate, consider a lobbying action
-                //Else do nothing
+                else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 1)))
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 1);
+                }
+                else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 3)) && tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) <= 200)
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 3);
+                }
+                else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,2)) && tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) <= 200)
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 2);
+                }
+                else if (tcontrol.CalculateInfIncrease(AIPlayer.playerNumber) > 100)
+                {
+                    ActionTaken = tryLobbyAction();
+                }
+                else
+                {
+                    //Do nothing
+                    Debug.Log("No viable action to take.");
+                    ActionTaken = true;
+                }
             }
             else if (winCondition == 1)
             {
@@ -162,11 +197,55 @@ public class HardAIController : MonoBehaviour
             else if (winCondition == 2)
             {
                 //If can, buy Industrial
-                //If can, buy powerplant
-                //If can, buy Residential
-                //If can, try lobbying
-                //Else sell most expensive landmark (if any)
-                //Else sell most expensive Civic (if any)
+                if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 2)))
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 2);
+                }
+                else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 3)))
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 3);
+                }
+                else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 1)))
+                {
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 1);
+                }
+                else if (AIPlayer.playerInfluence >= 100)
+                {
+                    ActionTaken = tryLobbyAction();
+                    if(ActionTaken == false)
+                    {
+                        if (AIPlayer.tileCounts[5] > 0)
+                        {
+                            ActionTaken = SellBestCellOfType(AIPlayer, 5);
+                        }
+                        else if (AIPlayer.tileCounts[4] > 0)
+                        {
+                            ActionTaken = SellBestCellOfType(AIPlayer, 4);
+                        }
+                        else
+                        {
+                            ActionTaken = false;
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Lobbying action attempted");
+                    }
+                }
+                else if (AIPlayer.tileCounts[5] > 0)
+                {
+                    ActionTaken = SellBestCellOfType(AIPlayer, 5);
+                }
+                else if (AIPlayer.tileCounts[4] > 0)
+                {
+                    ActionTaken = SellBestCellOfType(AIPlayer, 4);
+                }
+                else
+                {
+                    //Do nothing
+                    Debug.Log("No viable action to take.");
+                    ActionTaken = true;
+                }
             }
             else if (winCondition == 3)
             {
