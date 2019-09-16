@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelSetupController : MonoBehaviour
 {
@@ -57,6 +58,33 @@ public class LevelSetupController : MonoBehaviour
     }
     public void UpdateWinCondition()
     {
+        updateExplanationText();
         globalContol.updateWinCondition();
+    }
+
+    public void updateExplanationText()
+    {
+        int winConditionValue = (int)GameObject.Find("VicConDD").GetComponent<Dropdown>().value;
+        Text explanationText = GameObject.Find("RulesExplanation").GetComponent<Text>();
+        if (winConditionValue == 0)
+        {
+            explanationText.text = "Be the first to reach 1000 influence";
+        }
+        else if(winConditionValue == 1)
+        {
+            explanationText.text = "Control every district in the city";
+        }
+        else if(winConditionValue == 2)
+        {
+            explanationText.text = "Best the first to reach $10000 cash";
+        }
+        else if(winConditionValue == 3)
+        {
+            explanationText.text = "Control 3 landmarks";
+        }
+        else
+        {
+            Debug.Log("Error in LevelSetupController:UpdateExplanationText -- win condition not recognised.");
+        }
     }
 }

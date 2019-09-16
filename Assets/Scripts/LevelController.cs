@@ -158,6 +158,7 @@ public class LevelController : MonoBehaviour {
 
     private void Start()
     {
+        VictoryCondition = globalController.winCondition;
         Debug.Log("Level controller setup complete.");
     }
 
