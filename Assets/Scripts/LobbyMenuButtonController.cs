@@ -36,7 +36,8 @@ public class LobbyMenuButtonController : MonoBehaviour
             parentButton.GetComponent<Image>().color = Color.white;
         }
         ButtonText = GetButtonText(lobbyActionIndex);
-        parentButton.GetComponent<Text>().text = ButtonText;
+        Debug.Log(ButtonText);
+        transform.GetComponentInChildren<Text>().text = ButtonText;
     }
 
     public void buttonClicked()

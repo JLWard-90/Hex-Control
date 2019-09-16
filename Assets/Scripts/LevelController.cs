@@ -166,7 +166,7 @@ public class LevelController : MonoBehaviour {
         VictoryCondition = globalController.winCondition;
         TargetCells = 30;
         TargetCash = 10000;//Hard code in these targets 
-        
+        SetupLobbyOptions();
         Debug.Log("Level controller setup complete.");
     }
 

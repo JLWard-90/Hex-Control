@@ -1501,6 +1501,12 @@ MonoBehaviour:
   CurrentPlayer: 0
   CurrentTurn: 0
   powerToThepeople: 0
+  championOfIndustry: 0
+  ruleOfLaw: 0
+  bribesAsIndustry: 0
+  rentHike: 0
+  decentraliseGovernment: 0
+  freeHousingInitiative: 0
 --- !u!114 &780838005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1517,6 +1523,15 @@ MonoBehaviour:
   greenInitiativePPdrain: 100
   changeToIndCost: 100
   powerToThePeopleCost: 100
+  championOfIndustryCost: 100
+  ruleOfLawCost: 100
+  bribesAsIndustryCost: 100
+  moveGoalpostCost: 300
+  rentHikeCost: 100
+  decentraliseGovernmentCost: 100
+  freeHousingInitiativeCost: 100
+  officeRefurbishmentCost: 100
+  officeRefurbishmentPenalty: 200
 --- !u!1 &819512205
 GameObject:
   m_ObjectHideFlags: 0
@@ -3612,6 +3627,8 @@ MonoBehaviour:
     type: 3}
   playerNames: []
   playerTypes: 
+  NLobbyOptions: 5
+  lobbyingOptions: 
 --- !u!4 &1924174565
 Transform:
   m_ObjectHideFlags: 0
