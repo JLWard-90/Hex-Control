@@ -16,6 +16,11 @@ public class TurnController : MonoBehaviour {
     HexCell[] Cells;
     HexGrid Grid;
     public bool powerToThepeople = false;
+    public bool championOfIndustry = false;
+    public bool ruleOfLaw = false;
+    public bool bribesAsIndustry = false;
+    public bool rentHike = false;
+    public bool decentraliseGovernment = false;
 
     private void Awake()
     {
@@ -98,11 +103,34 @@ public class TurnController : MonoBehaviour {
                     CpI = (CpI * lCont.PowerPlantMultiplier);
                 }
             }
+            if (championOfIndustry == true)
+            {
+                CpI = CpI * 1.1f;
+            }
+            if (rentHike == true)
+            {
+                CpR = CpR * 1.5f;
+            }
             int newCashPerInd = (int)CpI;
             int newCashPerRes = (int)CpR;
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[2] * newCashPerInd;
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[3] * lCont.CashPerPow;
-            CurrentPlayer.playerCash += CurrentPlayer.tileCounts[4] * lCont.CashPerCiv;
+            if(bribesAsIndustry == true && decentraliseGovernment == false)
+            {
+                CurrentPlayer.playerCash += (int)(CurrentPlayer.tileCounts[4] * lCont.CashPerCiv * 0.8f);
+            }
+            else if (bribesAsIndustry == false && decentraliseGovernment == false)
+            {
+                CurrentPlayer.playerCash += CurrentPlayer.tileCounts[4] * lCont.CashPerCiv;
+            }
+            else if (bribesAsIndustry == true && decentraliseGovernment == true)
+            {
+                CurrentPlayer.playerCash += (int)(CurrentPlayer.tileCounts[4] * lCont.CashPerCiv * 0.8f * 0.5f);
+            }
+            else if(bribesAsIndustry == false && decentraliseGovernment == true)
+            {
+                CurrentPlayer.playerCash += (int)(CurrentPlayer.tileCounts[4] * lCont.CashPerCiv * 0.5f);
+            }
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[5] * lCont.CashPerLan;
 
             if(CurrentPlayer.playerCash >= lCont.TargetCash && lCont.VictoryCondition == 2)
@@ -132,17 +160,32 @@ public class TurnController : MonoBehaviour {
         for (int i = 0; i < TotalPlayerNumber; i++)
         {
             Player CurrentPlayer = players[i];
-            if(powerToThepeople == true)
+            if(powerToThepeople == true && rentHike == false)
             {
                 CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[1] * (int)(lCont.InfPerRes * CurrentPlayer.tileCounts[3] * lCont.PowerPlantMultiplier);
             }
-            else
+            else if(rentHike == false)
             {
                 CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[1] * lCont.InfPerRes;
             }
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[2] * lCont.InfPerInd;
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[3] * lCont.InfPerPow;
-            CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[4] * lCont.InfPerCiv;
+            if(ruleOfLaw == true && decentraliseGovernment == false)
+            {
+                CurrentPlayer.playerInfluence += (int)(CurrentPlayer.tileCounts[4] * lCont.InfPerCiv * 1.1f);
+            }
+            else if (ruleOfLaw ==false && decentraliseGovernment == false)
+            {
+                CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[4] * lCont.InfPerCiv;
+            }
+            else if (ruleOfLaw == true && decentraliseGovernment == true)
+            {
+                CurrentPlayer.playerInfluence += (int)(CurrentPlayer.tileCounts[4] * lCont.InfPerCiv * 1.1f *0.5f);
+            }
+            else if (ruleOfLaw ==false && decentraliseGovernment == true)
+            {
+                CurrentPlayer.playerInfluence += (int)(CurrentPlayer.tileCounts[4] * lCont.InfPerCiv * 0.5f);
+            }
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[5] * lCont.InfPerLan;
 
             if(CurrentPlayer.playerInfluence >= lCont.TargetInfluence && lCont.VictoryCondition == 0)

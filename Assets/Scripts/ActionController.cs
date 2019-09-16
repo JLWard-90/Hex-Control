@@ -18,6 +18,18 @@ public class ActionController : MonoBehaviour {
     int changeToIndCost = 100;
     [SerializeField]
     int powerToThePeopleCost = 100;
+    [SerializeField]
+    int championOfIndustryCost = 100;
+    [SerializeField]
+    int ruleOfLawCost = 100;
+    [SerializeField]
+    int bribesAsIndustryCost = 100;
+    [SerializeField]
+    int moveGoalpostCost = 300;
+    [SerializeField]
+    int rentHikeCost = 100;
+    [SerializeField]
+    int decentraliseGovernmentCost = 100;
 
     AudioController audioCont;
 
@@ -134,6 +146,8 @@ public class ActionController : MonoBehaviour {
         }
     }
 
+    //The following are all of the Lobbying actions. The exact actions that are available will be randomised at the start of each game.
+
     public void OnGreenEnergyInitiative(Player CurrentPlayer, Player[] players) //Lobbying ability that charges every player on the board per power plant
     {
         int influenceCost = greenInitiativeCost;
@@ -194,5 +208,186 @@ public class ActionController : MonoBehaviour {
             uIController.updateMessageBox(CurrentPlayer.PlayerName, "played Power to the people");
         }
         
+    }
+
+    public void ChampionOfIndustry(Player CurrentPlayer)
+    {
+        //Increases industrial district output by 10%
+        if(CurrentPlayer.playerInfluence >= championOfIndustryCost)
+        {
+            tcontroller.championOfIndustry = true;
+            CurrentPlayer.playerInfluence -= championOfIndustryCost;
+            uIController.updateMessageBox(CurrentPlayer.PlayerName, "played Champion of Industry");
+        }
+    }
+
+    public void RuleOfLaw(Player CurrentPlayer)
+    {
+        //Increases Civic district influence output by 10%
+        if(CurrentPlayer.playerInfluence >= ruleOfLawCost)
+        {
+            tcontroller.ruleOfLaw = true;
+            CurrentPlayer.playerInfluence -= ruleOfLawCost;
+            uIController.updateMessageBox(CurrentPlayer.PlayerName, "played Rule of Law");
+        }
+    }
+
+    public void BribesAsIndustry(Player CurrentPlayer)
+    {
+        //Decreases the cash cost of maintaining civic buildings by 20%
+        if(CurrentPlayer.playerInfluence >= bribesAsIndustryCost)
+        {
+            tcontroller.bribesAsIndustry = true;
+            CurrentPlayer.playerInfluence -= bribesAsIndustryCost;
+            uIController.updateMessageBox(CurrentPlayer.PlayerName, "played Bribes as Industry");
+        }
+    }
+
+    public void MoveGoalposts(Player CurrentPlayer)
+    {
+        LevelController levelController = GameObject.Find("LevelController").GetComponent<LevelController>();
+        int winCondition = levelController.VictoryCondition;
+        int Nlandmarks = 0;
+        GameObject[] fullCellsList = GameObject.FindGameObjectsWithTag("HexCell");
+        foreach(GameObject cell in fullCellsList)
+        {
+            HexCell cellComponent = cell.GetComponent<HexCell>();
+            if(cellComponent.cellType == 5)
+            {
+                Nlandmarks++;
+            }
+        }
+        if (CurrentPlayer.playerInfluence >= moveGoalpostCost)
+        {
+            if (Nlandmarks >= 3)
+            {
+                if (winCondition == 0)
+                {
+                    levelController.VictoryCondition = Random.Range(1, 4);
+                }
+                else if(winCondition == 1)
+                {
+                    int randNum = Random.Range(1, 4);
+                    if(randNum == 1)
+                    {
+                        levelController.VictoryCondition = 0;
+                    }
+                    else if(randNum == 2)
+                    {
+                        levelController.VictoryCondition = 2; 
+                    }
+                    else if (randNum == 3)
+                    {
+                        levelController.VictoryCondition = 3;
+                    }
+                }
+                else if (winCondition == 2)
+                {
+                    int randNum = Random.Range(1, 4);
+                    if (randNum == 1)
+                    {
+                        levelController.VictoryCondition = 0;
+                    }
+                    else if (randNum == 2)
+                    {
+                        levelController.VictoryCondition = 1;
+                    }
+                    else if (randNum == 3)
+                    {
+                        levelController.VictoryCondition = 3;
+                    }
+                }
+                else if (winCondition == 3)
+                {
+                    int randNum = Random.Range(1, 4);
+                    if (randNum == 1)
+                    {
+                        levelController.VictoryCondition = 0;
+                    }
+                    else if (randNum == 2)
+                    {
+                        levelController.VictoryCondition = 2;
+                    }
+                    else if (randNum == 3)
+                    {
+                        levelController.VictoryCondition = 1;
+                    }
+                }
+            }
+            else
+            {
+                if (winCondition == 0)
+                {
+                    levelController.VictoryCondition = Random.Range(1, 3);
+                }
+                else if (winCondition == 1)
+                {
+                    int randNum = Random.Range(1, 3);
+                    if (randNum == 1)
+                    {
+                        levelController.VictoryCondition = 0;
+                    }
+                    else
+                    {
+                        levelController.VictoryCondition = 2;
+                    }
+                }
+                else if (winCondition == 2)
+                {
+                    int randNum = Random.Range(1, 3);
+                    if (randNum == 1)
+                    {
+                        levelController.VictoryCondition = 0;
+                    }
+                    else
+                    {
+                        levelController.VictoryCondition = 1;
+                    }
+                }
+            }
+            if (levelController.VictoryCondition == 0)
+            {
+                uIController.updateMessageBox(CurrentPlayer.PlayerName, "changed the victory condition to Influencer");
+            }
+            else if (levelController.VictoryCondition == 1)
+            {
+                uIController.updateMessageBox(CurrentPlayer.PlayerName, "changed the victory condition to Domination");
+            }
+            else if (levelController.VictoryCondition == 2)
+            {
+                uIController.updateMessageBox(CurrentPlayer.PlayerName, "changed the victory condition to Mogul");
+            }
+            else if (levelController.VictoryCondition == 3)
+            {
+                uIController.updateMessageBox(CurrentPlayer.PlayerName, "changed the victory condition to Landmark");
+            }
+            else
+            {
+                Debug.Log("Something has gone wrong! No longer recognise victory condition (ActionController::MoveGoalposts)");
+            }
+
+        }
+    }
+
+    public void RentHike(Player currentPlayer)
+    {
+        //increase cash from residences by 50% but decreases their influence to 0
+        if(currentPlayer.playerInfluence >= rentHikeCost)
+        {
+            tcontroller.rentHike = true;
+            currentPlayer.playerInfluence -= rentHikeCost;
+            uIController.updateMessageBox(currentPlayer.PlayerName, "played Rent Hike");
+        }
+    }
+
+    public void DecentraliseGovernment(Player currentPlayer)
+    {
+        //decrease civic influence and cost
+        if(currentPlayer.playerInfluence >= decentraliseGovernmentCost)
+        {
+            tcontroller.decentraliseGovernment = true;
+            currentPlayer.playerInfluence -= decentraliseGovernmentCost;
+            uIController.updateMessageBox(currentPlayer.PlayerName, "played decentralise government");
+        }
     }
 }
