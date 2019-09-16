@@ -30,6 +30,12 @@ public class ActionController : MonoBehaviour {
     int rentHikeCost = 100;
     [SerializeField]
     int decentraliseGovernmentCost = 100;
+    [SerializeField]
+    int freeHousingInitiativeCost = 100;
+    [SerializeField]
+    int officeRefurbishmentCost = 100;
+    [SerializeField]
+    int officeRefurbishmentPenalty = 200;
 
     AudioController audioCont;
 
@@ -393,6 +399,24 @@ public class ActionController : MonoBehaviour {
 
     public void FreeHousingInitiative(Player currentPlayer)
     {
+        if(currentPlayer.playerInfluence >= freeHousingInitiativeCost)
+        {
+            tcontroller.freeHousingInitiative = true;
+            currentPlayer.playerInfluence -= freeHousingInitiativeCost;
+            uIController.updateMessageBox(currentPlayer.PlayerName, "played Free Housing Initiative");
+        }
+    }
 
+    public void OfficeRefurbishment(Player currentPlayer, Player[] players)
+    {
+        if (currentPlayer.playerInfluence >= officeRefurbishmentCost)
+        {
+            foreach (Player player in players)
+            {
+                player.playerCash -= officeRefurbishmentPenalty * player.tileCounts[3];
+            }
+            currentPlayer.playerInfluence -= officeRefurbishmentCost;
+            uIController.updateMessageBox(currentPlayer.PlayerName, "played Office Refurbishment Programme");
+        }
     }
 }
