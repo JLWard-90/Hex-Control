@@ -166,14 +166,76 @@ public class hardAI : MonoBehaviour
         else if(winCondition == 1)
         {
             //If win condition is control of board
+            if (AIPlayer.playerCash + tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) <=  500) //If player is making less than 500 cash per turn, focus on making more cash
+            {
+                if (AIPlayer.tileCounts[2] >= 2 && AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 3)) && CountAvailableCellsOfType(AIPlayer, 3) > 0) //If buying a power plant makes sense, then try to do that
+                {
+                    Debug.Log("Attempting to buy power plant district (NormalGameLogicSequence:winCondition==1:Step1,1)");
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 3);
+                }
+                else if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 2)) && CountAvailableCellsOfType(AIPlayer,2) > 0) //If player can afford to buy an industrial district
+                {
+                    Debug.Log("Attempting to buy industrial district (NormalGameLogicSequence:winCondition==1:Step1,2)");
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 2);
+                }
+                else if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,1)) && CountAvailableCellsOfType(AIPlayer,1) > 0) //If player can buy residential
+                {
+                    Debug.Log("Attempting to buy residential district (NormalGameLogicSequence:winCondition==1,step1,3)");
+                    ActionTaken = BuyBestcellOfType(AIPlayer, 1);
+                }
+                else if(AIPlayer.playerInfluence >= 100)
+                {
+                    Debug.Log("Attempting lobby action (NormalGameLogicSequence:winCondition==1,step1,4)");
+                    ActionTaken = tryLobbyAction();
+                }
+                else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCells(AIPlayer)) && FindAvailableCells(AIPlayer).Count > 0)
+                {
+                    Debug.Log("Try to buy any cell (NormalGameLogicSequence:winCondition==1,step1,5)");
+                    ActionTaken = BuyBestCellOfAnyType(AIPlayer);
+                }
+                else
+                {
+                    Debug.Log("No action taken: no viable action found. (NormalGameLogicSequence:winCondition==1,step1,6)");
+                }
+            }
+            else
+            {
+                //Else try to buy up cells prioritising the cheapest ones
+                if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCells(AIPlayer)) && FindAvailableCells(AIPlayer).Count > 0)
+                {
+                    Debug.Log("Try to buy any cell (NormalGameLogicSequence:winCondition==1,step2,1)");
+                }
+                else if (AIPlayer.playerInfluence >= 100)
+                {
+                    Debug.Log("Attempting lobby action (NormalGameLogicSequence:winCondition==1,step2,2)");
+                    ActionTaken = tryLobbyAction();
+                }
+                else
+                {
+                    Debug.Log("No action taken: no viable action found. (NormalGameLogicSequence:winCondition==1,step2,3)");
+                }
+            }
         }
         else if (winCondition == 2)
         {
             //If win condition is target cash
+            //Just prioritise cash
+            //If power plant makes sense to buy buy that
+            //If can afford industrial district
+            //If can afford residential district
+            //if can lobby
+            //if can afford civic district
+            //Else do nothing
         }
         else if (winCondition == 3)
         {
             //If win condition is to get 3 landmarks
+            //Try to buy a landmark and if that is not possible then need to prioritise making more money
+            //If can buy landmark
+            //If power plant makes sense
+            //If can buy residential
+            //If can lobby
+            //Else do nothing
         }
         else
         {
