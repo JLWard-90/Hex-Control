@@ -35,7 +35,6 @@ public class TurnController : MonoBehaviour {
         ResetPrices();
         uiC.UpdateInfoPanel();
         uiC.UpdateScoreTextBox(players);
-        WinCondition = GameObject.Find("GlobalController").GetComponent<GlobalController>().winCondition;
     }
 
     public void EndTurn()
@@ -121,6 +120,11 @@ public class TurnController : MonoBehaviour {
                     }
                 }
             }
+
+        }
+        if (WinCondition == 1)
+        {
+            uiC.SpawnWinText(WinningPlayer.PlayerName, WinningPlayer.playerCash);
         }
     }
     void AddInfluence()
@@ -200,6 +204,10 @@ public class TurnController : MonoBehaviour {
         {
             Player CurrentPlayer = players[i];
             int Ncells = CurrentPlayer.tileCounts[0] + CurrentPlayer.tileCounts[1] + CurrentPlayer.tileCounts[2] + CurrentPlayer.tileCounts[3] + CurrentPlayer.tileCounts[4] + CurrentPlayer.tileCounts[5];
+            Debug.Log("Checking victory condition:");
+            Debug.Log(Ncells);
+            Debug.Log(lCont.TargetCells);
+            Debug.Log(lCont.VictoryCondition);
             if (Ncells >= lCont.TargetCells && lCont.VictoryCondition == 1)
             {
                 if (WinCondition != 1)
@@ -230,6 +238,10 @@ public class TurnController : MonoBehaviour {
                     }
                 }
             }
+        }
+        if (WinCondition == 1)
+        {
+            uiC.SpawnWinText(WinningPlayer.PlayerName, WinningPlayer.playerInfluence);
         }
     }
 }

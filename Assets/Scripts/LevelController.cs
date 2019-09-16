@@ -69,7 +69,7 @@ public class LevelController : MonoBehaviour {
 
     public int TargetCash = 10000;
 
-    public int TargetCells = 36;
+    public int TargetCells = 30;
 
     public int TargetLandmarks = 3;
 
@@ -159,6 +159,8 @@ public class LevelController : MonoBehaviour {
     private void Start()
     {
         VictoryCondition = globalController.winCondition;
+        TargetCells = 30;
+        TargetCash = 10000;//Hard code in these targets 
         Debug.Log("Level controller setup complete.");
     }
 

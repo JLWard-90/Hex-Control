@@ -72,7 +72,7 @@ public class LevelSetupController : MonoBehaviour
         }
         else if(winConditionValue == 1)
         {
-            explanationText.text = "Control every district in the city";
+            explanationText.text = "Control 30 of the city's districts";
         }
         else if(winConditionValue == 2)
         {
