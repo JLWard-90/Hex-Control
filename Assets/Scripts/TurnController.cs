@@ -21,6 +21,7 @@ public class TurnController : MonoBehaviour {
     public bool bribesAsIndustry = false;
     public bool rentHike = false;
     public bool decentraliseGovernment = false;
+    public bool freeHousingInitiative = false;
 
     private void Awake()
     {
@@ -111,6 +112,10 @@ public class TurnController : MonoBehaviour {
             {
                 CpR = CpR * 1.5f;
             }
+            if (freeHousingInitiative == true)
+            {
+                CpR = CpR * 0;
+            }
             int newCashPerInd = (int)CpI;
             int newCashPerRes = (int)CpR;
             CurrentPlayer.playerCash += CurrentPlayer.tileCounts[2] * newCashPerInd;
@@ -160,32 +165,35 @@ public class TurnController : MonoBehaviour {
         for (int i = 0; i < TotalPlayerNumber; i++)
         {
             Player CurrentPlayer = players[i];
-            if(powerToThepeople == true && rentHike == false)
+            float IpC = lCont.InfPerCiv;
+            float IpR = lCont.InfPerRes;
+
+            if(powerToThepeople == true)
             {
-                CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[1] * (int)(lCont.InfPerRes * CurrentPlayer.tileCounts[3] * lCont.PowerPlantMultiplier);
+                IpR = IpR * CurrentPlayer.tileCounts[3] * lCont.PowerPlantMultiplier;
             }
-            else if(rentHike == false)
+            if(rentHike == true)
             {
-                CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[1] * lCont.InfPerRes;
+                IpR = IpR * 0.5f;
             }
+            if(freeHousingInitiative == true)
+            {
+                IpR = IpR * 1.5f; 
+            }
+            CurrentPlayer.playerInfluence += (int)(CurrentPlayer.tileCounts[1] * IpR);
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[2] * lCont.InfPerInd;
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[3] * lCont.InfPerPow;
-            if(ruleOfLaw == true && decentraliseGovernment == false)
+
+            if(ruleOfLaw == true)
             {
-                CurrentPlayer.playerInfluence += (int)(CurrentPlayer.tileCounts[4] * lCont.InfPerCiv * 1.1f);
+                IpC = IpC * 1.1f;
             }
-            else if (ruleOfLaw ==false && decentraliseGovernment == false)
+            if(decentraliseGovernment == true)
             {
-                CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[4] * lCont.InfPerCiv;
+                IpC = IpC * 0.5f;
             }
-            else if (ruleOfLaw == true && decentraliseGovernment == true)
-            {
-                CurrentPlayer.playerInfluence += (int)(CurrentPlayer.tileCounts[4] * lCont.InfPerCiv * 1.1f *0.5f);
-            }
-            else if (ruleOfLaw ==false && decentraliseGovernment == true)
-            {
-                CurrentPlayer.playerInfluence += (int)(CurrentPlayer.tileCounts[4] * lCont.InfPerCiv * 0.5f);
-            }
+            CurrentPlayer.playerInfluence += (int)(CurrentPlayer.tileCounts[4] * IpC);
+            
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[5] * lCont.InfPerLan;
 
             if(CurrentPlayer.playerInfluence >= lCont.TargetInfluence && lCont.VictoryCondition == 0)

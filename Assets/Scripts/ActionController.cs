@@ -161,7 +161,7 @@ public class ActionController : MonoBehaviour {
             }
             audioCont.PlayLobbySound();
             uIController.UpdateInfoPanel();
-            uIController.updateMessageBox(CurrentPlayer.PlayerName, "lobbied for a green energy initiative");
+            uIController.updateMessageBox(CurrentPlayer.PlayerName, "played green energy initiative");
         }
         else
         {
@@ -389,5 +389,10 @@ public class ActionController : MonoBehaviour {
             currentPlayer.playerInfluence -= decentraliseGovernmentCost;
             uIController.updateMessageBox(currentPlayer.PlayerName, "played decentralise government");
         }
+    }
+
+    public void FreeHousingInitiative(Player currentPlayer)
+    {
+
     }
 }
