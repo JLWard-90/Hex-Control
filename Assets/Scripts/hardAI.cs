@@ -169,7 +169,7 @@ public class hardAI : MonoBehaviour
                     index = -1;
                 }
             }
-            else if(winCondition == 2)
+            else 
             {
                 int nresmax = 0;
                 foreach (GameObject player in allPlayers)
@@ -189,6 +189,34 @@ public class hardAI : MonoBehaviour
                     index = -1;
                 }
             }
+        }
+        else if(tcontrol.freeHousingInitiative == true)
+        {
+            int randnum = Random.Range(1, 7);
+            if (randnum <= 3)
+            {
+                index = 7;
+            }
+            else
+            {
+                index = -1;
+            }
+        }
+        else if (tcontrol.decentraliseGovernment == true)
+        {
+            int randnum = Random.Range(1, 7);
+            if (randnum <= 3)
+            {
+                index = 7;
+            }
+            else
+            {
+                index = -1;
+            }
+        }
+        else
+        {
+            index = -1;
         }
         return index;
     }
