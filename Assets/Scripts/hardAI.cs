@@ -79,8 +79,16 @@ public class hardAI : MonoBehaviour
         }
         else
         {
-            actions.RepealEdict(AIPlayer, repealIndex);
-            actionTaken = true;
+            int randNum = Random.Range(1, 7); //Roll a d6
+            if (randNum <= 3)
+            {
+                actions.RepealEdict(AIPlayer, repealIndex); //If a suitable edict has been found to repeal then repeal it
+                actionTaken = true;
+            }
+            else
+            {
+                Debug.Log("AI Lobbying Actions not yet implemented!");
+            }
         }
         return actionTaken;
     }
@@ -124,6 +132,61 @@ public class hardAI : MonoBehaviour
                 if(playerComponent.tileCounts[4] > AIPlayer.tileCounts[4])
                 {
                     index = 3;
+                }
+            }
+        }
+        else if(tcontrol.bribesAsIndustry == true)
+        {
+            foreach (GameObject player in allPlayers)
+            {
+                Player playerComponent = player.GetComponent<Player>();
+                if (playerComponent.tileCounts[4] > AIPlayer.tileCounts[4])
+                {
+                    index = 4;
+                }
+            }
+        }
+        else if (tcontrol.rentHike == true)
+        {
+            int winCondition = levelcont.VictoryCondition;
+            if(winCondition == 0)
+            {
+                int nresmax = 0;
+                foreach (GameObject player in allPlayers)
+                {
+                    Player playerComponent = player.GetComponent<Player>();
+                    if(playerComponent.tileCounts[1] > nresmax && playerComponent.playerNumber != AIPlayer.playerNumber)
+                    {
+                        nresmax = playerComponent.tileCounts[1];
+                    }
+                }
+                if(nresmax < AIPlayer.tileCounts[1])
+                {
+                    index = 6;
+                }
+                else
+                {
+                    index = -1;
+                }
+            }
+            else if(winCondition == 2)
+            {
+                int nresmax = 0;
+                foreach (GameObject player in allPlayers)
+                {
+                    Player playerComponent = player.GetComponent<Player>();
+                    if(playerComponent.tileCounts[1] > nresmax && playerComponent.playerNumber != AIPlayer.playerNumber)
+                    {
+                        nresmax = playerComponent.tileCounts[1];
+                    }
+                }
+                if(nresmax > AIPlayer.tileCounts[1])
+                {
+                    index = 6;
+                }
+                else
+                {
+                    index = -1;
                 }
             }
         }
