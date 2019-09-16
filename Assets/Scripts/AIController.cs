@@ -285,6 +285,18 @@ public class AIController : MonoBehaviour {
     {
         Debug.Log("Called RunAITurn");
         int nActionsToTake = 2;
+        if(aiLevel == 3)
+        {
+            nActionsToTake = 5;
+        }
+        else if(aiLevel == 2)
+        {
+            nActionsToTake = 3;
+        }
+        else
+        {
+            nActionsToTake = 2;
+        }
         for (int i = 0; i < nActionsToTake; i++)
         {
             yield return new WaitForSeconds(0.2f);
