@@ -65,6 +65,7 @@ public class hardAI : MonoBehaviour
     {
         bool actionTaken = false;
         int repealIndex = CheckForPersistentNegativeEffects();
+
         if(repealIndex == -1) //If nothing worth repealing, continue onwards
         {
             int actionToTake = chooseLobbyAction();
@@ -74,7 +75,8 @@ public class hardAI : MonoBehaviour
             }
             else
             {
-                Debug.Log("AI Lobbying actions not yet implemented!");
+               actions.PerformLobbyAction(actionToTake, AIPlayer, levelcont.players);
+                actionTaken = true;
             }
         }
         else
@@ -87,7 +89,16 @@ public class hardAI : MonoBehaviour
             }
             else
             {
-                Debug.Log("AI Lobbying Actions not yet implemented!");
+                int actionToTake = chooseLobbyAction();
+                if (actionToTake == 0)
+                {
+                    actionTaken = false;
+                }
+                else
+                {
+                    actions.PerformLobbyAction(actionToTake, AIPlayer, levelcont.players);
+                    actionTaken = true;
+                }
             }
         }
         return actionTaken;
@@ -96,9 +107,81 @@ public class hardAI : MonoBehaviour
     private int chooseLobbyAction() //Here we select a lobby action at random, check if it is worth doing
     {
         int lobbyAction = 0; //If lobbyAction == 0, no action is performed. We start with this value to ensure that nothing weird is likely to happen
-        if(lobbyAction == 0)
+        int[] lobbyingOptionsAvailable = levelcont.lobbyingOptions;
+        bool[] attempted = new bool[4] {false,false,false,false};
+        int triedCount = 0;
+        bool finished = false;
+        GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("player");
+        while (finished == false)
         {
-            Debug.Log("No suitable lobby action was selected");
+            int randomIndex = Random.Range(0, 5); //Four actions available that are not repeal
+            if (attempted[randomIndex] == false)
+            {
+                bool success = false;
+                attempted[randomIndex] = true;
+                triedCount++;
+                if (lobbyingOptionsAvailable[randomIndex] == 1)
+                {
+                    //green energy initiative
+                    int NpowOpponent = 0;
+                    foreach(GameObject playerObj in allPlayers)
+                    {
+                        if(playerObj.GetComponent<Player>().tileCounts[3] > NpowOpponent)
+                        {
+                            NpowOpponent = playerObj.GetComponent<Player>().tileCounts[3];
+                        }
+                    }
+                    if(AIPlayer.tileCounts[3] < 2 && NpowOpponent >= 2 && AIPlayer.playerInfluence > 100)
+                    {
+                        success = true;
+                        lobbyAction = 1;
+                    }
+                }
+                else if (lobbyingOptionsAvailable[randomIndex] == 2)
+                {
+                    //powertothepeople
+                }
+                else if (lobbyingOptionsAvailable[randomIndex] == 3)
+                {
+                    //rule of law
+                }
+                else if (lobbyingOptionsAvailable[randomIndex] == 4)
+                {
+                    //bribes as industry
+                }
+                else if (lobbyingOptionsAvailable[randomIndex] == 5)
+                {
+                    //MoveGoalposts
+                }
+                else if (lobbyingOptionsAvailable[randomIndex] == 6)
+                {
+                    //Rent hike
+                }
+                else if (lobbyingOptionsAvailable[randomIndex] == 7)
+                {
+                    //decentralise government
+                }
+                else if (lobbyingOptionsAvailable[randomIndex] == 8)
+                {
+                    //office refurbishment
+                }
+                else if (lobbyingOptionsAvailable[randomIndex] == 9)
+                {
+                    //free housing initiative
+                }
+                else
+                {
+                    Debug.Log("Error in hardAI::chooseLobbyAction : lobby action index not recognised.");
+                }
+                if (triedCount == 4 || success == true)
+                {
+                    finished = true;
+                }
+            }
+        }
+        if (lobbyAction == 0)
+        {
+            Debug.Log("No suitible lobby action found");
         }
         return lobbyAction;
     }
