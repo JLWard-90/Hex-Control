@@ -260,7 +260,40 @@ public class hardAI : MonoBehaviour
         {
             //If win condition is to get 3 landmarks
             //Try to buy a landmark and if that is not possible then need to prioritise making more money
-            //If can buy landmark
+            if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 5)) && tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) >= levelcont.CashPerLan + 100 && CountAvailableCellsOfType(AIPlayer, 5) > 0)
+            {
+                Debug.Log("Attempting to buy landmark (NormalGameLogicSequence:winCondition==3,step1)");
+                ActionTaken = BuyBestcellOfType(AIPlayer, 5);
+            }
+            else if (tcontrol.powerToThepeople == true && AIPlayer.tileCounts[1] >= 5 && AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 3)) && CountAvailableCellsOfType(AIPlayer,3) > 0)
+            {
+                Debug.Log("Attempting to buy power plant district (NormalGameLogicSequence:winCondition==3,step2)");
+                ActionTaken = BuyBestcellOfType(AIPlayer, 3);
+            }
+            else if (AIPlayer.tileCounts[2] >= 3 && AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 3)) && CountAvailableCellsOfType(AIPlayer, 3) > 0)
+            {
+                Debug.Log("Attempting to buy power plant district (NormalGameLogicSequence:winCondition==3,step3)");
+                ActionTaken = BuyBestcellOfType(AIPlayer, 3);
+            }
+            else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,2)) && CountAvailableCellsOfType(AIPlayer, 2) >0)
+            {
+                Debug.Log("Attempting to buy industrial district (NormalGameLogicSequence:winCondition==3,step4)");
+                ActionTaken = BuyBestcellOfType(AIPlayer, 2);
+            }
+            else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 1)) && CountAvailableCellsOfType(AIPlayer,1) > 0)
+            {
+                Debug.Log("Attempting to buy industrial district (NormalGameLogicSequence:winCondition==3,step5)");
+                ActionTaken = BuyBestcellOfType(AIPlayer, 1);
+            }
+            else if (AIPlayer.playerInfluence >= 100)
+            {
+                Debug.Log("Attempting lobby action (NormalGameLogicSequence:winCondition==3,step6)");
+                ActionTaken = tryLobbyAction();
+            }
+            else
+            {
+                Debug.Log("No Action taken. No viable actions found (NormalGameLogicSequence:winCondition==3,step7)");
+            }
             //If power plant makes sense
             //If can buy residential
             //If can lobby
