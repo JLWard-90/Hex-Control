@@ -79,9 +79,9 @@ public class hardAI : MonoBehaviour
         }
         else
         {
-            
+            actions.RepealEdict(AIPlayer, repealIndex);
+            actionTaken = true;
         }
-        
         return actionTaken;
     }
 
@@ -99,6 +99,34 @@ public class hardAI : MonoBehaviour
     {
         //This will check for effects of active edicts that negatively impact the AI player and if so, returns the index of the action to repeal
         int index = -1;
+        GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("player");
+        if (tcontrol.powerToThepeople == true)
+        {
+            int maxResidential = 0;
+            foreach(GameObject player in allPlayers)
+            {
+                Player playerComponent = player.GetComponent<Player>();
+                if(playerComponent.playerNumber != AIPlayer.playerNumber && playerComponent.tileCounts[1] > maxResidential && playerComponent.tileCounts[3] > 0)
+                {
+                    maxResidential = playerComponent.tileCounts[1];
+                }
+            }
+            if(maxResidential > AIPlayer.tileCounts[1])
+            {
+                index = 2;
+            }
+        }
+        else if(tcontrol.ruleOfLaw == true)
+        {
+            foreach(GameObject player in allPlayers)
+            {
+                Player playerComponent = player.GetComponent<Player>();
+                if(playerComponent.tileCounts[4] > AIPlayer.tileCounts[4])
+                {
+                    index = 3;
+                }
+            }
+        }
         return index;
     }
 
