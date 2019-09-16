@@ -79,7 +79,7 @@ public class UIController : MonoBehaviour {
         PlayerNameText.text = string.Format("Turn {0} {1}", CurrentTurn, CurrentPlayer.PlayerName);
         if(lCont.VictoryCondition == 2)
         {
-            PlayerCashText = string.Format("Cash:${0} (+${1}) / {2}", CurrentPlayer.playerCash, CashIncrease, lCont.TargetCash);
+            PlayerCashText.text = string.Format("Cash:${0} (+${1}) / {2}", CurrentPlayer.playerCash, CashIncrease, lCont.TargetCash);
         }
         else
         {
