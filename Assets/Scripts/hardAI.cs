@@ -64,15 +64,24 @@ public class hardAI : MonoBehaviour
     private bool tryLobbyAction()
     {
         bool actionTaken = false;
-        int actionToTake = chooseLobbyAction();
-        if (actionToTake == 0)
+        int repealIndex = CheckForPersistentNegativeEffects();
+        if(repealIndex == -1) //If nothing worth repealing, continue onwards
         {
-            actionTaken = false;
+            int actionToTake = chooseLobbyAction();
+            if (actionToTake == 0)
+            {
+                actionTaken = false;
+            }
+            else
+            {
+                Debug.Log("AI Lobbying actions not yet implemented!");
+            }
         }
         else
         {
-            Debug.Log("AI Lobbying actions not yet implemented!");
+            
         }
+        
         return actionTaken;
     }
 
@@ -84,6 +93,13 @@ public class hardAI : MonoBehaviour
             Debug.Log("No suitable lobby action was selected");
         }
         return lobbyAction;
+    }
+
+    private int CheckForPersistentNegativeEffects()
+    {
+        //This will check for effects of active edicts that negatively impact the AI player and if so, returns the index of the action to repeal
+        int index = -1;
+        return index;
     }
 
     private bool NormalGameLogicSequence()

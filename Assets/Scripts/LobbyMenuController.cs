@@ -54,6 +54,7 @@ public class LobbyMenuController : MonoBehaviour {
 
     public void OnCloseButton()
     {
+        actionController.repealModeOn = false;
         Destroy(gameObject);
     }
 

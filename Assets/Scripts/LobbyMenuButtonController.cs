@@ -13,14 +13,17 @@ public class LobbyMenuButtonController : MonoBehaviour
     TurnController tcontrol;
     LevelController lcont;
     ActionController actions;
+    UIController uiController;
 
     // Start is called before the first frame update
     void Awake()
     {
         parentButton = transform.GetComponent<Button>();
         tcontrol = GameObject.Find("GameController").GetComponent<TurnController>();
-        lcont = GameObject.Find("GameController").GetComponent<LevelController>();
+        lcont = GameObject.Find("LevelController").GetComponent<LevelController>();
         actions = GameObject.Find("GameController").GetComponent<ActionController>();
+        actions.repealModeOn = false;
+        uiController  = GameObject.Find("UICanvas").GetComponent<UIController>();
     }
 
     public void updateButtonAppearence()
@@ -44,7 +47,17 @@ public class LobbyMenuButtonController : MonoBehaviour
     {
         Player[] thePlayers = lcont.players;
         Player currentPlayer = thePlayers[tcontrol.CurrentPlayer];
-        actions.PerformLobbyAction(lobbyActionIndex, currentPlayer, thePlayers);
+        if(actions.repealModeOn == false)
+        {
+            actions.PerformLobbyAction(lobbyActionIndex, currentPlayer, thePlayers);
+        }
+        else if (actions.repealModeOn == true)
+        {
+            actions.RepealEdict(currentPlayer,lobbyActionIndex);
+            actions.repealModeOn = false;
+        }
+        updateButtonAppearence();
+        uiController.UpdateInfoPanel();
     }
 
     bool CheckIfActive(int actionIndex)

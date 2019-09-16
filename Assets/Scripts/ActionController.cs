@@ -9,7 +9,7 @@ public class ActionController : MonoBehaviour {
     UIController uIController;
     LevelController level;
     TurnController tcontroller;
-
+    public bool repealModeOn = false;
     [SerializeField]
     int greenInitiativeCost = 100;
     [SerializeField]
@@ -36,6 +36,8 @@ public class ActionController : MonoBehaviour {
     int officeRefurbishmentCost = 100;
     [SerializeField]
     int officeRefurbishmentPenalty = 200;
+    [SerializeField]
+    int repealCost = 100;
 
     AudioController audioCont;
 
@@ -420,9 +422,63 @@ public class ActionController : MonoBehaviour {
         }
     }
 
-    public void RepealEdict(Player currentPlayer)
+    public void RepealEdict(Player currentPlayer, int IndexToRepeal)
     {
         Debug.Log("Sorry repeal action is not yet implemented");
+        if(IndexToRepeal == 2)
+        {
+            if(tcontroller.powerToThepeople == true && currentPlayer.playerInfluence >= repealCost)
+            {
+                currentPlayer.playerInfluence -= repealCost;
+                tcontroller.powerToThepeople = false;
+                uIController.updateMessageBox(currentPlayer.PlayerName, "has repealed Power to the People");
+            }
+        }
+        else if(IndexToRepeal == 3)
+        {
+            if(tcontroller.ruleOfLaw == true && currentPlayer.playerInfluence >= repealCost)
+            {
+                currentPlayer.playerInfluence -= repealCost;
+                tcontroller.ruleOfLaw = false;
+                uIController.updateMessageBox(currentPlayer.PlayerName, "has repealed Rule of Law");
+            }
+        }
+        else if(IndexToRepeal == 4)
+        {
+            if(tcontroller.bribesAsIndustry ==true && currentPlayer.playerInfluence >= repealCost)
+            {
+                currentPlayer.playerInfluence -= repealCost;
+                tcontroller.bribesAsIndustry = false;
+                uIController.updateMessageBox(currentPlayer.PlayerName, "has repealed Bribes as Industry");
+            }
+        }
+        else if(IndexToRepeal == 6)
+        {
+            if(tcontroller.rentHike == true && currentPlayer.playerInfluence >= repealCost)
+            {
+                currentPlayer.playerInfluence -= repealCost;
+                tcontroller.rentHike = false;
+                uIController.updateMessageBox(currentPlayer.PlayerName, "has repealed Rent Hike");
+            }
+        }
+        else if(IndexToRepeal == 7)
+        {
+            if(tcontroller.decentraliseGovernment == true && currentPlayer.playerInfluence >= repealCost)
+            {
+                currentPlayer.playerInfluence -= repealCost;
+                tcontroller.decentraliseGovernment = false;
+                uIController.updateMessageBox(currentPlayer.PlayerName, "has repealed Decentralised Government");
+            }
+        }
+        else if(IndexToRepeal == 9)
+        {
+            if(tcontroller.freeHousingInitiative == true && currentPlayer.playerInfluence >= repealCost)
+            {
+                currentPlayer.aiPlayerLevel -= repealCost;
+                tcontroller.freeHousingInitiative = false;
+                uIController.updateMessageBox(currentPlayer.PlayerName, "has repealed Free Housing Initiative");
+            }
+        }
     }
 
     public void PerformLobbyAction(int actionToPerform, Player currentPlayer, Player[] thePlayers)
@@ -430,7 +486,17 @@ public class ActionController : MonoBehaviour {
         if (actionToPerform == 0)
         {
             //Repeal button selected
-            RepealEdict(currentPlayer);
+            //int indexToRepeal = 1;
+            if(currentPlayer.playerInfluence >= repealCost)
+            {
+                repealModeOn = true;
+            }
+            else
+            {
+                Debug.Log("Insufficient influence for repeal action");
+            }
+            
+            //RepealEdict(currentPlayer, indexToRepeal);
         }
         else if (actionToPerform == 1)
         {
