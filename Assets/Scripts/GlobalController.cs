@@ -10,6 +10,8 @@ public class GlobalController : MonoBehaviour {
 
     public static GlobalController instance;
 
+    public int winCondition = 0;
+
     //Need to have the level controller settings stored in the global controller because this is the only object that does not get destroyed when a new scene is loaded
     public bool useDefaults = true;
     //Below are all the details that are used to set up the game
@@ -114,6 +116,12 @@ public class GlobalController : MonoBehaviour {
     public void updateLandmarkValue()
     {
         Landmark = (int)GameObject.Find("LandmarkSlider").GetComponent<Slider>().value;
+    }
+    public void updateWinCondition()
+    {
+        winCondition = (int)GameObject.Find("VicConDD").GetComponent<Dropdown>().value;
+        Debug.Log("win Condition:");
+        Debug.Log(winCondition);
     }
 
     public void updatePlayerList()

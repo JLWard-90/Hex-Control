@@ -32,6 +32,7 @@ public class LevelSetupController : MonoBehaviour
     {
         globalContol.updatePlayerList();
         globalContol.useDefaults = false;
+        globalContol.updateWinCondition();
         SceneManager.LoadScene("MainScene");
     }
     public void UpdateResBuildings()
@@ -53,5 +54,9 @@ public class LevelSetupController : MonoBehaviour
     public void UpdateLanBuildings()
     {
         globalContol.updateLandmarkValue();
+    }
+    public void UpdateWinCondition()
+    {
+        globalContol.updateWinCondition();
     }
 }

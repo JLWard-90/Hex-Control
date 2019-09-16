@@ -25,6 +25,7 @@ public class TurnController : MonoBehaviour {
         TotalPlayerNumber = lCont.playerCount;
         CurrentTurn = 1;
         CurrentPlayer = 0; //Start with the first player
+        
     }
 
     private void Start()
@@ -34,6 +35,7 @@ public class TurnController : MonoBehaviour {
         ResetPrices();
         uiC.UpdateInfoPanel();
         uiC.UpdateScoreTextBox(players);
+        WinCondition = GameObject.Find("GlobalController").GetComponent<GlobalController>().winCondition;
     }
 
     public void EndTurn()
