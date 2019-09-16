@@ -204,6 +204,7 @@ public class hardAI : MonoBehaviour
                 if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCells(AIPlayer)) && FindAvailableCells(AIPlayer).Count > 0)
                 {
                     Debug.Log("Try to buy any cell (NormalGameLogicSequence:winCondition==1,step2,1)");
+                    ActionTaken = BuyBestCellOfAnyType(AIPlayer);
                 }
                 else if (AIPlayer.playerInfluence >= 100)
                 {
@@ -219,13 +220,41 @@ public class hardAI : MonoBehaviour
         else if (winCondition == 2)
         {
             //If win condition is target cash
-            //Just prioritise cash
-            //If power plant makes sense to buy buy that
+            if(tcontrol.powerToThepeople == true && AIPlayer.tileCounts[1] >= 5 && AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,3)) && CountAvailableCellsOfType(AIPlayer,3)>0) 
+            {
+                Debug.Log("Attempting to buy power plant district (NormalGameLogicSequence:winCondition==2,step1)");
+                ActionTaken = BuyBestcellOfType(AIPlayer, 3);
+            }
+            else if(AIPlayer.tileCounts[2] >= 3 && AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,3))&& CountAvailableCellsOfType(AIPlayer, 3) > 0)
+            {
+                Debug.Log("Attempting to buy power plant district (NormalGameLogicSequence:winCondition==2,step2)");
+                ActionTaken = BuyBestcellOfType(AIPlayer, 3);
+            }
             //If can afford industrial district
-            //If can afford residential district
-            //if can lobby
-            //if can afford civic district
-            //Else do nothing
+            else if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,2))&& CountAvailableCellsOfType(AIPlayer,2) > 0)
+            {
+                Debug.Log("Attempting to buy industrial district (NormalGameLogicSequence:winCondition==2,step3)");
+                ActionTaken = BuyBestcellOfType(AIPlayer, 2);
+            }
+            else if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 1)) && CountAvailableCellsOfType(AIPlayer, 1) > 0)
+            {
+                Debug.Log("Attempting to buy residential district (NormalGameLogicSequence:winCondition==2,step4)");
+                ActionTaken = BuyBestcellOfType(AIPlayer, 1);
+            }
+            else if (AIPlayer.playerInfluence >= 100)
+            {
+                Debug.Log("Attempting lobby action (NormalGameLogicSequence:winCondition==2,step5)");
+                ActionTaken = tryLobbyAction();
+            }
+            else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,4)) + levelcont.CashPerCiv && CountAvailableCellsOfType(AIPlayer,4) > 0 && tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) >= levelcont.CashPerCiv + 100)
+            {
+                Debug.Log("Attempting to buy Civic district (NormalGameLogicSequence:winCondition==2,step6)");
+                ActionTaken = BuyBestcellOfType(AIPlayer, 4);
+            }
+            else
+            {
+                Debug.Log("No action taken: no viable action found. (NormalGameLogicSequence:winCondition==2,step7)");
+            }
         }
         else if (winCondition == 3)
         {
