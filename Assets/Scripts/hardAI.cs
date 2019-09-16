@@ -136,10 +136,43 @@ public class hardAI : MonoBehaviour
                         success = true;
                         lobbyAction = 1;
                     }
+                    else
+                    {
+                        success = false;
+                    }
                 }
                 else if (lobbyingOptionsAvailable[randomIndex] == 2)
                 {
                     //powertothepeople
+                    int NpowResOpponent = 0; //A measure of the value of residential districts with associated power plants
+                    int NpowIndOpponent = 0; //A measure of the value of industrial districts with associated power plants
+                    int NpowResPlayer = AIPlayer.tileCounts[1] * AIPlayer.tileCounts[3];
+                    int NpowIndPlayer = AIPlayer.tileCounts[2] * 3 * AIPlayer.tileCounts[3];
+                    foreach(GameObject playerObj in allPlayers)
+                    {
+                        Player player = playerObj.GetComponent<Player>();
+                        int tempValNum = player.tileCounts[1] * player.tileCounts[3];
+                        if(tempValNum > NpowResOpponent)
+                        {
+                            NpowResOpponent = tempValNum;
+                            tempValNum = 0;
+                        }
+                        tempValNum = player.tileCounts[2] * 3 * player.tileCounts[3]; //Assert that industrial zones are three times as valuable as residential
+                        if(tempValNum > NpowIndOpponent)
+                        {
+                            NpowIndOpponent = tempValNum;
+                            tempValNum = 0;
+                        }
+                        if(tcontrol.powerToThepeople != true && ((NpowIndOpponent > NpowIndPlayer && NpowResOpponent <= NpowResPlayer) || (NpowResPlayer > NpowResOpponent)))
+                        {
+                            success = true;
+                            lobbyAction = 2;
+                        }
+                        else
+                        {
+                            success = false;
+                        }
+                    }
                 }
                 else if (lobbyingOptionsAvailable[randomIndex] == 3)
                 {
