@@ -386,6 +386,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40475561802fb8540b45ab1e536b6370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LobbyMenuButtonPrefab: {fileID: 5337133102292189490, guid: f0d41f1a02014374a932709b09ad8bdc,
+    type: 3}
 --- !u!114 &3620305885138089462
 MonoBehaviour:
   m_ObjectHideFlags: 0

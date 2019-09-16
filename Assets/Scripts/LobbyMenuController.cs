@@ -12,6 +12,8 @@ public class LobbyMenuController : MonoBehaviour {
     TurnController turnController;
     HexGrid theGrid;
     GameObject[] instance;
+    [SerializeField]
+    GameObject LobbyMenuButtonPrefab;
 
     private void Awake()
     {
@@ -25,10 +27,21 @@ public class LobbyMenuController : MonoBehaviour {
         turnController = GameObject.Find("GameController").GetComponent<TurnController>();
         actionController = GameObject.Find("GameController").GetComponent<ActionController>();
         theGrid = GameObject.Find("HexGrid").GetComponent<HexGrid>();
-        if(turnController.powerToThepeople == true)
+        /*if(turnController.powerToThepeople == true) //This is old and should be removed when the up to date code is finished and tested
         {
             Button pttpButton = GameObject.Find("powerToThePeopleButton").GetComponent<Button>();
             pttpButton.GetComponent<Image>().color = Color.red;
+        }
+        */
+        int nButtons = lCont.NLobbyOptions;
+        int[] lobbyOptions = lCont.lobbyingOptions;
+        for(int i=0; i < nButtons; i++)
+        {
+            //For each lobby button, we need to instantiate it, set it's parent, update the action it performs, and update it's appearence.
+            GameObject newLobbyButton = Instantiate<GameObject>(LobbyMenuButtonPrefab);
+            newLobbyButton.transform.SetParent(transform, false);
+            newLobbyButton.GetComponent<LobbyMenuButtonController>().lobbyActionIndex = lobbyOptions[i];
+            newLobbyButton.GetComponent<LobbyMenuButtonController>().updateButtonAppearence();
         }
     }
 
@@ -83,4 +96,6 @@ public class LobbyMenuController : MonoBehaviour {
             Debug.Log("PowerToThePeople Already in play!");
         }
     }
+
+
 }

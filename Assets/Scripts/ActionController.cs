@@ -419,4 +419,68 @@ public class ActionController : MonoBehaviour {
             uIController.updateMessageBox(currentPlayer.PlayerName, "played Office Refurbishment Programme");
         }
     }
+
+    public void RepealEdict(Player currentPlayer)
+    {
+        Debug.Log("Sorry repeal action is not yet implemented");
+    }
+
+    public void PerformLobbyAction(int actionToPerform, Player currentPlayer, Player[] thePlayers)
+    {
+        if (actionToPerform == 0)
+        {
+            //Repeal button selected
+            RepealEdict(currentPlayer);
+        }
+        else if (actionToPerform == 1)
+        {
+            //Green Energy Initiative
+            OnGreenEnergyInitiative(currentPlayer, thePlayers);
+        }
+        else if (actionToPerform == 2)
+        {
+            //Power To the people
+            PowerToThePeople(currentPlayer);
+        }
+        else if (actionToPerform == 3)
+        {
+            //Rule of Law
+            RuleOfLaw(currentPlayer);
+        }
+        else if (actionToPerform == 4)
+        {
+            //Bribes as Industry
+            BribesAsIndustry(currentPlayer);
+        }
+        else if (actionToPerform == 5)
+        {
+            //Move Goalposts
+            MoveGoalposts(currentPlayer);
+        }
+        else if (actionToPerform == 6)
+        {
+            //Rent hike
+            RentHike(currentPlayer);
+        }
+        else if (actionToPerform == 7)
+        {
+            //Decentralise government
+            DecentraliseGovernment(currentPlayer);
+        }
+        else if (actionToPerform == 8)
+        {
+            //Office refurbishment
+            OfficeRefurbishment(currentPlayer, thePlayers);
+        }
+        else if (actionToPerform == 9)
+        {
+            //Free housing initiative
+            FreeHousingInitiative(currentPlayer);
+        }
+        else
+        {
+            Debug.Log("Error in LobbyMenuController::performLobbyAction : unkown actionToPerform");
+        }
+    }
+
 }

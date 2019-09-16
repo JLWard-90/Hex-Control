@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class LevelController : MonoBehaviour {
 
@@ -93,6 +94,10 @@ public class LevelController : MonoBehaviour {
     public string[] playerNames;
     public int[] playerTypes;
 
+    public int NLobbyOptions = 5; //Only 5 options will be available per game
+    int maxLobbyIndexAvailable = 9; //At this time there are 10 lobby options (including repeal) so the maximum index is 9 
+    public int[] lobbyingOptions; 
+
     private void Awake()
     {
         //First thing to do is to find the Global controller
@@ -161,6 +166,7 @@ public class LevelController : MonoBehaviour {
         VictoryCondition = globalController.winCondition;
         TargetCells = 30;
         TargetCash = 10000;//Hard code in these targets 
+        
         Debug.Log("Level controller setup complete.");
     }
 
@@ -223,7 +229,29 @@ public class LevelController : MonoBehaviour {
         }
     }
 
-
+    void SetupLobbyOptions()
+    {
+        lobbyingOptions = new int[NLobbyOptions];
+        lobbyingOptions[0] = 0; //The zeroth lobbying option is always set to "repeal"
+        for(int i=1; i<NLobbyOptions; i++)
+        {
+            int randNum;
+            bool unique = false;
+            while(unique == false)
+            {
+               randNum = Random.Range(1, maxLobbyIndexAvailable + 1);
+                if (lobbyingOptions.Contains(randNum))
+                {
+                    unique = false;
+                }
+                else
+                {
+                    lobbyingOptions[i] = randNum;
+                    unique = true;
+                }
+            }
+        }
+    }
 
 
 }
