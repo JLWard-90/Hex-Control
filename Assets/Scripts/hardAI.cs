@@ -201,15 +201,164 @@ public class hardAI : MonoBehaviour
                 }
                 else if (lobbyingOptionsAvailable[randomIndex] == 4)
                 {
-                    //bribes as industry
+                    Debug.Log("testing if bribes as industry is worthwhile");
+                    //bribes as industry. This can use the same logic as Rule of Law
+                    int maxNCivOpponent = 0;
+                    foreach (GameObject playerObj in allPlayers)
+                    {
+                        Player player = playerObj.GetComponent<Player>();
+                        if (player.tileCounts[4] > maxNCivOpponent && player.playerNumber != AIPlayer.playerNumber) //If player has more Civics and is not the current AI player
+                        {
+                            maxNCivOpponent = player.tileCounts[4];
+                        }
+                    }
+                    if (maxNCivOpponent < AIPlayer.tileCounts[4] && tcontrol.ruleOfLaw != true) //If the AIplayer has at least 2 more Civic buildings than anyone else then it is worth using Rule Of Law
+                    {
+                        success = true;
+                        lobbyAction = 4;
+                    }
+                    else
+                    {
+                        success = false;
+                    }
                 }
                 else if (lobbyingOptionsAvailable[randomIndex] == 5)
                 {
                     //MoveGoalposts
+                    //This will need to be the same logic as PreventOpponentVictory
+                    int winCondition = levelcont.VictoryCondition;
+                    bool opponentWinPossible = false;
+                    if (winCondition == 0)
+                    {
+                        int distanceToVictory = 1000; //
+                                                      //Victory condition is to reach target influence
+                        foreach (GameObject playerObject in allPlayers)
+                        {
+                            Player playerComponent = playerObject.GetComponent<Player>();
+                            if (playerComponent.playerNumber != AIPlayer.playerNumber && (levelcont.TargetInfluence - playerComponent.playerInfluence) < distanceToVictory && (playerComponent.playerInfluence + tcontrol.CalculateInfIncrease(playerComponent.playerNumber)) >= levelcont.TargetInfluence)
+                            {
+                                //If the playerComponent does not belong to the target player AND the distance to victory is lower than the current stored value AND the player in question is on track to win
+                                opponentWinPossible = true;
+                                distanceToVictory = levelcont.TargetInfluence - playerComponent.playerInfluence; //Set the new distance to Victory (this will ensure that the player closest to winning will be targeted)
+                                Debug.Log("AI has decided that player will win soon");
+                            }
+                            else
+                            {
+                                Debug.Log("Player does not appear to be about to win");
+                            }
+                        }
+                    }
+                    else if (winCondition == 1) //If win condition is controlling the board
+                    {
+                        int distanceToVictory = 1000; //
+                        foreach (GameObject playerObject in allPlayers)
+                        {
+                            Player playerComponent = playerObject.GetComponent<Player>();
+                            int NplayerTerritories = playerComponent.tileCounts[0] + playerComponent.tileCounts[1] + playerComponent.tileCounts[2] + playerComponent.tileCounts[3] + playerComponent.tileCounts[4] + playerComponent.tileCounts[5];
+                            if (NplayerTerritories - 3 >= levelcont.TargetCells && playerComponent.playerNumber != AIPlayer.playerNumber && levelcont.TargetCells - NplayerTerritories <= distanceToVictory)
+                            {
+                                //If the playerComponent does not belong to the target player AND the distance to victory is lower than the current stored value AND the player in question only needs 3 or fewer more districts to win the game
+                                opponentWinPossible = true;
+                                distanceToVictory = levelcont.TargetCells - NplayerTerritories; //Set the new distance to Victory (this will ensure that the player closest to winning will be targeted)
+                            }
+                            else
+                            {
+                                Debug.Log("Player does not appear to be about to win");
+                            }
+                        }
+                    }
+                    else if(winCondition == 2)
+                    {
+                        int distanceToVictory = 10000; //
+                                                       //Victory condition is to reach target influence
+                        foreach (GameObject playerObject in allPlayers)
+                        {
+                            Player playerComponent = playerObject.GetComponent<Player>();
+                            if (playerComponent.playerNumber != AIPlayer.playerNumber && (levelcont.TargetCash - playerComponent.playerCash) < distanceToVictory && (playerComponent.playerCash + tcontrol.CalculateCashIncrease(playerComponent.playerNumber)) >= levelcont.TargetCash)
+                            {
+                                //If the playerComponent does not belong to the target player AND the distance to victory is lower than the current stored value AND the player in question is on track to win
+                                opponentWinPossible = true;
+                                distanceToVictory = levelcont.TargetCash - playerComponent.playerCash; //Set the new distance to Victory (this will ensure that the player closest to winning will be targeted)
+                            }
+                            else
+                            {
+                                Debug.Log("Player does not appear to be about to win");
+                            }
+                        }
+                    }
+                    else if(winCondition == 3)
+                    {
+                        foreach (GameObject playerObject in allPlayers)
+                        {
+                            Player playerComponent = playerObject.GetComponent<Player>();
+                            if (playerComponent.playerNumber != AIPlayer.playerNumber && playerComponent.tileCounts[5] >= levelcont.TargetLandmarks - 1)
+                            {
+                                opponentWinPossible = true;
+                            }
+                            else
+                            {
+                                Debug.Log("Player does not appear to be about to win");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Error in hardAI.cs::ChooseLobbyAction -- choice 5: Victory condition is not recognised!");
+                        success = false;
+                        opponentWinPossible = false;
+                    }
+                    if (opponentWinPossible == true)
+                    {
+                        //If the AI thinks an opponent might win then it is worthwhile changing the victory condition
+                        success = true;
+                        lobbyAction = 5;
+                    }
+                    else
+                    {
+                        success = false;
+                    }
+
                 }
                 else if (lobbyingOptionsAvailable[randomIndex] == 6)
                 {
                     //Rent hike
+                    Debug.Log("testing whether Rent Hike is worthwhile");
+                    int winCondition = levelcont.VictoryCondition;
+                    bool goodIdea = false;
+                    int maxResOpponent = 0;
+                    foreach (GameObject playerObj in allPlayers)
+                    {
+                        Player player = playerObj.GetComponent<Player>();
+                        if (player.tileCounts[1] > maxResOpponent)
+                        {
+                            maxResOpponent = player.tileCounts[1];
+                        }
+                    }
+                    if(winCondition == 0 && AIPlayer.tileCounts[1] < maxResOpponent - 3) //If influence victory and the current player has much fewer residences than another player
+                    {
+                        goodIdea = true; //Then Rent hike might be a good idea
+                    }
+                    else if (winCondition == 0)
+                    {
+                        goodIdea = false; //otherwise if the winCondition==0, Rent hike is probably a bad idea
+                    }
+                    else if(AIPlayer.tileCounts[1] > maxResOpponent + 1) //If player has at least 2 more Residential districts than any other player
+                    {
+                        goodIdea = true;
+                    }
+                    else
+                    {
+                        goodIdea = false;
+                    }
+                    if(goodIdea == true)
+                    {
+                        success = true;
+                        lobbyAction = 6;
+                    }
+                    else
+                    {
+                        success = false;
+                    }
                 }
                 else if (lobbyingOptionsAvailable[randomIndex] == 7)
                 {
