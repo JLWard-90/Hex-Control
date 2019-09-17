@@ -114,14 +114,15 @@ public class hardAI : MonoBehaviour
         GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("player");
         while (finished == false)
         {
-            int randomIndex = Random.Range(0, 5); //Four actions available that are not repeal
-            if (attempted[randomIndex] == false)
+            int randomIndex = Random.Range(1, 5); //Four actions available that are not repeal and repeal is at 0
+            if (attempted[randomIndex-1] == false)
             {
                 bool success = false;
-                attempted[randomIndex] = true;
+                attempted[randomIndex-1] = true;
                 triedCount++;
-                if (lobbyingOptionsAvailable[randomIndex] == 1)
+                if (lobbyingOptionsAvailable[randomIndex] == 1) 
                 {
+                    Debug.Log("testing if Green Energy Initiative might be useful");
                     //green energy initiative
                     int NpowOpponent = 0;
                     foreach(GameObject playerObj in allPlayers)
@@ -143,6 +144,7 @@ public class hardAI : MonoBehaviour
                 }
                 else if (lobbyingOptionsAvailable[randomIndex] == 2)
                 {
+                    Debug.Log("testing if Power to the People might be useful");
                     //powertothepeople
                     int NpowResOpponent = 0; //A measure of the value of residential districts with associated power plants
                     int NpowIndOpponent = 0; //A measure of the value of industrial districts with associated power plants
@@ -177,6 +179,25 @@ public class hardAI : MonoBehaviour
                 else if (lobbyingOptionsAvailable[randomIndex] == 3)
                 {
                     //rule of law
+                    Debug.Log("testing if Rule of Law mgiht be useful");
+                    int maxNCivOpponent = 0;
+                    foreach(GameObject playerObj in allPlayers)
+                    {
+                        Player player = playerObj.GetComponent<Player>();
+                        if(player.tileCounts[4] > maxNCivOpponent && player.playerNumber != AIPlayer.playerNumber) //If player has more Civics and is not the current AI player
+                        {
+                            maxNCivOpponent = player.tileCounts[4];
+                        }
+                    }
+                    if(maxNCivOpponent+1 < AIPlayer.tileCounts[4] && tcontrol.ruleOfLaw != true) //If the AIplayer has at least 2 more Civic buildings than anyone else then it is worth using Rule Of Law
+                    {
+                        success = true;
+                        lobbyAction = 3;
+                    }
+                    else
+                    {
+                        success = false;
+                    }
                 }
                 else if (lobbyingOptionsAvailable[randomIndex] == 4)
                 {
