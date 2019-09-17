@@ -5,7 +5,7 @@ using UnityEngine;
 public class AIController : MonoBehaviour {
 
     TurnController turnController;
-    int aiLevel = 0; //[0] the simplest possible AI. Makes decisions at random.
+    int aiLevel = 1; //[0] the simplest possible AI. Makes decisions at random.
     //AI levels: [0]: pathetic, [1]: easy, [2]: medium, [3] hard
     Player AIPlayer;
     LevelController level;

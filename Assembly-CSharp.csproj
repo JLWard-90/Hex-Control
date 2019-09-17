@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\LobbyMenuController.cs" />
     <Compile Include="Assets\Scripts\MenuController.cs" />
     <Compile Include="Assets\Scripts\MouseOverTextController.cs" />
+    <Compile Include="Assets\Scripts\MusicController.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
     <Compile Include="Assets\Scripts\pointerCleanup.cs" />
     <Compile Include="Assets\Scripts\TurnController.cs" />
