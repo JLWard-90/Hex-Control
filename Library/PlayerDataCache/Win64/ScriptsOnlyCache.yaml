@@ -87,21 +87,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10452}
     - Class: 114
-      Script: {instanceID: 10684}
+      Script: {instanceID: 10686}
     - Class: 114
-      Script: {instanceID: 10922}
+      Script: {instanceID: 10924}
     - Class: 114
-      Script: {instanceID: 11190}
+      Script: {instanceID: 11192}
     - Class: 114
-      Script: {instanceID: 11526}
+      Script: {instanceID: 11528}
     - Class: 114
-      Script: {instanceID: 11958}
+      Script: {instanceID: 11960}
     - Class: 114
-      Script: {instanceID: 11976}
+      Script: {instanceID: 11978}
     - Class: 114
-      Script: {instanceID: 11994}
+      Script: {instanceID: 11996}
     - Class: 114
-      Script: {instanceID: 12014}
+      Script: {instanceID: 12016}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -172,15 +172,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10452}
     - Class: 114
-      Script: {instanceID: 10856}
+      Script: {instanceID: 10858}
     - Class: 114
-      Script: {instanceID: 10922}
+      Script: {instanceID: 10924}
     - Class: 114
-      Script: {instanceID: 11346}
+      Script: {instanceID: 11348}
     - Class: 114
-      Script: {instanceID: 11526}
+      Script: {instanceID: 11528}
     - Class: 114
-      Script: {instanceID: 11976}
+      Script: {instanceID: 11978}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -255,33 +255,33 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10452}
     - Class: 114
-      Script: {instanceID: 10734}
+      Script: {instanceID: 10656}
     - Class: 114
-      Script: {instanceID: 10840}
+      Script: {instanceID: 10736}
     - Class: 114
-      Script: {instanceID: 10922}
+      Script: {instanceID: 10842}
     - Class: 114
-      Script: {instanceID: 11028}
+      Script: {instanceID: 10924}
     - Class: 114
-      Script: {instanceID: 11074}
+      Script: {instanceID: 11030}
     - Class: 114
-      Script: {instanceID: 11128}
+      Script: {instanceID: 11076}
     - Class: 114
-      Script: {instanceID: 11176}
+      Script: {instanceID: 11130}
     - Class: 114
-      Script: {instanceID: 11308}
+      Script: {instanceID: 11178}
     - Class: 114
-      Script: {instanceID: 11374}
+      Script: {instanceID: 11310}
     - Class: 114
-      Script: {instanceID: 11526}
+      Script: {instanceID: 11376}
     - Class: 114
-      Script: {instanceID: 11714}
+      Script: {instanceID: 11528}
     - Class: 114
-      Script: {instanceID: 11976}
+      Script: {instanceID: 11716}
     - Class: 114
       Script: {instanceID: 11978}
     - Class: 114
-      Script: {instanceID: 51224}
+      Script: {instanceID: 11980}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -611,6 +611,12 @@ ScriptsOnlyBuild:
     assemblyName: com.unity.multiplayer-hlapi.Runtime.dll
     namespaceName: UnityEngine.Networking
     className: NetworkTransformVisualizer
+  - hash:
+      serializedVersion: 2
+      Hash: 2272d456c94f1de52ea63fa6a98b556b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: LobbyMenuButtonController
   - hash:
       serializedVersion: 2
       Hash: b3ab2106268377ffe25dd18ac23dca28
@@ -1073,12 +1079,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 2272d456c94f1de52ea63fa6a98b556b
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: LobbyMenuButtonController
   platform: 19
   scenePathNames:
   - Assets/Scenes/MainMenu.unity
