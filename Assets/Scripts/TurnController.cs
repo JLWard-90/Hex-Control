@@ -22,7 +22,7 @@ public class TurnController : MonoBehaviour {
     public bool rentHike = false;
     public bool decentraliseGovernment = false;
     public bool freeHousingInitiative = false;
-
+    public bool paused = false;
     private void Awake()
     {
         lCont = GameObject.Find("LevelController").GetComponent<LevelController>();
@@ -31,16 +31,20 @@ public class TurnController : MonoBehaviour {
         TotalPlayerNumber = lCont.playerCount;
         CurrentTurn = 1;
         CurrentPlayer = 0; //Start with the first player
-        
+        players = lCont.players;
+        thePlayer = players[CurrentPlayer];
+        ResetPrices();
+
     }
 
     private void Start()
     {
-        players = lCont.players;
-        thePlayer = players[CurrentPlayer];
-        ResetPrices();
         uiC.UpdateInfoPanel();
         uiC.UpdateScoreTextBox(players);
+        if (lCont.players[CurrentPlayer].GetComponent<Player>().AIplayer)
+        {
+            lCont.players[CurrentPlayer].GetComponent<AIController>().RunAITurn();
+        }
     }
 
     public void EndTurn()
@@ -48,7 +52,7 @@ public class TurnController : MonoBehaviour {
         if (CurrentPlayer < TotalPlayerNumber - 1)
         {
             NextPlayer();
-            if(lCont.players[CurrentPlayer].GetComponent<Player>().AIplayer)
+            if(lCont.players[CurrentPlayer].GetComponent<Player>().AIplayer && paused != true)
             {
                 Debug.Log("AI player is up!");
                 lCont.players[CurrentPlayer].GetComponent<AIController>().RunAITurn();
@@ -57,7 +61,7 @@ public class TurnController : MonoBehaviour {
         else
         {
             NextRound();
-            if (lCont.players[CurrentPlayer].GetComponent<Player>().AIplayer)
+            if (lCont.players[CurrentPlayer].GetComponent<Player>().AIplayer && paused != true)
             {
                 lCont.players[CurrentPlayer].GetComponent<AIController>().RunAITurn();
             }
@@ -195,6 +199,10 @@ public class TurnController : MonoBehaviour {
             CurrentPlayer.playerInfluence += (int)(CurrentPlayer.tileCounts[4] * IpC);
             
             CurrentPlayer.playerInfluence += CurrentPlayer.tileCounts[5] * lCont.InfPerLan;
+            if(CurrentPlayer.playerInfluence <= 0)
+            {
+                CurrentPlayer.playerInfluence = 0;
+            }
 
             if(CurrentPlayer.playerInfluence >= lCont.TargetInfluence && lCont.VictoryCondition == 0)
             {

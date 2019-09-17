@@ -43,6 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdbb63b34007f1d429fb9292ca33d1bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  noPlayerIndex: 5
+  winCondition: 0
   useDefaults: 1
   Residential: 46
   Industrial: 24
@@ -65,9 +67,9 @@ MonoBehaviour:
   CashPerLan: 0
   InfPerPow: 0
   InfPerInd: -20
-  InfPerRes: 5
+  InfPerRes: 10
   InfPerCiv: 30
-  InfPerLan: 75
+  InfPerLan: 100
   PowerPlantMultiplier: 1.25
   TargetInfluence: 500
   StartingCash: 300
@@ -77,3 +79,6 @@ MonoBehaviour:
   PowCost: 500
   CivCost: 500
   LanCost: 2000
+  mouseOverTextOn: 0
+  playerNames: []
+  playerTypes: 

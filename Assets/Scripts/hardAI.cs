@@ -624,7 +624,7 @@ public class hardAI : MonoBehaviour
                     Debug.Log("Attempting to buy power plant district (NormalGameLogicSequence:winCondition==0:Step4)");
                     ActionTaken = BuyBestcellOfType(AIPlayer, 3);
                 }
-                else if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 2)) && CountAvailableCellsOfType(AIPlayer, 2) > 0)
+                else if(AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer, 2)) && CountAvailableCellsOfType(AIPlayer, 2) > 0 && (AIPlayer.tileCounts[2] <2 || tcontrol.CalculateInfIncrease(AIPlayer.playerNumber) > Mathf.Abs(levelcont.InfPerInd) + 10))
                 {
                     Debug.Log("Attempting to buy Industrial district (NormalGameLogicSequence:winCondition==0:Step5)");
                     ActionTaken = BuyBestcellOfType(AIPlayer, 2);
@@ -865,10 +865,6 @@ public class hardAI : MonoBehaviour
                 else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCellsOfType(AIPlayer,2)) && tcontrol.CalculateCashIncrease(AIPlayer.playerNumber) <= 200)
                 {
                     ActionTaken = BuyBestcellOfType(AIPlayer, 2);
-                }
-                else if (tcontrol.CalculateInfIncrease(AIPlayer.playerNumber) > 100)
-                {
-                    ActionTaken = tryLobbyAction();
                 }
                 else
                 {

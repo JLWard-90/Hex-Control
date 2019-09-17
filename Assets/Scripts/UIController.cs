@@ -222,6 +222,7 @@ public class UIController : MonoBehaviour {
         winnerAnnounce.GetComponent<RectTransform>().SetParent(this.transform, false);
         winnerAnnounce.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
         WinText.text = string.Format("Game Over \n {0} wins! \n Winning score: {1}", playername, playerscore);
+        turnController.paused = true;
     }
 
     public void OnExitToOSPress()
