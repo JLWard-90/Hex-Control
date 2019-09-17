@@ -157,7 +157,7 @@ public class TurnController : MonoBehaviour {
         }
         if (WinCondition == 1)
         {
-            uiC.SpawnWinText(WinningPlayer.PlayerName, WinningPlayer.playerCash);
+            uiC.SpawnWinText(WinningPlayer.PlayerName, WinningPlayer.playerInfluence + (WinningPlayer.playerCash / 20));
         }
     }
     void AddInfluence()
@@ -214,7 +214,7 @@ public class TurnController : MonoBehaviour {
         }
         if(WinCondition == 1)
         {
-            uiC.SpawnWinText(WinningPlayer.PlayerName, WinningPlayer.playerInfluence);
+            uiC.SpawnWinText(WinningPlayer.PlayerName, WinningPlayer.playerInfluence + (WinningPlayer.playerCash / 20));
         }
     }
     private void ResetPrices()
@@ -292,7 +292,7 @@ public class TurnController : MonoBehaviour {
         }
         if (WinCondition == 1)
         {
-            uiC.SpawnWinText(WinningPlayer.PlayerName, WinningPlayer.playerInfluence);
+            uiC.SpawnWinText(WinningPlayer.PlayerName, WinningPlayer.playerInfluence + (WinningPlayer.playerCash / 20));
         }
     }
 }
