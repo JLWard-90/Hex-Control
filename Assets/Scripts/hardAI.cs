@@ -668,15 +668,15 @@ public class hardAI : MonoBehaviour
                     Debug.Log("Attempting to buy residential district (NormalGameLogicSequence:winCondition==1,step1,3)");
                     ActionTaken = BuyBestcellOfType(AIPlayer, 1);
                 }
-                else if(AIPlayer.playerInfluence >= 100)
-                {
-                    Debug.Log("Attempting lobby action (NormalGameLogicSequence:winCondition==1,step1,4)");
-                    ActionTaken = tryLobbyAction();
-                }
                 else if (AIPlayer.playerCash >= minimumCellCost(FindAvailableCells(AIPlayer)) && FindAvailableCells(AIPlayer).Count > 0)
                 {
                     Debug.Log("Try to buy any cell (NormalGameLogicSequence:winCondition==1,step1,5)");
                     ActionTaken = BuyBestCellOfAnyType(AIPlayer);
+                }
+                else if (AIPlayer.playerInfluence >= 100)
+                {
+                    Debug.Log("Attempting lobby action (NormalGameLogicSequence:winCondition==1,step1,4)");
+                    ActionTaken = tryLobbyAction();
                 }
                 else
                 {
