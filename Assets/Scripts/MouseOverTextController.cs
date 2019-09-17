@@ -93,43 +93,43 @@ public class MouseOverTextController : MonoBehaviour, IPointerEnterHandler, IPoi
         }
         else if (actionID == 0)
         {
-            infoText = "Repeal an existing edict that is in effect (Edits in effect are shown in red)";
+            infoText = "Repeal an existing edict that is in effect (Edits in effect are shown in red)\n Cost: 100inf";
         }
         else if (actionID == 1)
         {
-            infoText = "Each player is charged $100 for every Power Plant district they own";
+            infoText = "Each player is charged $100 for every Power Plant district they own\n Cost: 100inf";
         }
         else if (actionID == 2)
         {
-            infoText = "Power plants give bonuses to residential districts rather than industrial districts";
+            infoText = "Power plants give bonuses to residential districts rather than industrial district\n Cost: 100infs";
         }
         else if (actionID == 3)
         {
-            infoText = "Increases the influence output of Civic districts";
+            infoText = "Increases the influence output of Civic districts\n Cost: 100inf";
         }
         else if (actionID == 4)
         {
-            infoText = "Reduces the upkeep cost of Civic districts";
+            infoText = "Reduces the upkeep cost of Civic districts\n Cost: 100inf";
         }
         else if (actionID == 5)
         {
-            infoText = "Randomly selects a new victory condition";
+            infoText = "Randomly selects a new victory condition\n Cost: 200inf";
         }
         else if  (actionID == 6)
         {
-            infoText = "Increases the income from residences but decreases their influence production";
+            infoText = "Increases the income from residences but decreases their influence production\n Cost: 100inf";
         }
         else if (actionID == 7)
         {
-            infoText = "Reduces the upkeep cost of Civic districts but also decreases their influence production";
+            infoText = "Reduces the upkeep cost of Civic districts but also decreases their influence production\n Cost: 100inf";
         }
         else if (actionID == 8)
         {
-            infoText = "Charges each player $200 for each Civic district they own";
+            infoText = "Charges each player $200 for each Civic district they own\n Cost: 100inf";
         }
         else if (actionID == 9)
         {
-            infoText = "Influence output of residential districts is increased but income from residential districts is reduced to 0";
+            infoText = "Influence output of residential districts is increased but income from residential districts is reduced to 0\n Cost: 100inf";
         }
         return infoText;
     }

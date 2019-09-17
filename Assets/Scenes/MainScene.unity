@@ -1538,6 +1538,7 @@ MonoBehaviour:
   rentHike: 0
   decentraliseGovernment: 0
   freeHousingInitiative: 0
+  paused: 0
 --- !u!114 &780838005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1558,7 +1559,7 @@ MonoBehaviour:
   championOfIndustryCost: 100
   ruleOfLawCost: 100
   bribesAsIndustryCost: 100
-  moveGoalpostCost: 300
+  moveGoalpostCost: 200
   rentHikeCost: 100
   decentraliseGovernmentCost: 100
   freeHousingInitiativeCost: 100

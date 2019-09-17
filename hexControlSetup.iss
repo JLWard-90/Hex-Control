@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Hex Control"
-#define MyAppVersion "4.0.0"
+#define MyAppVersion "0.4.3"
 #define MyAppPublisher "Jacob Ward"
 #define MyAppURL "https://jakeward.itch.io/hex-control"
 #define MyAppExeName "Hex Control.exe"
