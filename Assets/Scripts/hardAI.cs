@@ -350,7 +350,7 @@ public class hardAI : MonoBehaviour
                     {
                         goodIdea = false;
                     }
-                    if(goodIdea == true)
+                    if(goodIdea == true && tcontrol.rentHike != true)
                     {
                         success = true;
                         lobbyAction = 6;
@@ -363,14 +363,78 @@ public class hardAI : MonoBehaviour
                 else if (lobbyingOptionsAvailable[randomIndex] == 7)
                 {
                     //decentralise government
+                    Debug.Log("test decentralise government");
+                    int winCondition = levelcont.VictoryCondition;
+                    int maxNCivOpponent = 0;
+                    foreach (GameObject playerObj in allPlayers)
+                    {
+                        Player player = playerObj.GetComponent<Player>();
+                        if (player.tileCounts[4] > maxNCivOpponent && player.playerNumber != AIPlayer.playerNumber) //If player has more Civics and is not the current AI player
+                        {
+                            maxNCivOpponent = player.tileCounts[4];
+                        }
+                    }
+                    if (winCondition != 0 && maxNCivOpponent < AIPlayer.tileCounts[4] && tcontrol.ruleOfLaw != true) //If the AIplayer has at least 2 more Civic buildings than anyone else then it is worth using Rule Of Law
+                    {
+                        success = true;
+                        lobbyAction = 7;
+                    }
+                    else if (winCondition == 0 && maxNCivOpponent > AIPlayer.tileCounts[4] +1  && tcontrol.ruleOfLaw != true)
+                    {
+                        success = true;
+                        lobbyAction = 7;
+                    }
+                    else
+                    {
+                        success = false;
+                    }
                 }
                 else if (lobbyingOptionsAvailable[randomIndex] == 8)
                 {
                     //office refurbishment
+                    Debug.Log("Checking if office refurbishment is worthwhile");
+                    int maxNCivOpponent = 0;
+                    foreach (GameObject playerObj in allPlayers)
+                    {
+                        Player player = playerObj.GetComponent<Player>();
+                        if (player.tileCounts[4] > maxNCivOpponent && player.playerNumber != AIPlayer.playerNumber) //If player has more Civics and is not the current AI player
+                        {
+                            maxNCivOpponent = player.tileCounts[4];
+                        }
+                    }
+                    if ((AIPlayer.tileCounts[4] == 0 && maxNCivOpponent > 0) || AIPlayer.tileCounts[4] < maxNCivOpponent - 2)
+                    {
+                        success = true;
+                        lobbyAction = 8;
+                    }
+                    else
+                    {
+                        success = false;
+                    }
                 }
                 else if (lobbyingOptionsAvailable[randomIndex] == 9)
                 {
                     //free housing initiative
+                    Debug.Log("testing free housing initiative.");
+                    int winCondition = levelcont.VictoryCondition;
+                    int maxNResOpponent = 0;
+                    foreach (GameObject playerObj in allPlayers)
+                    {
+                        Player player = playerObj.GetComponent<Player>();
+                        if (player.tileCounts[1] > maxNResOpponent && player.playerNumber != AIPlayer.playerNumber) //If player has more Civics and is not the current AI player
+                        {
+                            maxNResOpponent = player.tileCounts[1];
+                        }
+                    }
+                    if((winCondition == 0 && AIPlayer.tileCounts[1] > maxNResOpponent + 1) || (winCondition !=0 && AIPlayer.tileCounts[1] < maxNResOpponent-2))
+                    {
+                        success = true;
+                        lobbyAction = 9;
+                    }
+                    else
+                    {
+                        success = false;
+                    }
                 }
                 else
                 {
