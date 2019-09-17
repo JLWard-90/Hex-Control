@@ -1519,6 +1519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5aee4b110f7da43947b354fe4f1e9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  repealModeOn: 0
   greenInitiativeCost: 100
   greenInitiativePPdrain: 100
   changeToIndCost: 100
@@ -1532,6 +1533,7 @@ MonoBehaviour:
   freeHousingInitiativeCost: 100
   officeRefurbishmentCost: 100
   officeRefurbishmentPenalty: 200
+  repealCost: 100
 --- !u!1 &819512205
 GameObject:
   m_ObjectHideFlags: 0
@@ -3677,7 +3679,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 564.93, y: 139.84}
+  m_AnchoredPosition: {x: 500, y: 139.84}
   m_SizeDelta: {x: 357.81, y: 316.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1971132047
