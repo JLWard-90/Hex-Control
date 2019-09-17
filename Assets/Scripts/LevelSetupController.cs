@@ -68,7 +68,7 @@ public class LevelSetupController : MonoBehaviour
         Text explanationText = GameObject.Find("RulesExplanation").GetComponent<Text>();
         if (winConditionValue == 0)
         {
-            explanationText.text = "Be the first to reach 1000 influence";
+            explanationText.text = "Be the first to reach 500 influence";
         }
         else if(winConditionValue == 1)
         {

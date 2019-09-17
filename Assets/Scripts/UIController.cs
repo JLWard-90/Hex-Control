@@ -35,6 +35,8 @@ public class UIController : MonoBehaviour {
 
     [SerializeField]
     Text ScoreBoxScoreText;
+    [SerializeField]
+    Text scoreBoxHeaderText;
 
     [SerializeField]
     GameObject gameOverPrefab;
@@ -189,12 +191,51 @@ public class UIController : MonoBehaviour {
 
     public void UpdateScoreTextBox(Player[] thePlayers)
     {
+        int winCondition = lCont.VictoryCondition;
+        string headerOutputString = "";
+        if(winCondition == 0)
+        {
+            headerOutputString = "Gain 500 influence\nScores:\n";
+        }
+        else if(winCondition == 1)
+        {
+            headerOutputString = "Control 30 districts\nScores:\n";
+        }
+        else if (winCondition == 2)
+        {
+            headerOutputString = "Obtain $10000\nScores:\n";
+        }
+        else if (winCondition == 3)
+        {
+            headerOutputString = "Hold 3 landmarks\nScores:\n";
+        }
         string outputString = "";
         foreach(Player thePlayer in thePlayers)
         {
             int playerScore = thePlayer.playerInfluence;
+            if (winCondition == 0)
+            {
+                playerScore = thePlayer.playerInfluence;
+            }
+            else if (winCondition == 1)
+            {
+                playerScore = thePlayer.tileCounts[1] + thePlayer.tileCounts[2] + thePlayer.tileCounts[3] + thePlayer.tileCounts[4] + thePlayer.tileCounts[5];
+            }
+            else if (winCondition == 2)
+            {
+                playerScore = thePlayer.playerCash;
+            }
+            else if(winCondition == 3)
+            {
+                playerScore = thePlayer.tileCounts[5];
+            }
+            else
+            {
+                playerScore = thePlayer.playerInfluence;
+            }
             outputString = outputString + string.Format("{0}: {1}\n", thePlayer.PlayerName, playerScore);
         }
+        scoreBoxHeaderText.text = headerOutputString;
         ScoreBoxScoreText.text = outputString;
     }
 

@@ -780,6 +780,7 @@ MonoBehaviour:
     type: 3}
   gameController: {fileID: 780838001}
   ScoreBoxScoreText: {fileID: 1687384529}
+  scoreBoxHeaderText: {fileID: 592060576}
   gameOverPrefab: {fileID: 7053897457304427272, guid: 9a75b31e26368ba4da53d562aebc5c18,
     type: 3}
   messageBox: {fileID: 1971132047}
@@ -1186,7 +1187,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 41.37}
+  m_SizeDelta: {x: 342.9, y: 88.7}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &592060576
 MonoBehaviour:
@@ -3061,8 +3062,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7.2, y: -19.823}
-  m_SizeDelta: {x: 372.5, y: 166.95}
+  m_AnchoredPosition: {x: 0, y: -41}
+  m_SizeDelta: {x: 372.5, y: 122.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1687384529
 MonoBehaviour:
@@ -3611,7 +3612,7 @@ MonoBehaviour:
   InfPerLan: 75
   PowerPlantMultiplier: 1.25
   VictoryCondition: 0
-  TargetInfluence: 1000
+  TargetInfluence: 500
   TargetCash: 300
   TargetCells: 36
   TargetLandmarks: 3
