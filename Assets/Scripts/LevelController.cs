@@ -96,7 +96,9 @@ public class LevelController : MonoBehaviour {
 
     public int NLobbyOptions = 5; //Only 5 options will be available per game
     int maxLobbyIndexAvailable = 9; //At this time there are 10 lobby options (including repeal) so the maximum index is 9 
-    public int[] lobbyingOptions; 
+    public int[] lobbyingOptions;
+
+    public bool mouseOverText = false;
 
     private void Awake()
     {
@@ -136,6 +138,7 @@ public class LevelController : MonoBehaviour {
             LanCost = globalController.LanCost;
             playerNames = globalController.playerNames;
             playerTypes = globalController.playerTypes;
+            mouseOverText = globalController.mouseOverTextOn;
         }
         //Move this stuff to start so that it definitely happens after setting the level parameters.
         CellPrices = new List<int>

@@ -34,6 +34,7 @@ public class LevelSetupController : MonoBehaviour
         globalContol.updatePlayerList();
         globalContol.useDefaults = false;
         globalContol.updateWinCondition();
+        updateMouseOverTextOn();
         SceneManager.LoadScene("MainScene");
     }
     public void UpdateResBuildings()
@@ -60,6 +61,20 @@ public class LevelSetupController : MonoBehaviour
     {
         updateExplanationText();
         globalContol.updateWinCondition();
+    }
+    public void updateMouseOverTextOn()
+    {
+        bool mouseOverText = false;
+        int mouseOverTextValue = GameObject.Find("MouseOverTextDropdown").GetComponent<Dropdown>().value;
+        if(mouseOverTextValue == 0)
+        {
+            mouseOverText = true;
+        }
+        else
+        {
+            mouseOverText = false;
+        }
+        globalContol.mouseOverTextOn = mouseOverText;
     }
 
     public void updateExplanationText()

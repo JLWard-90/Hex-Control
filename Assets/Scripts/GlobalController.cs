@@ -69,6 +69,7 @@ public class GlobalController : MonoBehaviour {
     public int PowCost = 500;
     public int CivCost = 500;
     public int LanCost = 2000;
+    public bool mouseOverTextOn = false;
     //Aditional lists for players:
     public string[] playerNames;
     public int[] playerTypes;

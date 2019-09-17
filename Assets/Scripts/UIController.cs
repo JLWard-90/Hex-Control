@@ -123,8 +123,17 @@ public class UIController : MonoBehaviour {
     {
         if(CurrentPlayer.AIplayer != true)
         {
-            HexCell cell = gridController.cells[gridController.SelectedCellIndex];
-            actionController.OnBuyCell(CurrentPlayer, cell);
+            GameObject instance = GameObject.FindGameObjectWithTag("mouseOverText");
+            if (instance != null)
+            {
+                Debug.Log("pointer cleanup on enter");
+                GameObject.Destroy(instance);
+            }
+            else
+            {
+                HexCell cell = gridController.cells[gridController.SelectedCellIndex];
+                actionController.OnBuyCell(CurrentPlayer, cell);
+            }
         }
         
     }
@@ -133,8 +142,18 @@ public class UIController : MonoBehaviour {
     {
         if (CurrentPlayer.AIplayer != true)
         {
-            HexCell cell = gridController.cells[gridController.SelectedCellIndex];
-            actionController.OnSellCell(CurrentPlayer, cell);
+            GameObject instance = GameObject.FindGameObjectWithTag("mouseOverText");
+            if (instance != null)
+            {
+                Debug.Log("pointer cleanup on enter");
+                GameObject.Destroy(instance);
+            }
+            else
+            {
+                HexCell cell = gridController.cells[gridController.SelectedCellIndex];
+                actionController.OnSellCell(CurrentPlayer, cell);
+            }
+            
         }
     }
 
@@ -142,13 +161,29 @@ public class UIController : MonoBehaviour {
     {
         if (CurrentPlayer.AIplayer != true)
         {
-            GameObject LobbyMenu = Instantiate<GameObject>(LobbyMenuPrefab);
-            LobbyMenu.transform.SetParent(transform, false);
+            GameObject instance = GameObject.FindGameObjectWithTag("mouseOverText");
+            if (instance != null)
+            {
+                Debug.Log("pointer cleanup on enter");
+                GameObject.Destroy(instance);
+            }
+            else
+            {
+                GameObject LobbyMenu = Instantiate<GameObject>(LobbyMenuPrefab);
+                LobbyMenu.transform.SetParent(transform, false);
+            }
+            
         }
     }
 
     public void OnMenuButtonPress()
     {
+        GameObject instance = GameObject.FindGameObjectWithTag("mouseOverText");
+        if (instance != null)
+        {
+            Debug.Log("pointer cleanup on enter");
+            GameObject.Destroy(instance);
+        }
         GameObject Escmen = GameObject.Find("MenuOnEsc(Clone)");
         if (Escmen != null)
         {
@@ -165,8 +200,18 @@ public class UIController : MonoBehaviour {
     {
         if (CurrentPlayer.AIplayer != true)
         {
-            turnController.EndTurn();
-            gridController.DeselectCell();
+            GameObject instance = GameObject.FindGameObjectWithTag("mouseOverText");
+            if (instance != null)
+            {
+                Debug.Log("pointer cleanup on enter");
+                GameObject.Destroy(instance);
+            }
+            else
+            {
+                turnController.EndTurn();
+                gridController.DeselectCell();
+            }
+            
         }
     }
 

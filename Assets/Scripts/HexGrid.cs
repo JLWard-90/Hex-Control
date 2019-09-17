@@ -84,21 +84,36 @@ public class HexGrid : MonoBehaviour {
 
     void HandleInput0()
     {
-        Debug.Log("click");
-        Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if(Physics.Raycast(inputRay, out hit) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        GameObject instance = GameObject.FindGameObjectWithTag("mouseOverText");
+        if (instance != null)
         {
-            Debug.Log("TouchCell (HexGrid.cs line 92)");
-            TouchCell(hit.point);
+            Debug.Log("pointer cleanup on timeout");
+            GameObject.Destroy(instance);
         }
-        else
-        {
-            Debug.Log("No cell hit");
-        }
+        
+            Debug.Log("click");
+            Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            if (Physics.Raycast(inputRay, out hit) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+            {
+                Debug.Log("TouchCell (HexGrid.cs line 92)");
+                TouchCell(hit.point);
+            }
+            else
+            {
+                Debug.Log("No cell hit");
+            }
+        
+        
     }
     void HandleInput1()
     {
+        GameObject instance = GameObject.FindGameObjectWithTag("mouseOverText");
+        if (instance != null)
+        {
+            Debug.Log("pointer cleanup on timeout");
+            GameObject.Destroy(instance);
+        }
         DeselectCell();
     }
 

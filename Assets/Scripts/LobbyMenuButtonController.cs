@@ -45,19 +45,30 @@ public class LobbyMenuButtonController : MonoBehaviour
 
     public void buttonClicked()
     {
-        Player[] thePlayers = lcont.players;
-        Player currentPlayer = thePlayers[tcontrol.CurrentPlayer];
-        if(actions.repealModeOn == false)
+        GameObject instance = GameObject.FindGameObjectWithTag("mouseOverText");
+        if (instance != null)
         {
-            actions.PerformLobbyAction(lobbyActionIndex, currentPlayer, thePlayers);
+            Debug.Log("pointer cleanup on timeout");
+            GameObject.Destroy(instance);
         }
-        else if (actions.repealModeOn == true)
+        else
         {
-            actions.RepealEdict(currentPlayer,lobbyActionIndex);
-            actions.repealModeOn = false;
+
+            Player[] thePlayers = lcont.players;
+            Player currentPlayer = thePlayers[tcontrol.CurrentPlayer];
+            if (actions.repealModeOn == false)
+            {
+                actions.PerformLobbyAction(lobbyActionIndex, currentPlayer, thePlayers);
+            }
+            else if (actions.repealModeOn == true)
+            {
+                actions.RepealEdict(currentPlayer, lobbyActionIndex);
+                actions.repealModeOn = false;
+            }
+            updateButtonAppearence();
+            uiController.UpdateInfoPanel();
         }
-        updateButtonAppearence();
-        uiController.UpdateInfoPanel();
+
     }
 
     bool CheckIfActive(int actionIndex)

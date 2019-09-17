@@ -92,9 +92,10 @@ GameObject:
   - component: {fileID: 4604041695113874682}
   - component: {fileID: 7462540066701516525}
   - component: {fileID: 4752037714084640940}
+  - component: {fileID: 4828780600228864699}
   m_Layer: 5
   m_Name: LobbyMenuButton
-  m_TagString: Untagged
+  m_TagString: LobbyButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -229,3 +230,17 @@ MonoBehaviour:
   ButtonText: Default button
   ExplanationText: Default text
   parentButton: {fileID: 0}
+--- !u!114 &4828780600228864699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5337133102292189490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df33ae4c87fe543499dc65a07db8f657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseOverTextPrefab: {fileID: 6236831720246110383, guid: 7bc716753f8231c47aed4f410230ba62,
+    type: 3}

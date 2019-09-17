@@ -82,6 +82,7 @@
     <Compile Include="Assets\Scripts\MenuController.cs" />
     <Compile Include="Assets\Scripts\MouseOverTextController.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\pointerCleanup.cs" />
     <Compile Include="Assets\Scripts\TurnController.cs" />
     <Compile Include="Assets\Scripts\UIController.cs" />
     <None Include="Assets\Shaders\NewShader.shader" />

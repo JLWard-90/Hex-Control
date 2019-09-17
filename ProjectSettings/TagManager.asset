@@ -7,6 +7,8 @@ TagManager:
   - HexCell
   - LobbyMenu
   - player
+  - mouseOverText
+  - LobbyButton
   layers:
   - Default
   - TransparentFX

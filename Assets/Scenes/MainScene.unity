@@ -452,6 +452,7 @@ GameObject:
   - component: {fileID: 250600230}
   - component: {fileID: 250600229}
   - component: {fileID: 250600228}
+  - component: {fileID: 250600231}
   m_Layer: 5
   m_Name: SellButton
   m_TagString: Untagged
@@ -573,6 +574,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 250600226}
   m_CullTransparentMesh: 0
+--- !u!114 &250600231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 250600226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df33ae4c87fe543499dc65a07db8f657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseOverTextPrefab: {fileID: 6236831720246110383, guid: 7bc716753f8231c47aed4f410230ba62,
+    type: 3}
 --- !u!1 &269605670
 GameObject:
   m_ObjectHideFlags: 0
@@ -1243,6 +1258,7 @@ GameObject:
   - component: {fileID: 692036783}
   - component: {fileID: 692036782}
   - component: {fileID: 692036781}
+  - component: {fileID: 692036784}
   m_Layer: 5
   m_Name: LobbyButton
   m_TagString: Untagged
@@ -1364,6 +1380,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692036779}
   m_CullTransparentMesh: 0
+--- !u!114 &692036784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692036779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df33ae4c87fe543499dc65a07db8f657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseOverTextPrefab: {fileID: 6236831720246110383, guid: 7bc716753f8231c47aed4f410230ba62,
+    type: 3}
 --- !u!1 &750136243
 GameObject:
   m_ObjectHideFlags: 0
@@ -2732,6 +2762,7 @@ GameObject:
   - component: {fileID: 1570615924}
   - component: {fileID: 1570615923}
   - component: {fileID: 1570615922}
+  - component: {fileID: 1570615925}
   m_Layer: 5
   m_Name: ActionPanel
   m_TagString: Untagged
@@ -2826,6 +2857,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1570615920}
   m_CullTransparentMesh: 0
+--- !u!114 &1570615925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570615920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7249a0946cfad04e83b2232565b0fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1572051033
 GameObject:
   m_ObjectHideFlags: 0
@@ -2838,6 +2881,7 @@ GameObject:
   - component: {fileID: 1572051037}
   - component: {fileID: 1572051036}
   - component: {fileID: 1572051035}
+  - component: {fileID: 1572051038}
   m_Layer: 5
   m_Name: EndTurnButton
   m_TagString: Untagged
@@ -2959,6 +3003,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1572051033}
   m_CullTransparentMesh: 0
+--- !u!114 &1572051038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1572051033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df33ae4c87fe543499dc65a07db8f657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseOverTextPrefab: {fileID: 6236831720246110383, guid: 7bc716753f8231c47aed4f410230ba62,
+    type: 3}
 --- !u!1001 &1665257322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3254,6 +3312,7 @@ GameObject:
   - component: {fileID: 1734547669}
   - component: {fileID: 1734547668}
   - component: {fileID: 1734547667}
+  - component: {fileID: 1734547670}
   m_Layer: 5
   m_Name: BuyButton
   m_TagString: Untagged
@@ -3375,6 +3434,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1734547665}
   m_CullTransparentMesh: 0
+--- !u!114 &1734547670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734547665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df33ae4c87fe543499dc65a07db8f657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseOverTextPrefab: {fileID: 6236831720246110383, guid: 7bc716753f8231c47aed4f410230ba62,
+    type: 3}
 --- !u!1 &1896051851
 GameObject:
   m_ObjectHideFlags: 0
